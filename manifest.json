@@ -4,16 +4,29 @@
   "version": "0.1",
 
   "browser_action": {
-     "browser_style": true,
-     "default_title": "Tab Sorter",
-     "default_popup": "tab_sorter.html"
-   },
+    "browser_style": true,
+    "default_title": "Tab Sorter",
+    "default_popup": "tab-sorter.html"
+  },
+
+  "background": {
+    "page": "background-tab-sorter.html"
+  },
 
   "description": "Sort the current tabs by domain.",
 
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
+  },
+
+  "commands": {
+    "sort-tabs": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space"
+      },
+      "description": "Send a 'sort-tabs' event"
+    }
   },
 
   "permissions": [

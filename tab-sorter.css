@@ -1,8 +1,12 @@
 html, body {
-  width: 350px;
+  width: 20em;
 }
 
 .container {
   background: white;
+  padding: 1em;
+}
+
+button {
   padding: 1em;
 }
