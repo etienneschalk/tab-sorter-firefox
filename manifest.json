@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Sorter",
+  "version": "0.1",
+
+  "browser_action": {
+     "browser_style": true,
+     "default_title": "Tab Sorter",
+     "default_popup": "tab_sorter.html"
+   },
+
+  "description": "Sort the current tabs by domain.",
+
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+
+  "permissions": [
+    "<all_urls>",
+    "tabs"
+  ]
+}
