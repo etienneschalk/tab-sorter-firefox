@@ -65,7 +65,7 @@ function zip(a, b) {
 
 // Event listeners -------------------------------------------------------------
 
-document.addEventListener("DOMContentLoaded", listTabs);
+// document.addEventListener("DOMContentLoaded", listTabs);
 
 document.addEventListener("click", (e) => {
   if (e.target.id === "sort-tabs") {
