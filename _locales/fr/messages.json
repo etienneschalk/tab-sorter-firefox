@@ -1,4 +1,5 @@
 {
+
   "extensionName": {
     "message": "Trieur d'onglets",
     "description": "Name of the extension."
@@ -10,12 +11,53 @@
   },
 
   "buttonSortTabsByUrl": {
-    "message": "Trier les onglets par URL",
+    "message": "Par URL",
     "description": "Button for sorting tabs by URL."
   },
 
   "buttonSortTabsByMru": {
-    "message": "Trier les onglets par dernière utilisation",
+    "message": "Par dernière utilisation",
     "description": "Button for sorting tabs by most recently used"
+  },
+
+  "buttonSortTabsByTitle": {
+    "message": "Par titre",
+    "description": "Button for sorting tabs by title"
+  },
+
+  "buttonSortTabsByFaviconAndTitle": {
+    "message": "Par icône et titre",
+    "description": "Button for sorting tabs by most recently used"
+  },
+
+  "shortcutSortTabsByUrl": {
+    "message": "-",
+    "description": "Shortcut sort by URL"
+  },
+
+  "shortcutSortTabsByMru": {
+    "message": "Ctrl + Shift + Espace",
+    "description": "Shortcut sort by most recently used"
+  },
+
+
+  "shortcutSortTabsByTitle": {
+    "message": "-",
+    "description": "Shortcut sort by title"
+  },
+
+  "shortcutSortTabsByFaviconAndTitle": {
+    "message": "Ctrl + Alt + Espace",
+    "description": "Shortcut sort by favicon then title"
+  },
+
+  "reverseSorting": {
+    "message": "Inverser l'ordre de tri",
+    "description": "Reverse sorting order"
+  },
+
+  "shuffle": {
+    "message": "Mélanger les onglets",
+    "description": "Reorganizes tabs randomly"
   }
 }

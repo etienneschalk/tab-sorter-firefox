@@ -2,10 +2,11 @@
 .container {
   background: white;
   padding: 1em;
+  text-align: center;
 }
 
 button {
-  padding: 1em;
+  padding: 0.4em;
   width: 100%;
   text-align: center;
 }
@@ -13,4 +14,20 @@ button {
 .centered, .centered h1, .centered p {
   text-align: center;
   margin: 0 auto;
+}
+
+label {
+  display: block;
+  width: 100%;
+}
+
+label input[type="checkbox"] {
+  position: relative;
+  top: 1px;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  text-align: right;
 }
