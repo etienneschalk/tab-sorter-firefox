@@ -1,0 +1,21 @@
+{
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Extension for sorting your tabs.",
+    "description": "Description of the extension."
+  },
+
+  "buttonSortTabsByUrl": {
+    "message": "Sort tabs by URL",
+    "description": "Button for sorting tabs by URL."
+  },
+
+  "buttonSortTabsByMru": {
+    "message": "Sort tabs by most recently used",
+    "description": "Button for sorting tabs by most recently used"
+  }
+}

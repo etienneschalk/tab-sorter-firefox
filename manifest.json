@@ -1,6 +1,8 @@
 {
+  "default_locale": "en",
   "manifest_version": 2,
-  "name": "Tab Sorter",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
   "version": "0.1",
 
   "browser_action": {
@@ -12,20 +14,25 @@
   "background": {
     "page": "background-tab-sorter.html"
   },
-
-  "description": "Sort the current tabs by domain.",
-
+  
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
   },
 
   "commands": {
-    "sort-tabs": {
+    "sort-tabs-url": {
       "suggested_key": {
         "default": "Ctrl+Shift+Space"
       },
-      "description": "Send a 'sort-tabs' event"
+      "description": "Send a 'sort-tabs-url' event"
+    },
+
+    "sort-tabs-mru": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+Space"
+      },
+      "description": "Send a 'sort-tabs-mru' event (most recently used)"
     }
   },
 

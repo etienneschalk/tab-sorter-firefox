@@ -1,0 +1,21 @@
+{
+  "extensionName": {
+    "message": "Trieur d'onglets",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Extension pour trier vos onglets",
+    "description": "Description of the extension."
+  },
+
+  "buttonSortTabsByUrl": {
+    "message": "Trier les onglets par URL",
+    "description": "Button for sorting tabs by URL."
+  },
+
+  "buttonSortTabsByMru": {
+    "message": "Trier les onglets par dernière utilisation",
+    "description": "Button for sorting tabs by most recently used"
+  }
+}

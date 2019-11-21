@@ -1,26 +1,50 @@
+const DEBUG = false;
 
-function getCurrentWindowTabs() {
-  return browser.tabs.query({
-    currentWindow: true
-  });
+
+// Comparison functions --------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+function comparisonByUrl(tabA, tabB) {
+  return tabA.url.localeCompare(tabB.url);
 }
 
-function sortTabs() {
-  console.log("[Tab Sorter] sortTabs()");
+function comparisonByMru(tabA, tabB) {
+  return tabA.lastAccessed - tabB.lastAccessed;
+}
+
+
+// Core sorting function -------------------------------------------------------
+// -----------------------------------------------------------------------------
+function sortTabs(sortingType) {
+  console.log(`[Tab Sorter] sortTabs() with ${sortingType}`);
 
   getCurrentWindowTabs().then((tabs) => {
     let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
-    notPinnedTabs.sort((tabA, tabB) => tabA.url.localeCompare(tabB.url))
+    let comparisonFunction;
+
+    switch (sortingType) {
+      case "sort-tabs-url":
+        comparisonFunction = comparisonByUrl;
+        break;
+      case "sort-tabs-mru":
+        comparisonFunction = comparisonByMru;
+        break;
+      default:
+        comparisonFunction = comparisonByUrl;
+    }
+
+    notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
     let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
 
     let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
 
     function onMoved(theTab) {
-      console.log(`Moved: [${theTab[0].id}] ${theTab[0].url}`);
+      if (DEBUG)
+        console.debug(`Moved: [${theTab[0].id}] ${theTab[0].url}`);
     }
 
     function onError(error) {
-      console.log("Error:" + error);
+      console.error("Error:" + error);
     }
 
     newIds.forEach((value, index) => {
@@ -34,7 +58,11 @@ function sortTabs() {
   });
 }
 
-// Zipping two arrays like in python
+
+// Helpers ---------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+// Zipping two arrays like in python -------------------------------------------
 function zip(a, b) {
   if (a.length !== b.length) {
     return null;
@@ -42,4 +70,31 @@ function zip(a, b) {
   return a.map((e, i) => [e, b[i]]);
 }
 
-export default sortTabs;
+// Retrieve the tabs from the current window -----------------------------------
+function getCurrentWindowTabs() {
+  return browser.tabs.query({
+    currentWindow: true
+  });
+}
+
+// Configure event listening ---------------------------------------------------
+// -----------------------------------------------------------------------------
+function eventConfig(command) {
+  switch (command) {
+    case "sort-tabs-url":
+      sortTabs("sort-tabs-url");
+      break;
+    case "sort-tabs-mru":
+      sortTabs("sort-tabs-mru");
+      break;
+    default:
+      ;
+  }
+}
+
+// Exports ---------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+export {
+  sortTabs,
+  eventConfig
+};
