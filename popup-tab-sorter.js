@@ -1,4 +1,7 @@
-import { sortTabs, eventConfig } from "./tab-sorter.js";
+import {
+  sortTabs,
+  eventConfig
+} from "./tab-sorter.js";
 
 const messages = {
   extensionName: browser.i18n.getMessage("extensionName"),
@@ -7,6 +10,7 @@ const messages = {
 };
 
 const popupContent = `
+<div id="container">
 <h1> ${messages.extensionName} </h1>
 <br />
 <button class="button-primary" href="#" id="sort-tabs-url"> ${messages.buttonSortTabsByUrl} </button>
@@ -14,9 +18,13 @@ const popupContent = `
 <br />
 <button class="button-primary" href="#" id="sort-tabs-mru"> ${messages.buttonSortTabsByMru} </button>
 <p> (Ctrl + Alt + Space) </p>
+</div>
 `;
 
-document.getElementById("container").innerHTML = popupContent;
+const container = new DOMParser().parseFromString(popupContent, "text/html").getElementById("container");
+document.getElementById("container").innerHTML = ``;
+document.getElementById("container").appendChild(container);
+
 
 // Clicking on the extension "Sort tabs" icon
 document.addEventListener("click", (e) => {

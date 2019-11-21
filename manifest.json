@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.1",
+  "version": "0.2",
 
   "browser_action": {
     "browser_style": true,
@@ -14,7 +14,7 @@
   "background": {
     "page": "background-tab-sorter.html"
   },
-  
+
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
