@@ -16,4 +16,22 @@
   - v MRU
   - Domain
   - Title (used for domain and url for example)
-- Reverse
+- v Reverse
+- Extraction by icon and connection with OneTab to reduce all tabs from a same domain
+- Optimization:
+  - Quick reverse if a first sort was just clicked
+   (like a cache ; while no tab is moved after a sorting operation, if we choose the same operation but we reverse, we just reverse the tab without sorting all of them once again)
+  - Quicker sort for MRU (comparison between numbers)
+  - Put current group of tabs at the end / the beginning
+  - Detect duplicate table
+  - implement MRU even for chrome
+  - Decouple firefox and chrome code
+  - Better sorting of integer
+
+## Performance
+
+### Looping on arrays
+
+Firefox is on average very slower for looping than google chrome.
+On Firefox, the faster loop for looping on an array seems to be forEach;
+On Google Chrome, it seems to be the for loop.

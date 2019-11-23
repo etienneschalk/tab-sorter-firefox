@@ -26,7 +26,7 @@
   },
 
   "buttonSortTabsByFaviconAndTitle": {
-    "message": "By icon and title",
+    "message": "By icon",
     "description": "Button for sorting tabs by most recently used"
   },
 
@@ -36,7 +36,7 @@
   },
 
   "shortcutSortTabsByMru": {
-    "message": "Ctrl + Shift + Space",
+    "message": "Ctrl + Alt + Space",
     "description": "Shortcut sort by most recently used"
   },
 
@@ -46,7 +46,7 @@
   },
 
   "shortcutSortTabsByFaviconAndTitle": {
-    "message": "Ctrl + Alt + Space",
+    "message": "Ctrl + Shift + Space",
     "description": "Shortcut sort by favicon then title"
   },
 
@@ -58,6 +58,11 @@
   "shuffle": {
     "message": "Shuffle tabs",
     "description": "Reorganizes tabs randomly"
+  },
+
+  "allWindows": {
+    "message": "Sort in all windows",
+    "description": "Sorting tabs also in other windows"
   }
 
 }

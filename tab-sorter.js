@@ -1,7 +1,9 @@
 const DEBUG = false;
+const FOREACH_SORT = false;
 
 var state = {
-  reverse: false
+  reverse: false,
+  allWindows: true
 };
 
 
@@ -61,7 +63,7 @@ function sortTabs(sortingType, shuffle) {
 
   console.log(`[Tab Sorter] sortTabs() with ${sortingType}`);
 
-  getCurrentWindowTabs().then((tabs) => {
+  getCurrentWindowTabs(function(tabs) {
     let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
     let comparisonFunction;
     let customSort = undefined;
@@ -116,23 +118,18 @@ function sortTabs(sortingType, shuffle) {
 
     let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
 
-    function onMoved(theTab) {
-      if (DEBUG)
-        console.debug(`Moved: [${theTab[0].id}] ${theTab[0].url}`);
-    }
+    performance.mark("begin");
 
-    function onError(error) {
-      console.error("Error:" + error);
-    }
-
-    newIds.forEach((value, index) => {
-      let moving = browser.tabs.move(
-        value, {
-          index: index + numberOfPinnedTabs
-        }
-      );
-      moving.then(onMoved, onError);
+    // The index seems to be useless in this case of moving all the tabs
+    chrome.tabs.move(newIds, {
+      index: numberOfPinnedTabs
     });
+
+    performance.mark("end");
+    performance.measure("Tab reorganizing time", "begin", "end");
+    console.table(performance.getEntriesByType("measure").map((e) => [e.name, e.duration]));
+    performance.clearMarks();
+    performance.clearMeasures();
   });
 }
 
@@ -149,9 +146,16 @@ function zip(a, b) {
 }
 
 // Retrieve the tabs from the current window -----------------------------------
-function getCurrentWindowTabs() {
-  return browser.tabs.query({
-    currentWindow: true
+function getCurrentWindowTabs(callback) {
+  // /!\ currentWindow: false != no argument currentWindow given
+  let options = {};
+  if (getAllWindows() == false) {
+    options = {
+      currentWindow: true
+    };
+  }
+  chrome.tabs.query(options, function(tabs) {
+    callback(tabs)
   });
 }
 
@@ -183,6 +187,16 @@ function getReverse() {
   return state.reverse;
 }
 
+function setAllWindows(choice) {
+  state.allWindows = choice;
+  if (DEBUG)
+    console.debug("Sorting in all windows ? " + choice);
+}
+
+function getAllWindows() {
+  return state.allWindows;
+}
+
 
 // Configure event listening ---------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -210,15 +224,16 @@ function eventConfig(command, value) {
 }
 
 // Using the sort-tabs shortcut defined in manifest.json -----------------------
-browser.commands.onCommand.addListener((command) => {
+chrome.commands.onCommand.addListener((command) => {
   eventConfig(command);
 });
 
 // Clicking on a popup button --------------------------------------------------
-browser.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message) => {
   eventConfig(message.command);
   if (message.command === "sort-tabs-reverse") {
     setReverse(message.value);
-    reverse = message.value;
+  } else if (message.command === "sort-tabs-all-windows") {
+    setAllWindows(message.value);
   }
 });

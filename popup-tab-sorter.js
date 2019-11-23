@@ -1,30 +1,31 @@
 function retrieve(message) {
-  return browser.i18n.getMessage(message);
+  return chrome.i18n.getMessage(message);
 }
 
 async function initTemplate() {
-  var backgroundWindow = await browser.runtime.getBackgroundPage();
+  var backgroundWindow = await chrome.extension.getBackgroundPage();
   var isReverse = backgroundWindow.getReverse();
+  var isAllWindows = backgroundWindow.getAllWindows();
 
   const popupContent = `
   <div id="container">
 
-  <h1> ${retrieve("extensionName")} </h1>
-  <br />
+  <!--<h1> ${retrieve("extensionName")} </h1>
+  <br />-->
 
   <button class="button-primary" href="#" id="sort-tabs-mru"> ${retrieve("buttonSortTabsByMru")} </button>
-  <p> (${retrieve("shortcutSortTabsByMru")}) </p>
+  <p class="has-text-centered"> (${retrieve("shortcutSortTabsByMru")}) </p>
   <br />
 
   <button class="button-primary" href="#" id="sort-tabs-favicon-and-title"> ${retrieve("buttonSortTabsByFaviconAndTitle")} </button>
-  <p> (${retrieve("shortcutSortTabsByFaviconAndTitle")}) </p>
+  <p class="has-text-centered"> (${retrieve("shortcutSortTabsByFaviconAndTitle")}) </p>
   <br />
 
-  <button class="button-primary" href="#" id="sort-tabs-title"> ${retrieve("buttonSortTabsByTitle")} </button>
+  <button class="button-simple" href="#" id="sort-tabs-title"> ${retrieve("buttonSortTabsByTitle")} </button>
   <p> <!--(${retrieve("shortcutSortTabsByTitle")})--> </p>
   <br />
 
-  <button class="button-primary" href="#" id="sort-tabs-url"> ${retrieve("buttonSortTabsByUrl")} </button>
+  <button class="button-simple" href="#" id="sort-tabs-url"> ${retrieve("buttonSortTabsByUrl")} </button>
   <p> <!--(${retrieve("shortcutSortTabsByUrl")})--> </p>
   <br />
 
@@ -33,7 +34,14 @@ async function initTemplate() {
    ${retrieve("reverseSorting")} </label>
   <br/>
 
+  <label for="sort-tabs-all-windows">
+  <input type="checkbox" id="sort-tabs-all-windows" ${isAllWindows ? 'checked' : ''}/>
+   ${retrieve("allWindows")} </label>
+  <br/>
+
   <a href="#" id="sort-tabs-shuffle"> ${retrieve("shuffle")} </a>
+
+  <small> Tab Sorter </small>
   </div>
   `;
 
@@ -70,11 +78,19 @@ document.addEventListener("click", (e) => {
     case "sort-tabs-reverse":
       command = "sort-tabs-reverse";
       value = e.target.checked;
+      break;
+    case "sort-tabs-all-windows":
+      command = "sort-tabs-all-windows";
+      value = e.target.checked;
+      break;
+    case "close-button":
+      window.close();
+      break;
     default:
       ;
   }
 
-  browser.runtime.sendMessage({
+  chrome.runtime.sendMessage({
     type: "clickFromPopup",
     command: command,
     value: value

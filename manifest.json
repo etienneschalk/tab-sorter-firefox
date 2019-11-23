@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.3",
+  "version": "0.4",
 
   "browser_action": {
     "browser_style": true,
@@ -23,14 +23,14 @@
   "commands": {
     "sort-tabs-favicon-and-title": {
       "suggested_key": {
-        "default": "Ctrl+Alt+Space"
+        "default": "Ctrl+Shift+Space"
       },
       "description": "Send a 'sort-tabs-favicon-and-title' event"
     },
 
     "sort-tabs-mru": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Space"
+        "default": "Ctrl+Alt+Space"
       },
       "description": "Send a 'sort-tabs-mru' event (most recently used)"
     }
