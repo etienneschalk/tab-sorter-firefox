@@ -1,11 +1,19 @@
 # Tab Sorter
 
+## Changelog 
+
+- 2023-05-14: Persist user parameters
+
+
 ## Help
+
 - [Mozilla Docs - Your first WebExtension](https://developer.mozilla.org/en/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension)
 - [Mozilla Docs - Working with the Tabs API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_the_Tabs_API)
 - [Mozilla Docs - Anatomy of a WebExtension](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Background_scripts)
 - [Mozilla Docs - Commands](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands)
 - [Mozilla Docs - Communication with background scripts](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#Communication_avec_les_scripts_darri%C3%A8re-plan)
+- [Mozilla Docs - Implement a settings page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page)
+
 ## Todo
 - Less naive filtering:
   - Better analyze of the URLs (exclude 'www.')

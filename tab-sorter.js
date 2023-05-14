@@ -2,10 +2,9 @@ const DEBUG = false;
 const FOREACH_SORT = false;
 
 var state = {
-  reverse: false,
-  allWindows: true
+  reverse: true,
+  allWindows: true,
 };
-
 
 // Custom sorts ----------------------------------------------------------------
 // Takes tabs, return tabs
@@ -16,7 +15,7 @@ var state = {
 // corresponding tabs)
 // Exemple : {"google.com": [1,5,6], "rickandmortyadventures.com": [4,2,0]}
 function faviconSort(tabs, comparisonFunction, reverse) {
-  let dictionaryByUrl = {}
+  let dictionaryByUrl = {};
   let sortedTabs = [];
 
   tabs.forEach((tab, index) => {
@@ -55,7 +54,6 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
-
 // Core sorting function -------------------------------------------------------
 // -----------------------------------------------------------------------------
 function sortTabs(sortingType, shuffle) {
@@ -63,7 +61,7 @@ function sortTabs(sortingType, shuffle) {
 
   console.log(`[Tab Sorter] sortTabs() with ${sortingType}`);
 
-  getCurrentWindowTabs(function(tabs) {
+  getCurrentWindowTabs(function (tabs) {
     let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
     let comparisonFunction;
     let customSort = undefined;
@@ -87,12 +85,15 @@ function sortTabs(sortingType, shuffle) {
     }
 
     if (customSort) {
-      notPinnedTabs = customSort(notPinnedTabs, comparisonFunction, getReverse());
+      notPinnedTabs = customSort(
+        notPinnedTabs,
+        comparisonFunction,
+        getReverse()
+      );
     } else {
       if (getReverse()) {
         notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-        if (DEBUG)
-          console.log("Reverse sorting");
+        if (DEBUG) console.log("Reverse sorting");
       } else {
         notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
       }
@@ -122,17 +123,18 @@ function sortTabs(sortingType, shuffle) {
 
     // The index seems to be useless in this case of moving all the tabs
     chrome.tabs.move(newIds, {
-      index: numberOfPinnedTabs
+      index: numberOfPinnedTabs,
     });
 
     performance.mark("end");
     performance.measure("Tab reorganizing time", "begin", "end");
-    console.table(performance.getEntriesByType("measure").map((e) => [e.name, e.duration]));
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
+    );
     performance.clearMarks();
     performance.clearMeasures();
   });
 }
-
 
 // Helpers ---------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -151,11 +153,11 @@ function getCurrentWindowTabs(callback) {
   let options = {};
   if (getAllWindows() == false) {
     options = {
-      currentWindow: true
+      currentWindow: true,
     };
   }
-  chrome.tabs.query(options, function(tabs) {
-    callback(tabs)
+  chrome.tabs.query(options, function (tabs) {
+    callback(tabs);
   });
 }
 
@@ -174,13 +176,11 @@ function removeParenthesisNotification(stringToModify) {
   return stringToModify.replace(/\(\d*\)/m, "").trim();
 }
 
-
 // Getter/Setters on state  ----------------------------------------------------
 // -----------------------------------------------------------------------------
 function setReverse(choice) {
   state.reverse = choice;
-  if (DEBUG)
-    console.debug("Reverse sorting: " + choice);
+  if (DEBUG) console.debug("Reverse sorting: " + choice);
 }
 
 function getReverse() {
@@ -189,14 +189,12 @@ function getReverse() {
 
 function setAllWindows(choice) {
   state.allWindows = choice;
-  if (DEBUG)
-    console.debug("Sorting in all windows ? " + choice);
+  if (DEBUG) console.debug("Sorting in all windows ? " + choice);
 }
 
 function getAllWindows() {
   return state.allWindows;
 }
-
 
 // Configure event listening ---------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -219,7 +217,6 @@ function eventConfig(command, value) {
       sortTabs("sort-tabs-mru", true);
       break;
     default:
-      ;
   }
 }
 

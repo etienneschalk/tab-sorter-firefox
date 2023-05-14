@@ -1,3 +1,6 @@
+const SORT_TABS_REVERSE = "sort-tabs-reverse";
+const SORT_TABS_ALL_WINDOWS = "sort-tabs-all-windows";
+
 function retrieve(message) {
   return chrome.i18n.getMessage(message);
 }
@@ -13,29 +16,41 @@ async function initTemplate() {
   <!--<h1> ${retrieve("extensionName")} </h1>
   <br />-->
 
-  <button class="button-primary" href="#" id="sort-tabs-mru"> ${retrieve("buttonSortTabsByMru")} </button>
+  <button class="button-primary" href="#" id="sort-tabs-mru"> ${retrieve(
+    "buttonSortTabsByMru"
+  )} </button>
   <p class="has-text-centered"> (${retrieve("shortcutSortTabsByMru")}) </p>
   <br />
 
-  <button class="button-primary" href="#" id="sort-tabs-favicon-and-title"> ${retrieve("buttonSortTabsByFaviconAndTitle")} </button>
-  <p class="has-text-centered"> (${retrieve("shortcutSortTabsByFaviconAndTitle")}) </p>
+  <button class="button-primary" href="#" id="sort-tabs-favicon-and-title"> ${retrieve(
+    "buttonSortTabsByFaviconAndTitle"
+  )} </button>
+  <p class="has-text-centered"> (${retrieve(
+    "shortcutSortTabsByFaviconAndTitle"
+  )}) </p>
   <br />
 
-  <button class="button-simple" href="#" id="sort-tabs-title"> ${retrieve("buttonSortTabsByTitle")} </button>
+  <button class="button-simple" href="#" id="sort-tabs-title"> ${retrieve(
+    "buttonSortTabsByTitle"
+  )} </button>
   <p> <!--(${retrieve("shortcutSortTabsByTitle")})--> </p>
   <br />
 
-  <button class="button-simple" href="#" id="sort-tabs-url"> ${retrieve("buttonSortTabsByUrl")} </button>
+  <button class="button-simple" href="#" id="sort-tabs-url"> ${retrieve(
+    "buttonSortTabsByUrl"
+  )} </button>
   <p> <!--(${retrieve("shortcutSortTabsByUrl")})--> </p>
   <br />
 
   <label for="sort-tabs-reverse">
-  <input type="checkbox" id="sort-tabs-reverse" ${isReverse ? 'checked' : ''}/>
+  <input type="checkbox" id="sort-tabs-reverse" ${isReverse ? "checked" : ""}/>
    ${retrieve("reverseSorting")} </label>
   <br/>
 
   <label for="sort-tabs-all-windows">
-  <input type="checkbox" id="sort-tabs-all-windows" ${isAllWindows ? 'checked' : ''}/>
+  <input type="checkbox" id="sort-tabs-all-windows" ${
+    isAllWindows ? "checked" : ""
+  }/>
    ${retrieve("allWindows")} </label>
   <br/>
 
@@ -45,15 +60,24 @@ async function initTemplate() {
   </div>
   `;
 
-
   // <input type="checkbox" id="sort-tabs-reverse" ${getReverseToUi() ? 'checked' : ''}/>
 
-  const container = new DOMParser().parseFromString(popupContent, "text/html").getElementById("container");
+  const container = new DOMParser()
+    .parseFromString(popupContent, "text/html")
+    .getElementById("container");
   document.getElementById("container").innerHTML = ``;
   document.getElementById("container").appendChild(container);
+
+  document
+    .getElementById("container")
+    .querySelectorAll("input[type=checkbox]")
+    .forEach((checkbox) =>
+      checkbox.addEventListener("change", (event) => {
+        event.preventDefault();
+        saveOption(event.target.id, event.target.checked);
+      })
+    );
 }
-
-
 
 // Clicking on the extension "Sort tabs" icon
 document.addEventListener("click", (e) => {
@@ -87,14 +111,44 @@ document.addEventListener("click", (e) => {
       window.close();
       break;
     default:
-      ;
   }
 
   chrome.runtime.sendMessage({
     type: "clickFromPopup",
     command: command,
-    value: value
+    value: value,
   });
 });
+
+// Settings persistence
+function saveOption(key, value) {
+  browser.storage.sync.set({
+    [key]: value,
+  });
+}
+
+function restoreOptions() {
+  function setCurrentChoice(id, fallback) {
+    return (result) =>
+      (document.querySelector(`#${id}`).value = result[id] || fallback);
+  }
+
+  onError = (error) => console.log(`Error: ${error}`);
+
+  browser.storage.sync
+    .get(SORT_TABS_REVERSE)
+    .then(
+      setCurrentChoice(SORT_TABS_REVERSE, backgroundWindow.getReverse()),
+      onError
+    );
+  browser.storage.sync
+    .get(SORT_TABS_ALL_WINDOWS)
+    .then(
+      setCurrentChoice(SORT_TABS_ALL_WINDOWS, backgroundWindow.getAllWindows()),
+      onError
+    );
+}
+
+document.addEventListener("DOMContentLoaded", restoreOptions);
 
 initTemplate();
