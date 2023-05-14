@@ -36,7 +36,13 @@
     }
   },
 
-  "permissions": [
-    "tabs"
-  ]
+  "permissions": ["tabs", "storage"],
+  "options_ui": {
+    "page": "options.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-sorter@tab-sorting.com"
+    }
+  }
 }
