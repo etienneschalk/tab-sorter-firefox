@@ -2,7 +2,7 @@
 
 ## Changelog
 
-- 2023-05-14: Persist user parameters
+- 2023-05-14: Persist extension settings (checkboxes)
 
 ## Help
 
