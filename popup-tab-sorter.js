@@ -68,6 +68,10 @@ async function initTemplate() {
   document.getElementById("container").innerHTML = ``;
   document.getElementById("container").appendChild(container);
 
+  // Restore default options from storage sync
+  document.addEventListener("DOMContentLoaded", restoreOptions);
+
+  // Listeners on checkboxes to persist settings.
   document
     .getElementById("container")
     .querySelectorAll("input[type=checkbox]")
@@ -125,30 +129,32 @@ function saveOption(key, value) {
   browser.storage.sync.set({
     [key]: value,
   });
+  console.debug("saveOption", key, "=", value);
 }
 
 function restoreOptions() {
-  function setCurrentChoice(id, fallback) {
-    return (result) =>
-      (document.querySelector(`#${id}`).value = result[id] || fallback);
+  function setCurrentChoice(id) {
+    return (result) => {
+      if (result[id] === undefined) {
+        console.debug(
+          "restoreOptions.setCurrentChoice: skip restoration because no setting exists yet.",
+          id
+        );
+        return;
+      }
+      document.querySelector(`#${id}`).checked = result[id];
+      console.debug("restoreOptions.setCurrentChoice:", id, result[id]);
+    };
   }
 
   onError = (error) => console.log(`Error: ${error}`);
 
   browser.storage.sync
     .get(SORT_TABS_REVERSE)
-    .then(
-      setCurrentChoice(SORT_TABS_REVERSE, backgroundWindow.getReverse()),
-      onError
-    );
+    .then(setCurrentChoice(SORT_TABS_REVERSE), onError);
   browser.storage.sync
     .get(SORT_TABS_ALL_WINDOWS)
-    .then(
-      setCurrentChoice(SORT_TABS_ALL_WINDOWS, backgroundWindow.getAllWindows()),
-      onError
-    );
+    .then(setCurrentChoice(SORT_TABS_ALL_WINDOWS), onError);
 }
-
-document.addEventListener("DOMContentLoaded", restoreOptions);
 
 initTemplate();
