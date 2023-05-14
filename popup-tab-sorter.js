@@ -126,7 +126,7 @@ document.addEventListener("click", (e) => {
 
 // Settings persistence
 function saveOption(key, value) {
-  browser.storage.sync.set({
+  browser.storage.local.set({
     [key]: value,
   });
   console.debug("saveOption", key, "=", value);
@@ -149,10 +149,10 @@ function restoreOptions() {
 
   onError = (error) => console.log(`Error: ${error}`);
 
-  browser.storage.sync
+  browser.storage.local
     .get(SORT_TABS_REVERSE)
     .then(setCurrentChoice(SORT_TABS_REVERSE), onError);
-  browser.storage.sync
+  browser.storage.local
     .get(SORT_TABS_ALL_WINDOWS)
     .then(setCurrentChoice(SORT_TABS_ALL_WINDOWS), onError);
 }
