@@ -1,9 +1,8 @@
 # Tab Sorter
 
-## Changelog 
+## Changelog
 
 - 2023-05-14: Persist user parameters
-
 
 ## Help
 
@@ -15,6 +14,7 @@
 - [Mozilla Docs - Implement a settings page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page)
 
 ## Todo
+
 - Less naive filtering:
   - Better analyze of the URLs (exclude 'www.')
   - Taking into account the title for same domains (eg sorting youtube videos by title and not by id for better human readability)
@@ -28,7 +28,7 @@
 - Extraction by icon and connection with OneTab to reduce all tabs from a same domain
 - Optimization:
   - Quick reverse if a first sort was just clicked
-   (like a cache ; while no tab is moved after a sorting operation, if we choose the same operation but we reverse, we just reverse the tab without sorting all of them once again)
+    (like a cache ; while no tab is moved after a sorting operation, if we choose the same operation but we reverse, we just reverse the tab without sorting all of them once again)
   - Quicker sort for MRU (comparison between numbers)
   - Put current group of tabs at the end / the beginning
   - Detect duplicate table
