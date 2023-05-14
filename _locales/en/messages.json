@@ -1,5 +1,4 @@
 {
-
   "extensionName": {
     "message": "Tab Sorter",
     "description": "Name of the extension."
@@ -64,5 +63,4 @@
     "message": "Sort in all windows",
     "description": "Sorting tabs also in other windows"
   }
-
 }

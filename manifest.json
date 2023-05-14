@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.4",
+  "version": "0.5",
 
   "browser_action": {
     "browser_style": true,
@@ -36,7 +36,8 @@
     }
   },
 
-  "permissions": [
-    "tabs"
-  ]
+  "permissions": ["tabs", "storage"],
+  "options_ui": {
+    "page": "options.html"
+  }
 }

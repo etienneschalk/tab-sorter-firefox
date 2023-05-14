@@ -1,5 +1,4 @@
 {
-
   "extensionName": {
     "message": "Trieur d'onglets",
     "description": "Name of the extension."
@@ -64,5 +63,4 @@
     "message": "Trier toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   }
-
 }
