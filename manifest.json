@@ -1,43 +1,54 @@
 {
   "default_locale": "en",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.5",
-
-  "browser_action": {
-    "browser_style": true,
+  "author": "Etienne Schalk",
+  "version": "0.6",
+  "action": {
     "default_title": "Tab Sorter",
     "default_popup": "tab-sorter.html"
   },
-
   "background": {
     "page": "background-tab-sorter.html"
   },
-
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
   },
-
   "commands": {
-    "sort-tabs-favicon-and-title": {
+    "command-sort-tabs-mru": {
+      "description": "Command: Sort Tabs by MRU (Most Recently Used)",
       "suggested_key": {
         "default": "Ctrl+Shift+Space"
-      },
-      "description": "Send a 'sort-tabs-favicon-and-title' event"
+      }
     },
-
-    "sort-tabs-mru": {
+    "command-sort-tabs-favicon-and-title": {
+      "description": "Command: Sort Tabs by Favicon then Title",
       "suggested_key": {
         "default": "Ctrl+Alt+Space"
-      },
-      "description": "Send a 'sort-tabs-mru' event (most recently used)"
+      }
+    },
+    "command-sort-tabs-title": {
+      "description": "Command: Sort Tabs by Title"
+    },
+    "command-sort-tabs-url": {
+      "description": "Command: Sort Tabs by URL"
+    },
+    "command-sort-tabs-shuffle": {
+      "description": "Command: Shuffle Tabs"
     }
   },
-
-  "permissions": ["tabs", "storage"],
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
   "options_ui": {
     "page": "options.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-sorter@tab-sorter.com"
+    }
   }
 }

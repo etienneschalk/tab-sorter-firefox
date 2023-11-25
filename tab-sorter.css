@@ -1,8 +1,29 @@
-.container {
-  background: white;
-  padding: 0.6em;
+* {
+  font-family: system-ui;
+  font-size: 14px;
 }
 
+.container {
+  background: white;
+  max-width: 500px;
+  /* max-width: 250px; */
+}
+
+.flexcontainer {
+  display: flex;
+  flex-direction: col;
+  gap: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.flexcol {
+  width: 50%;
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 .has-text-right-aligned {
   text-align: right;
 }
@@ -15,8 +36,21 @@ button {
 
 .centered,
 .centered h1,
+.centered h2,
 .centered p {
   margin: 0 auto;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
 }
 
 .has-text-centered {
@@ -47,6 +81,16 @@ small {
   color: #999;
 }
 
+kbd {
+  background-color: #eee;
+  box-sizing: border-box;
+  padding: 2px;
+  border: #ccc solid 1px;
+  border-bottom: #ccc solid 3px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+
 /* https://www.bestcssbuttongenerator.com/#/12 */
 
 .button-primary {
@@ -58,8 +102,8 @@ small {
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
-  font-family: Arial;
-  font-size: 13px;
+  /* font-family: Arial; */
+  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #154682;
@@ -82,8 +126,8 @@ small {
   display: inline-block;
   cursor: pointer;
   color: #000000;
-  font-family: Arial;
-  font-size: 13px;
+  /* font-family: Arial; */
+  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
 }

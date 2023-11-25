@@ -3,64 +3,63 @@
     "message": "Tab Sorter",
     "description": "Name of the extension."
   },
-
   "extensionDescription": {
     "message": "Extension for sorting your tabs.",
     "description": "Description of the extension."
   },
-
-  "buttonSortTabsByUrl": {
+  "actions": {
+    "message": "Sort"
+  },
+  "preferences": {
+    "message": "Preferences"
+  },
+  "preferences-general": {
+    "message": "General Preferences"
+  },
+  "preferences-auto": {
+    "message": "Preferences for automatic sorting"
+  },
+  "no-shortcut-configured": {
+    "message": "No shortcut configured yet"
+  },
+  "command-sort-tabs-url": {
     "message": "By URL",
     "description": "Button for sorting tabs by URL."
   },
-
-  "buttonSortTabsByMru": {
+  "command-sort-tabs-mru": {
     "message": "By most recently used",
     "description": "Button for sorting tabs by most recently used"
   },
-
-  "buttonSortTabsByTitle": {
+  "command-sort-tabs-title": {
     "message": "By title",
     "description": "Button for sorting tabs by title"
   },
-
-  "buttonSortTabsByFaviconAndTitle": {
+  "command-sort-tabs-favicon-and-title": {
     "message": "By icon",
     "description": "Button for sorting tabs by most recently used"
   },
-
-  "shortcutSortTabsByUrl": {
-    "message": "-",
-    "description": "Shortcut sort by URL"
+  "command-sort-tabs-shuffle": {
+    "message": "Shuffle tabs",
+    "description": "Link to reorganize tabs randomly"
   },
-
-  "shortcutSortTabsByMru": {
-    "message": "Ctrl + Alt + Space",
-    "description": "Shortcut sort by most recently used"
+  "change-addons-preferences": {
+    "message": "Access addons preferences",
+    "description": "Link to access the Firefox's about:addons page"
   },
-
-  "shortcutSortTabsByTitle": {
-    "message": "-",
-    "description": "Shortcut sort by title"
-  },
-
-  "shortcutSortTabsByFaviconAndTitle": {
-    "message": "Ctrl + Shift + Space",
-    "description": "Shortcut sort by favicon then title"
-  },
-
-  "reverseSorting": {
+  "ui-checkbox-sort-tabs-reverse": {
     "message": "Reverse sorting",
     "description": "Reverse sorting order"
   },
-
-  "shuffle": {
-    "message": "Shuffle tabs",
-    "description": "Reorganizes tabs randomly"
-  },
-
-  "allWindows": {
-    "message": "Sort in all windows",
+  "ui-checkbox-sort-tabs-all-windows": {
+    "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
+  },
+  "ui-checkbox-sort-tabs-auto-on-new-tab": {
+    "message": "Sort tabs when a new tab is opened.",
+    "description": "Checkbox Sort tabs when a new tab is opened."
+  },
+  "ui-sort-select-tabs-default-sort-method": {
+    "message": "Default sort method for auto sort on new tab",
+    "description": "Select Default sort method for auto sort on new tab"
   }
 }

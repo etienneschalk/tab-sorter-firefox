@@ -1,10 +1,43 @@
+![Tab Sorter icon ](icons/icon-96.png)
+
 # Tab Sorter
+
+Firefox extension to sort your tabs.
+
+## Links
+
+- [Create an Issue on GitHub](https://github.com/etienneschalk/tab-sorter-firefox/issues/new)
+- [tab-sorter-firefox on GitHub](https://github.com/etienneschalk/tab-sorter-firefox)
+
+## FAQ
+
+### :question: How do I update the keyboard shortcuts mapping for the different sorting methods?
+
+The extension comes with predefined shortcuts for some sorting methods. You can change them via Firefox directly. For more information see:
+
+- :uk: [Manage extension shortcuts in Firefox](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox)
+- :fr: [Gérer les raccourcis d’extensions dans Firefox](https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox)
 
 ## Changelog
 
-- 2023-05-14: Persist extension settings (checkboxes)
+### 2023-11-25
 
-## Help
+| :uk:                                              | :fr:                                              |
+| ------------------------------------------------- | ------------------------------------------------- |
+| ![Screenshot EN](./screenshots/2023-11-25-en.png) | ![Screenshot FR](./screenshots/2023-11-25-fr.png) |
+
+- Automated sorting on new tab
+- Added commands so the user can define shortcuts
+- General refactor of the code
+- UI improvements
+
+### 2023-05-14
+
+- Persist extension settings (checkboxes)
+
+## Development
+
+### Help
 
 - [Mozilla Docs - Your first WebExtension](https://developer.mozilla.org/en/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension)
 - [Mozilla Docs - Working with the Tabs API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_the_Tabs_API)
@@ -13,7 +46,9 @@
 - [Mozilla Docs - Communication with background scripts](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#Communication_avec_les_scripts_darri%C3%A8re-plan)
 - [Mozilla Docs - Implement a settings page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page)
 
-## Todo
+### Legacy Todo list
+
+_Disclaimer: these were written 4 years ago_
 
 - Less naive filtering:
   - Better analyze of the URLs (exclude 'www.')
@@ -36,9 +71,9 @@
   - Decouple firefox and chrome code
   - Better sorting of integer
 
-## Performance
+### Performance
 
-### Looping on arrays
+#### Looping on arrays
 
 Firefox is on average very slower for looping than google chrome.
 On Firefox, the faster loop for looping on an array seems to be forEach;
