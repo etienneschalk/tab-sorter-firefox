@@ -1,23 +1,39 @@
+![Tab Sorter icon ](icons/icon-96.png)
+
 # Tab Sorter
 
-## Raise an issue with the extension
+Firefox extension to sort your tabs.
 
-- [GitHub Repository: tab-sorter-firefox](https://github.com/etienneschalk/tab-sorter-firefox)
-- [Create an Issue](https://github.com/etienneschalk/tab-sorter-firefox/issues/new)
+## Links
+
+- [Create an Issue on GitHub](https://github.com/etienneschalk/tab-sorter-firefox/issues/new)
+- [tab-sorter-firefox on GitHub](https://github.com/etienneschalk/tab-sorter-firefox)
 
 ## FAQ
 
-:question: How do I update the keyboard shortcuts mapping for the different sorting methods?
+### :question: How do I update the keyboard shortcuts mapping for the different sorting methods?
 
-See:
+The extension comes with predefined shortcuts for some sorting methods. You can change them via Firefox directly. For more information see:
 
-- :us: [Manage extension shortcuts in Firefox](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox)
+- :uk: [Manage extension shortcuts in Firefox](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox)
 - :fr: [Gérer les raccourcis d’extensions dans Firefox](https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox)
 
 ## Changelog
 
-- 2023-11-25: TODO
-- 2023-05-14: Persist extension settings (checkboxes)
+### 2023-11-25
+
+| :uk:                                              | :fr:                                              |
+| ------------------------------------------------- | ------------------------------------------------- |
+| ![Screenshot EN](./screenshots/2023-11-25-en.png) | ![Screenshot FR](./screenshots/2023-11-25-fr.png) |
+
+- Automated sorting on new tab
+- Added commands so the user can define shortcuts
+- General refactor of the code
+- UI improvements
+
+### 2023-05-14
+
+- Persist extension settings (checkboxes)
 
 ## Development
 
