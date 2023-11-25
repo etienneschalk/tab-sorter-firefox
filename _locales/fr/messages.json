@@ -3,63 +3,41 @@
     "message": "Trieur d'onglets",
     "description": "Name of the extension."
   },
-
   "extensionDescription": {
     "message": "Extension pour trier vos onglets",
     "description": "Description of the extension."
   },
-
-  "buttonSortTabsByUrl": {
+  "actions": {
+    "message": "Actions"
+  },
+  "preferences": {
+    "message": "Préférences"
+  },
+  "command-sort-tabs-url": {
     "message": "Par URL",
     "description": "Button for sorting tabs by URL."
   },
-
-  "buttonSortTabsByMru": {
+  "command-sort-tabs-mru": {
     "message": "Par dernière utilisation",
     "description": "Button for sorting tabs by most recently used"
   },
-
-  "buttonSortTabsByTitle": {
+  "command-sort-tabs-title": {
     "message": "Par titre",
     "description": "Button for sorting tabs by title"
   },
-
-  "buttonSortTabsByFaviconAndTitle": {
+  "command-sort-tabs-favicon-and-title": {
     "message": "Par icône",
     "description": "Button for sorting tabs by most recently used"
   },
-
-  "shortcutSortTabsByUrl": {
-    "message": "-",
-    "description": "Shortcut sort by URL"
-  },
-
-  "shortcutSortTabsByMru": {
-    "message": "Ctrl + Alt + Espace",
-    "description": "Shortcut sort by most recently used"
-  },
-
-  "shortcutSortTabsByTitle": {
-    "message": "-",
-    "description": "Shortcut sort by title"
-  },
-
-  "shortcutSortTabsByFaviconAndTitle": {
-    "message": "Ctrl + Shift + Espace",
-    "description": "Shortcut sort by favicon then title"
-  },
-
-  "reverseSorting": {
-    "message": "Inverser l'ordre de tri",
-    "description": "Reverse sorting order"
-  },
-
-  "shuffle": {
+  "command-sort-tabs-shuffle": {
     "message": "Mélanger les onglets",
     "description": "Reorganizes tabs randomly"
   },
-
-  "allWindows": {
+  "ui-checkbox-sort-tabs-reverse": {
+    "message": "Inverser l'ordre de tri",
+    "description": "Reverse sorting order"
+  },
+  "ui-checkbox-sort-tabs-all-windows": {
     "message": "Trier toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   }

@@ -15,8 +15,17 @@ button {
 
 .centered,
 .centered h1,
+.centered h2,
 .centered p {
   margin: 0 auto;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
 }
 
 .has-text-centered {
@@ -45,6 +54,16 @@ a:hover {
 }
 small {
   color: #999;
+}
+
+kbd {
+  background-color: #eee;
+  box-sizing: border-box;
+  padding: 2px;
+  border: #ccc solid 1px;
+  border-bottom: #ccc solid 3px;
+  font-size: 10px;
+  border-radius: 3px;
 }
 
 /* https://www.bestcssbuttongenerator.com/#/12 */

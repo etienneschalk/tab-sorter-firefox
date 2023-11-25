@@ -1,119 +1,207 @@
-const SORT_TABS_REVERSE = "sort-tabs-reverse";
-const SORT_TABS_ALL_WINDOWS = "sort-tabs-all-windows";
+renderTemplateAsync();
 
-function retrieve(message) {
+async function renderTemplateAsync() {
+  const backgroundWindow = await chrome.extension.getBackgroundPage();
+  const isReverse = await backgroundWindow.getReverseAsync();
+  const isAllWindows = await backgroundWindow.getAllWindowsAsync();
+
+  const allCommands = await browser.commands.getAll();
+  logCommands(allCommands);
+
+  console.log("isReverse", isReverse);
+  console.log("isAllWindows", isAllWindows);
+
+  const popupHtmlString = renderPopup({ isReverse, isAllWindows, allCommands });
+
+  const container = new DOMParser()
+    .parseFromString(popupHtmlString, "text/html")
+    .getElementById("container");
+  document.getElementById("container").innerHTML = "";
+  document.getElementById("container").appendChild(container);
+}
+
+const SORT_TABS_REVERSE = "ui-checkbox-sort-tabs-reverse";
+const SORT_TABS_ALL_WINDOWS = "ui-checkbox-sort-tabs-all-windows";
+const ACTION_BUTTON_ID_PREFIX = "click-button-";
+
+function translate(message) {
   return chrome.i18n.getMessage(message);
 }
 
-async function initTemplate() {
-  var backgroundWindow = await chrome.extension.getBackgroundPage();
-  var isReverse = backgroundWindow.getReverse();
-  var isAllWindows = backgroundWindow.getAllWindows();
+// TODO -> Display the commands shortcut in the POPUP
+function logCommands(commands) {
+  commands.forEach((command) => {
+    console.debug(command);
+  });
+}
 
-  const popupContent = `
-  <div id="container">
+function renderShortcutHint(shortcutString) {
+  return shortcutString
+    .split("+")
+    .map((part) => `<kbd>${part}</kbd>`)
+    .join("+");
+}
+function renderCommandActionButton(command) {
+  const { name, shortcut } = command;
 
-  <!--<h1> ${retrieve("extensionName")} </h1>
-  <br />-->
+  const className = shortcut ? "button-primary" : "button-simple";
+  return `
+<div>
+  <button class="${className}" href="#" id="${ACTION_BUTTON_ID_PREFIX}${name}">
+   ${translate(name)} 
+  </button>  
 
-  <button class="button-primary" href="#" id="sort-tabs-mru"> ${retrieve(
-    "buttonSortTabsByMru"
-  )} </button>
-  <p class="has-text-centered"> (${retrieve("shortcutSortTabsByMru")}) </p>
-  <br />
-
-  <button class="button-primary" href="#" id="sort-tabs-favicon-and-title"> ${retrieve(
-    "buttonSortTabsByFaviconAndTitle"
-  )} </button>
-  <p class="has-text-centered"> (${retrieve(
-    "shortcutSortTabsByFaviconAndTitle"
-  )}) </p>
-  <br />
-
-  <button class="button-simple" href="#" id="sort-tabs-title"> ${retrieve(
-    "buttonSortTabsByTitle"
-  )} </button>
-  <p> <!--(${retrieve("shortcutSortTabsByTitle")})--> </p>
-  <br />
-
-  <button class="button-simple" href="#" id="sort-tabs-url"> ${retrieve(
-    "buttonSortTabsByUrl"
-  )} </button>
-  <p> <!--(${retrieve("shortcutSortTabsByUrl")})--> </p>
-  <br />
-
-  <label for="sort-tabs-reverse">
-  <input type="checkbox" id="sort-tabs-reverse" ${isReverse ? "checked" : ""}/>
-   ${retrieve("reverseSorting")} </label>
   <br/>
+  ${`<p class="has-text-centered"> ${
+    shortcut
+      ? renderShortcutHint(shortcut)
+      : "<small>No shortcut configured yet</small>"
+  } </p>`}
+</div>
+  `;
+}
 
-  <label for="sort-tabs-all-windows">
-  <input type="checkbox" id="sort-tabs-all-windows" ${
-    isAllWindows ? "checked" : ""
-  }/>
-   ${retrieve("allWindows")} </label>
+function renderConfigurationCheckbox(id, initialValue) {
+  return `
+<label for=${id}>
+  <input type="checkbox" id=${id} ${initialValue ? "checked" : ""}/>
+   ${translate(id)} 
+</label>
+  `;
+}
+
+function renderPopup(params) {
+  const { isReverse, isAllWindows, allCommands } = params;
+
+  return `
+<div id="container">
+
+  <h1> ${translate("extensionName")} </h1>
+
+  <br />
+
+  <h2> ${translate("actions")} </h2>
+
+  ${allCommands
+    .map((command) => renderCommandActionButton(command))
+    .join("<br/>")}
+
+  <br />
+
+  <h2> ${translate("preferences")} </h2>
+
+  ${renderConfigurationCheckbox(SORT_TABS_REVERSE, isReverse)}
+  ${renderConfigurationCheckbox(SORT_TABS_ALL_WINDOWS, isAllWindows)}
+
+  <a href="#" id="click-button-sort-tabs-shuffle"> ${translate("shuffle")} </a>
+
   <br/>
-
-  <a href="#" id="sort-tabs-shuffle"> ${retrieve("shuffle")} </a>
+  
+  <!--<a href="about:addons" id="change-addons-preferences-link"> ${translate(
+    "change-addons-preferences"
+  )} </a>-->
 
   <small> Tab Sorter </small>
+
   </div>
   `;
-
-  // <input type="checkbox" id="sort-tabs-reverse" ${getReverseToUi() ? 'checked' : ''}/>
-
-  const container = new DOMParser()
-    .parseFromString(popupContent, "text/html")
-    .getElementById("container");
-  document.getElementById("container").innerHTML = ``;
-  document.getElementById("container").appendChild(container);
-
-  // Restore default options from storage sync
-  document.addEventListener("DOMContentLoaded", restoreOptions);
-
-  // Listeners on checkboxes to persist settings.
-  document
-    .getElementById("container")
-    .querySelectorAll("input[type=checkbox]")
-    .forEach((checkbox) =>
-      checkbox.addEventListener("change", (event) => {
-        event.preventDefault();
-        saveOption(event.target.id, event.target.checked);
-      })
-    );
 }
+
+// function renderPopup(params) {
+//   const { isReverse, isAllWindows } = params;
+
+//   return `
+//   <div id="container">
+
+//   <h1> ${translate("extensionName")} </h1>
+//   <br />
+
+//   <button class="button-primary" href="#" id="click-button-sort-tabs-mru"> ${translate(
+//     "command-sort-tabs-mru"
+//   )} </button>
+//   <!--<p class="has-text-centered"> (${translate(
+//     "shortcutSortTabsByMru"
+//   )}) </p>-->
+//   <br />
+
+//   <button class="button-primary" href="#" id="click-button-sort-tabs-favicon-and-title"> ${translate(
+//     "command-sort-tabs-favicon-and-title"
+//   )} </button>
+//   <!--<p class="has-text-centered"> (${translate(
+//     "shortcutSortTabsByFaviconAndTitle"
+//   )}) </p>-->
+//   <br />
+
+//   <button class="button-simple" href="#" id="click-button-sort-tabs-title"> ${translate(
+//     "command-sort-tabs-title"
+//   )} </button>
+//   <p> <!--(${translate("shortcutSortTabsByTitle")})--> </p>
+//   <br />
+
+//   <button class="button-simple" href="#" id="click-button-sort-tabs-url"> ${translate(
+//     "command-sort-tabs-url"
+//   )} </button>
+//   <p> <!--(${translate("shortcutSortTabsByUrl")})--> </p>
+//   <br />
+
+//   <h2> Preferences </h2>
+
+//   <label for=${SORT_TABS_REVERSE}>
+//   <input type="checkbox" id=${SORT_TABS_REVERSE} ${isReverse ? "checked" : ""}/>
+//    ${translate("reverseSorting")} </label>
+//   <br/>
+
+//   <label for=${SORT_TABS_ALL_WINDOWS}>
+//   <input type="checkbox" id=${SORT_TABS_ALL_WINDOWS} ${
+//     isAllWindows ? "checked" : ""
+//   }/>
+//    ${translate("allWindows")} </label>
+//   <br/>
+
+//   <a href="#" id="click-button-sort-tabs-shuffle"> ${translate("shuffle")} </a>
+
+//   <br/>
+
+//   <!--<a href="about:addons" id="change-addons-preferences-link"> ${translate(
+//     "change-addons-preferences"
+//   )} </a>-->
+
+//   <small> Tab Sorter </small>
+
+//   </div>
+//   `;
+// }
 
 // Clicking on the extension "Sort tabs" icon
 document.addEventListener("click", (e) => {
   let command = null;
   let value = null;
   switch (e.target.id) {
-    case "sort-tabs-url":
-      command = "sort-tabs-url";
+    case "click-button-command-sort-tabs-url":
+      command = "command-sort-tabs-url";
       break;
-    case "sort-tabs-mru":
-      command = "sort-tabs-mru";
+    case "click-button-command-sort-tabs-mru":
+      command = "command-sort-tabs-mru";
       break;
-    case "sort-tabs-title":
-      command = "sort-tabs-title";
+    case "click-button-command-sort-tabs-title":
+      command = "command-sort-tabs-title";
       break;
-    case "sort-tabs-favicon-and-title":
-      command = "sort-tabs-favicon-and-title";
+    case "click-button-command-sort-tabs-favicon-and-title":
+      command = "command-sort-tabs-favicon-and-title";
       break;
-    case "sort-tabs-shuffle":
-      command = "sort-tabs-shuffle";
+    case "click-button-command-sort-tabs-shuffle":
+      command = "command-sort-tabs-shuffle";
       break;
-    case "sort-tabs-reverse":
-      command = "sort-tabs-reverse";
+
+    case SORT_TABS_REVERSE:
+      command = SORT_TABS_REVERSE;
       value = e.target.checked;
       break;
-    case "sort-tabs-all-windows":
-      command = "sort-tabs-all-windows";
+    case SORT_TABS_ALL_WINDOWS:
+      command = SORT_TABS_ALL_WINDOWS;
       value = e.target.checked;
       break;
-    case "close-button":
-      window.close();
-      break;
+
     default:
   }
 
@@ -123,38 +211,3 @@ document.addEventListener("click", (e) => {
     value: value,
   });
 });
-
-// Settings persistence
-function saveOption(key, value) {
-  browser.storage.sync.set({
-    [key]: value,
-  });
-  console.debug("saveOption", key, "=", value);
-}
-
-function restoreOptions() {
-  function setCurrentChoice(id) {
-    return (result) => {
-      if (result[id] === undefined) {
-        console.debug(
-          "restoreOptions.setCurrentChoice: skip restoration because no setting exists yet.",
-          id
-        );
-        return;
-      }
-      document.querySelector(`#${id}`).checked = result[id];
-      console.debug("restoreOptions.setCurrentChoice:", id, result[id]);
-    };
-  }
-
-  onError = (error) => console.log(`Error: ${error}`);
-
-  browser.storage.sync
-    .get(SORT_TABS_REVERSE)
-    .then(setCurrentChoice(SORT_TABS_REVERSE), onError);
-  browser.storage.sync
-    .get(SORT_TABS_ALL_WINDOWS)
-    .then(setCurrentChoice(SORT_TABS_ALL_WINDOWS), onError);
-}
-
-initTemplate();
