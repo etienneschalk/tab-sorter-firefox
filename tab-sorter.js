@@ -1,25 +1,38 @@
-// Initialization code
-initTabSorter();
-
-// public
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+// Public:
 // Note: Currently, public means "used in popup-tab-sorter.js"
 
-// Constants
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// + getReverseAsync
+// + getAllWindowsAsync
+// + getAutoOnNewTabAsync
+// + getDefaultSortMethodAsync
+// + getAvailableSortMethodsSync
 
 const TAB_SORTER_PREFIX = "[Tab Sorter]";
 const DEBUG = false;
+
+const AVAILABLE_SORT_METHODS = [
+  "sort-tabs-url",
+  "sort-tabs-mru",
+  "sort-tabs-title",
+  "sort-tabs-favicon-and-title",
+  "sort-tabs-mru",
+];
 
 const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
 const STORAGE_DEFAULT_VALUE_REVERSE = false;
 const STORAGE_KEY_SORT_ALL_WINDOWS = "TAB_SORTER_STORAGE_KEY_SORT_ALL_WINDOWS";
 const STORAGE_DEFAULT_VALUE_SORT_ALL_WINDOWS = false;
-// TODO: auto sort boolean + option among commands
+const STORAGE_KEY_AUTO_SORT_ON_NEW_TAB =
+  "TAB_SORTER_STORAGE_KEY_AUTO_SORT_ON_NEW_TAB";
+const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
+const STORAGE_KEY_DEFAULT_SORT_METHOD =
+  "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
+const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+
+// Initialization code
+initTabSorter();
 
 // Getter/Setters on Global State
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 async function getReverseAsync() {
   return await retrieveFromStorage(
@@ -35,16 +48,41 @@ async function getAllWindowsAsync() {
   );
 }
 
+async function getAutoOnNewTabAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_AUTO_SORT_ON_NEW_TAB,
+    STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB
+  );
+}
+
+async function getDefaultSortMethodAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_DEFAULT_SORT_METHOD,
+    STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
+  );
+}
+
+function getAvailableSortMethodsSync() {
+  return AVAILABLE_SORT_METHODS;
+}
 // private
 // -----------------------------------------------------------------------------
 
 function initTabSorter() {
+  fillCache();
   addEventListeners();
 }
 
 // Getter/Setters on Global State
 // -----------------------------------------------------------------------------
 const CACHED_STATE = {};
+
+function fillCache() {
+  getReverseAsync();
+  getAllWindowsAsync();
+  getAutoOnNewTabAsync();
+  getDefaultSortMethodAsync();
+}
 
 function getReverseCached() {
   console.debug("getReverseCached 1");
@@ -60,12 +98,34 @@ function getAllWindowsCached() {
   return value;
 }
 
+function getAutoOnNewTabCached() {
+  console.debug("getAutoOnNewTabCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB];
+  console.debug("getAutoOnNewTabCached 2", `${value}`);
+  return value;
+}
+
+function getDefaultSortMethodCached() {
+  console.debug("getDefaultSortMethodCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD];
+  console.debug("getDefaultSortMethodCached 2", `${value}`);
+  return value;
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
 
 function setAllWindows(choice) {
   persistInStorage(STORAGE_KEY_SORT_ALL_WINDOWS, choice);
+}
+
+function setAutoOnNewTab(choice) {
+  persistInStorage(STORAGE_KEY_AUTO_SORT_ON_NEW_TAB, choice);
+}
+
+function setDefaultSortMethod(choice) {
+  persistInStorage(STORAGE_KEY_DEFAULT_SORT_METHOD, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -119,6 +179,13 @@ function addEventListeners() {
     commandEventListener(message.command);
     stateUpdateEventListener(message.command, message.value);
   });
+
+  // Listening on a new tab opening-----------------------------------------------
+  browser.tabs.onCreated.addListener((tab) => {
+    if (getAutoOnNewTabCached()) {
+      sortTabs(getDefaultSortMethodCached());
+    }
+  });
 }
 
 function commandEventListener(command) {
@@ -147,6 +214,10 @@ function stateUpdateEventListener(command, value) {
     setReverse(value);
   } else if (command === "ui-checkbox-sort-tabs-all-windows") {
     setAllWindows(value);
+  } else if (command === "ui-checkbox-sort-tabs-auto-on-new-tab") {
+    setAutoOnNewTab(value);
+  } else if (command === "ui-sort-select-tabs-default-sort-method") {
+    setDefaultSortMethod(value);
   }
 }
 
@@ -246,8 +317,6 @@ function sortTabs(sortingType, shuffle) {
       "Callback of getCurrentWindowTabs 2",
       `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
     );
-
-    console.debug(notPinnedTabs);
 
     if (customSort) {
       notPinnedTabs = customSort(

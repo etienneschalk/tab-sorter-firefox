@@ -1,6 +1,7 @@
 .container {
   background: white;
   padding: 0.6em;
+  max-width: 250px;
 }
 
 .has-text-right-aligned {

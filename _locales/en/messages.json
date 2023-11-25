@@ -44,5 +44,13 @@
   "ui-checkbox-sort-tabs-all-windows": {
     "message": "Sort in all windows",
     "description": "Sorting tabs also in other windows"
+  },
+  "ui-checkbox-sort-tabs-auto-on-new-tab": {
+    "message": "Sort tabs when a new tab is opened.",
+    "description": "Checkbox Sort tabs when a new tab is opened."
+  },
+  "ui-sort-select-tabs-default-sort-method": {
+    "message": "Default sort method for auto sort on new tab",
+    "description": "Select Default sort method for auto sort on new tab"
   }
 }
