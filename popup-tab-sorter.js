@@ -46,7 +46,6 @@ function translate(message) {
   return chrome.i18n.getMessage(message);
 }
 
-// TODO -> Display the commands shortcut in the POPUP
 function logCommands(commands) {
   commands.forEach((command) => {
     console.debug(command);
@@ -73,7 +72,7 @@ function renderCommandActionButton(command) {
   ${`<p class="has-text-centered"> ${
     shortcut
       ? renderShortcutHint(shortcut)
-      : "<small>No shortcut configured yet</small>"
+      : `<small>${translate("no-shortcut-configured")}</small>`
   } </p>`}
 </div>
   `;
@@ -100,51 +99,49 @@ function renderPopup(params) {
 
   return `
 <div id="container">
-
-  <h1> ${translate("extensionName")} </h1>
-
-  <br />
-
-  <h2> ${translate("actions")} </h2>
-
-  ${allCommands
-    .map((command) => renderCommandActionButton(command))
-    .join("<br/>")}
-
-  <br />
-
-  <h2> ${translate("preferences")} </h2>
-
-  ${renderConfigurationCheckbox(SORT_TABS_REVERSE, isReverse)}
-
-  ${renderConfigurationCheckbox(SORT_TABS_ALL_WINDOWS, isAllWindows)}
-
-  ${renderConfigurationCheckbox(SORT_TABS_AUTO_ON_NEW_TAB, isAutoOnNewTab)}
-
-  <label for="${SORT_TABS_DEFAULT_SORT_METHOD}">[TBT] Choose an automatic sorting method:</label>
-
-  <select id="${SORT_TABS_DEFAULT_SORT_METHOD}" >
-  ${availableSortMethods
-    .map(
-      (sortMethod) =>
-        `<option value="${sortMethod}" ${
-          sortMethod === defaultSortMethod ? "selected" : ""
-        }>[TBT] ${sortMethod}</option>`
-    )
-    .join()}
-  </select>
-
-  <a href="#" id="click-button-sort-tabs-shuffle"> ${translate("shuffle")} </a>
-
-  <br/>
-  
-  <!--<a href="about:addons" id="change-addons-preferences-link"> ${translate(
-    "change-addons-preferences"
-  )} </a>-->
-
-  <small> Tab Sorter </small>
-
-  </div>
+    <div class="">
+        <h1>  🗂️ ${translate("extensionName")} </h1>
+    </div>
+    <div class="flexcontainer">
+        <div class="flexcol">
+            <h2> ⚙️ ${translate("preferences")} </h2>
+            <h3> ${translate("preferences-general")}</h3>
+            ${renderConfigurationCheckbox(SORT_TABS_REVERSE, isReverse)}
+            ${renderConfigurationCheckbox(SORT_TABS_ALL_WINDOWS, isAllWindows)}
+            <h3> ${translate("preferences-auto")}</h3>
+            ${renderConfigurationCheckbox(
+              SORT_TABS_AUTO_ON_NEW_TAB,
+              isAutoOnNewTab
+            )}
+            <br />
+            <label for="${SORT_TABS_DEFAULT_SORT_METHOD}">${translate(
+    SORT_TABS_DEFAULT_SORT_METHOD
+  )}  
+            </label>
+            <select id="${SORT_TABS_DEFAULT_SORT_METHOD}" >
+            ${availableSortMethods
+              .map(
+                (sortMethod) =>
+                  `<option value="${sortMethod}" ${
+                    sortMethod === defaultSortMethod ? "selected" : ""
+                  }>${translate(`command-${sortMethod}`)}</option>`
+              )
+              .join()}
+            </select>
+        </div>
+        <div class="flexcol">
+            <h2> 🧹 ${translate("actions")} </h2>
+            <br /> 
+            ${allCommands
+              .map((command) => renderCommandActionButton(command))
+              .join("<br/>")}
+            <br />
+        </div>
+    </div>
+    <div class="">
+        <small> Tab Sorter - ${browser.runtime.getManifest().version} </small>
+    </div>
+</div>
   `;
 }
 

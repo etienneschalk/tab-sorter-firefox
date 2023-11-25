@@ -1,9 +1,29 @@
-.container {
-  background: white;
-  padding: 0.6em;
-  max-width: 250px;
+* {
+  font-family: system-ui;
+  font-size: 14px;
 }
 
+.container {
+  background: white;
+  max-width: 500px;
+  /* max-width: 250px; */
+}
+
+.flexcontainer {
+  display: flex;
+  flex-direction: col;
+  gap: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.flexcol {
+  width: 50%;
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 .has-text-right-aligned {
   text-align: right;
 }
@@ -27,6 +47,10 @@ h1 {
 
 h2 {
   font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
 }
 
 .has-text-centered {
@@ -78,8 +102,8 @@ kbd {
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
-  font-family: Arial;
-  font-size: 13px;
+  /* font-family: Arial; */
+  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #154682;
@@ -102,8 +126,8 @@ kbd {
   display: inline-block;
   cursor: pointer;
   color: #000000;
-  font-family: Arial;
-  font-size: 13px;
+  /* font-family: Arial; */
+  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
 }

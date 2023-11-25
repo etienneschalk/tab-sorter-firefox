@@ -8,10 +8,19 @@
     "description": "Description of the extension."
   },
   "actions": {
-    "message": "Actions"
+    "message": "Sort"
   },
   "preferences": {
     "message": "Preferences"
+  },
+  "preferences-general": {
+    "message": "General Preferences"
+  },
+  "preferences-auto": {
+    "message": "Preferences for automatic sorting"
+  },
+  "no-shortcut-configured": {
+    "message": "No shortcut configured yet"
   },
   "command-sort-tabs-url": {
     "message": "By URL",
@@ -42,7 +51,7 @@
     "description": "Reverse sorting order"
   },
   "ui-checkbox-sort-tabs-all-windows": {
-    "message": "Sort in all windows",
+    "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
   "ui-checkbox-sort-tabs-auto-on-new-tab": {

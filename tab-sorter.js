@@ -15,7 +15,6 @@ const AVAILABLE_SORT_METHODS = [
   "sort-tabs-mru",
   "sort-tabs-title",
   "sort-tabs-favicon-and-title",
-  "sort-tabs-mru",
 ];
 
 const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
