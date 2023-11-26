@@ -87,15 +87,26 @@ function initializeUserInterface(initialState) {
 
   logCommands(allCommands);
 
+  const commandDisplayPriority = {
+    command_sort_tabs_favicon_and_title: 1,
+    command_sort_tabs_title: 2,
+    command_sort_tabs_url: 3,
+    command_sort_tabs_mru: 4,
+    command_sort_tabs_shuffle: 5,
+  };
+
   const popupHtmlString = renderPopup({
     isReverse,
     isAllWindows,
     isAutoOnNewTab,
     defaultSortMethod,
     availableSortMethods,
-    allCommands: allCommands.filter((command) =>
-      command.name.startsWith("command_sort_tabs")
-    ),
+    allCommands: allCommands
+      .filter((command) => command.name.startsWith("command_sort_tabs"))
+      .sort(
+        (a, b) =>
+          commandDisplayPriority[a.name] - commandDisplayPriority[b.name]
+      ),
   });
 
   const container = new DOMParser()
@@ -194,13 +205,18 @@ function renderPopup(params) {
     <div class="flexcontainer">
         <div class="flexcol">
             <h2>❓ ${translate("help")} </h2>
+
             <br>
             <h3> ${translate("help_how_to_update_shortcuts_question")} </h3>
-            <p> ${translate("help_how_to_update_shortcuts_answer")}
-            <p>
+            <p> ${translate("help_how_to_update_shortcuts_answer")} </p>
+
+            <br>
+            <h3> ${translate("help_mru_not_working_chrome_question")} </h3>
+            <p> ${translate("help_mru_not_working_chrome_answer")} </p>
+
             <br>
             <h3>${translate("help_encountered_a_problem_question")} </h3>
-            <p> ${translate("help_encountered_a_problem_answer")}
+            <p> ${translate("help_encountered_a_problem_answer")} </p>
         </div>
         <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>

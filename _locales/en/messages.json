@@ -19,6 +19,12 @@
   "help_how_to_update_shortcuts_answer": {
     "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a target=\"_blank\" href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
   },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sort by most recently used do not work on Chrome."
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Indeed, this feature is not available on Chrome."
+  },
   "help_encountered_a_problem_question": {
     "message": "I encountered a problem!"
   },

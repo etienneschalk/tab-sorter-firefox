@@ -310,16 +310,19 @@ function sortTabs(sortingType, shuffle) {
 
   getCurrentWindowTabs(function (tabs) {
     console.debug("Callback of getCurrentWindowTabs 1");
-
     let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
     let comparisonFunction;
     let customSort = undefined;
+
+    console.debug(notPinnedTabs);
 
     switch (sortingType) {
       case "sort_tabs_url":
         comparisonFunction = comparisonByUrl;
         break;
       case "sort_tabs_mru":
+        // TODO Not working on chromium!
+        // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
         comparisonFunction = comparisonByMru;
         break;
       case "sort_tabs_title":

@@ -48,6 +48,35 @@ The extension comes with predefined shortcuts for some sorting methods. You can 
 - [Mozilla Docs - Communication with background scripts](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#Communication_avec_les_scripts_darri%C3%A8re-plan)
 - [Mozilla Docs - Implement a settings page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page)
 
+### Example of a Tab content
+
+In Chromium:
+
+````json
+    {
+        "active": false,
+        "audible": false,
+        "autoDiscardable": true,
+        "discarded": false,
+        "favIconUrl": "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196",
+        "groupId": -1,
+        "height": 939,
+        "highlighted": false,
+        "id": 1670254947,
+        "incognito": false,
+        "index": 2,
+        "mutedInfo": {
+            "muted": false
+        },
+        "pinned": false,
+        "selected": false,
+        "status": "complete",
+        "title": "javascript - Chrome extension: Get last used tab - Stack Overflow",
+        "url": "https://stackoverflow.com/questions/8688887/chrome-extension-get-last-used-tab",
+        "width": 1876,
+        "windowId": 1670254864
+    }
+```
 ### Legacy Todo list
 
 _Disclaimer: these were written 4 years ago_
@@ -80,3 +109,4 @@ _Disclaimer: these were written 4 years ago_
 Firefox is on average very slower for looping than google chrome.
 On Firefox, the faster loop for looping on an array seems to be forEach;
 On Google Chrome, it seems to be the for loop.
+````
