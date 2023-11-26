@@ -64,8 +64,8 @@ async function getDefaultSortMethodAsync() {
 function getAvailableSortMethodsSync() {
   return AVAILABLE_SORT_METHODS;
 }
+
 // private
-// -----------------------------------------------------------------------------
 
 function initTabSorter() {
   fillCache();
@@ -73,7 +73,6 @@ function initTabSorter() {
 }
 
 // Getter/Setters on Global State
-// -----------------------------------------------------------------------------
 const CACHED_STATE = {};
 
 function fillCache() {
@@ -160,17 +159,16 @@ function persistInStorage(key, value) {
   browser.storage.sync.set(payload).then(onSuccess, onError);
 }
 
-// Configure event listening ---------------------------------------------------
-// -----------------------------------------------------------------------------
+// Configure event listening
 
 function addEventListeners() {
-  // Using the sort-tabs shortcut defined in manifest.json -----------------------
+  // Using the sort-tabs shortcut defined in manifest.json
   chrome.commands.onCommand.addListener((command) => {
     console.debug(`${TAB_SORTER_PREFIX} Command event received: ${command}`);
     commandEventListener(command);
   });
 
-  // Clicking on a popup button --------------------------------------------------
+  // Clicking on a popup button
   chrome.runtime.onMessage.addListener((message) => {
     console.debug(
       `${TAB_SORTER_PREFIX} Message event received: ${message.command} with value=${message.value}`
@@ -179,7 +177,7 @@ function addEventListeners() {
     stateUpdateEventListener(message.command, message.value);
   });
 
-  // Listening on a new tab opening-----------------------------------------------
+  // Listening on a new tab opening
   browser.tabs.onCreated.addListener((tab) => {
     if (getAutoOnNewTabCached()) {
       sortTabs(getDefaultSortMethodCached());
@@ -222,9 +220,8 @@ function stateUpdateEventListener(command, value) {
   }
 }
 
-// Custom sorts ----------------------------------------------------------------
+// Custom sorts
 // Takes tabs, return tabs
-// -----------------------------------------------------------------------------
 
 // Return classified tabs by favicon then applies comparison function on each
 // (Uses intermediary a dict of tabs, indexed by url and valued by arrays of
@@ -255,8 +252,7 @@ function faviconSort(tabs, comparisonFunction, reverse) {
   return sortedTabs;
 }
 
-// Comparison functions --------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Comparison functions
 
 function comparisonByUrl(tabA, tabB) {
   return tabA.url.localeCompare(tabB.url);
@@ -272,8 +268,7 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
-// Core sorting function -------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Core sorting function
 
 /**
  * Sort Tabs
@@ -381,10 +376,9 @@ function sortTabs(sortingType, shuffle) {
   });
 }
 
-// Helpers ---------------------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Helpers
 
-// Zipping two arrays like in python -------------------------------------------
+// Zipping two arrays like in python
 function zip(a, b) {
   if (a.length !== b.length) {
     return null;
@@ -392,7 +386,7 @@ function zip(a, b) {
   return a.map((e, i) => [e, b[i]]);
 }
 
-// Retrieve the tabs from the current window -----------------------------------
+// Retrieve the tabs from the current window
 function getCurrentWindowTabs(callback) {
   console.debug(
     `${TAB_SORTER_PREFIX} getCurrentWindowTabs Before getAllWindowsCached`
@@ -411,7 +405,7 @@ function getCurrentWindowTabs(callback) {
   });
 }
 
-// Easy reverse option for sorting ---------------------------------------------
+// Easy reverse option for sorting
 function simpleSort(array, comparisonFunction, reverse) {
   reverse = reverse || false;
   if (reverse) {
@@ -421,12 +415,12 @@ function simpleSort(array, comparisonFunction, reverse) {
   }
 }
 
-// Remove youtube notifications in title eg "(20) video" -> "video" ------------
+// Remove youtube notifications in title eg "(20) video" -> "video"
 function removeParenthesisNotification(stringToModify) {
   return stringToModify.replace(/\(\d*\)/m, "").trim();
 }
 
-// Convert an object to JSON  --------------------------------------------------
+// Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
 }
