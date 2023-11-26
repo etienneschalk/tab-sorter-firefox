@@ -11,10 +11,10 @@ const TAB_SORTER_PREFIX = "[Tab Sorter]";
 const DEBUG = false;
 
 const AVAILABLE_SORT_METHODS = [
-  "sort-tabs-url",
-  "sort-tabs-mru",
-  "sort-tabs-title",
-  "sort-tabs-favicon-and-title",
+  "sort_tabs_url",
+  "sort_tabs_mru",
+  "sort_tabs_title",
+  "sort_tabs_favicon_and_title",
 ];
 
 const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
@@ -190,19 +190,19 @@ function addEventListeners() {
 function commandEventListener(command) {
   switch (command) {
     case "command_sort_tabs_url":
-      sortTabs("sort-tabs-url");
+      sortTabs("sort_tabs_url");
       break;
     case "command_sort_tabs_mru":
-      sortTabs("sort-tabs-mru");
+      sortTabs("sort_tabs_mru");
       break;
     case "command_sort_tabs_title":
-      sortTabs("sort-tabs-title");
+      sortTabs("sort_tabs_title");
       break;
     case "command_sort_tabs_favicon_and_title":
-      sortTabs("sort-tabs-favicon-and-title");
+      sortTabs("sort_tabs_favicon_and_title");
       break;
     case "command_sort_tabs_shuffle":
-      sortTabs("sort-tabs-mru", true);
+      sortTabs("sort_tabs_mru", true);
       break;
     default:
   }
@@ -297,16 +297,16 @@ function sortTabs(sortingType, shuffle) {
     let customSort = undefined;
 
     switch (sortingType) {
-      case "sort-tabs-url":
+      case "sort_tabs_url":
         comparisonFunction = comparisonByUrl;
         break;
-      case "sort-tabs-mru":
+      case "sort_tabs_mru":
         comparisonFunction = comparisonByMru;
         break;
-      case "sort-tabs-title":
+      case "sort_tabs_title":
         comparisonFunction = comparisonByTitle;
         break;
-      case "sort-tabs-favicon-and-title":
+      case "sort_tabs_favicon_and_title":
         comparisonFunction = comparisonByTitle;
         customSort = faviconSort;
         break;

@@ -19,10 +19,10 @@
   "help_how_to_update_shortcuts_answer": {
     "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines des méthodes de tri proposées. Vous pouvez les modifier directement via Firefox. Pour plus d'informations, voir : <a href=\"https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox\">Gérer les raccourcis d’extensions dans Firefox</a>"
   },
-  "help.encountered-a-problem.question": {
+  "help_encountered_a_problem_question": {
     "message": "J'ai rencontré un problème !"
   },
-  "help.encountered-a-problem.answer": {
+  "help_encountered_a_problem_answer": {
     "message": "<a href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
   },
   "preferences": {

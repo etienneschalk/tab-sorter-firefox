@@ -67,7 +67,7 @@ function renderCommandActionButton(command) {
 
   return `
 <div>
-  <button class="${className}" href="#" id="${"ui-click-button-command-"}${name}">
+  <button class="${className}" href="#" id="${"ui_click_button_command_"}${name}">
    ${translate(name)} 
   </button>  
 
@@ -103,7 +103,7 @@ function renderSelect(id, options, initialSelectedValue) {
 function renderOption(value, initialSelectedValue) {
   return `
 <option value="${value}" ${value === initialSelectedValue ? "selected" : ""}>
-    ${translate(`command-${value}`)}
+    ${translate(`command_${value}`)}
 </option>
     `;
 }
@@ -131,8 +131,8 @@ function renderPopup(params) {
             <p> ${translate("help_how_to_update_shortcuts_answer")}
             <p>
             <br>
-            <h3>❗${translate("help.encountered-a-problem.question")} </h3>
-            <p> ${translate("help.encountered-a-problem.answer")}
+            <h3>❗${translate("help_encountered_a_problem_question")} </h3>
+            <p> ${translate("help_encountered_a_problem_answer")}
         </div>
         <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>
@@ -175,9 +175,9 @@ document.addEventListener("click", (e) => {
   let command = null;
   let value = null;
 
-  if (id.startsWith("ui-click-button-command-")) {
-    command = id.replace("ui-click-button-command-", "");
-  } else if (id.startsWith("ui-click-checkbox-")) {
+  if (id.startsWith("ui_click_button_command_")) {
+    command = id.replace("ui_click_button_command_", "");
+  } else if (id.startsWith("ui_click_checkbox_")) {
     command = id;
     value = e.target.checked;
   }
@@ -196,7 +196,7 @@ document.addEventListener("change", (e) => {
   let command = null;
   let value = null;
 
-  if (id.startsWith("ui-change-select-")) {
+  if (id.startsWith("ui_change_select_")) {
     command = id;
     value = e.target.value;
   }
