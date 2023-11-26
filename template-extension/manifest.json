@@ -10,32 +10,29 @@
     "default_popup": "tab-sorter.html"
   },
   "background": {
-    "page": "background-tab-sorter.html"
+    "service_worker": "tab-sorter.js"
   },
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
   },
   "commands": {
-    "command-sort-tabs-mru": {
-      "description": "Command: Sort Tabs by MRU (Most Recently Used)",
+    "command_sort_tabs_mru": {
+      "description": "Command: Sort Tabs by MRU (Most Recently Used)"
+    },
+    "command_sort_tabs_favicon_and_title": {
+      "description": "Command: Sort Tabs by Favicon then Title",
       "suggested_key": {
         "default": "Ctrl+Shift+Space"
       }
     },
-    "command-sort-tabs-favicon-and-title": {
-      "description": "Command: Sort Tabs by Favicon then Title",
-      "suggested_key": {
-        "default": "Ctrl+Alt+Space"
-      }
-    },
-    "command-sort-tabs-title": {
+    "command_sort_tabs_title": {
       "description": "Command: Sort Tabs by Title"
     },
-    "command-sort-tabs-url": {
+    "command_sort_tabs_url": {
       "description": "Command: Sort Tabs by URL"
     },
-    "command-sort-tabs-shuffle": {
+    "command_sort_tabs_shuffle": {
       "description": "Command: Shuffle Tabs"
     }
   },

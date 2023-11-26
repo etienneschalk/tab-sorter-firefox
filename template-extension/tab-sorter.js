@@ -11,10 +11,10 @@ const TAB_SORTER_PREFIX = "[Tab Sorter]";
 const DEBUG = false;
 
 const AVAILABLE_SORT_METHODS = [
-  "sort-tabs-url",
-  "sort-tabs-mru",
-  "sort-tabs-title",
-  "sort-tabs-favicon-and-title",
+  "sort_tabs_url",
+  "sort_tabs_mru",
+  "sort_tabs_title",
+  "sort_tabs_favicon_and_title",
 ];
 
 const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
@@ -27,6 +27,8 @@ const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
 const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+
+const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 
 // Initialization code
 initTabSorter();
@@ -60,27 +62,32 @@ async function getDefaultSortMethodAsync() {
     STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
   );
 }
+async function getAllCommandsFromManifest() {
+  const allCommands = await chrome.commands.getAll();
+  CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
+  return allCommands;
+}
 
 function getAvailableSortMethodsSync() {
   return AVAILABLE_SORT_METHODS;
 }
+
 // private
-// -----------------------------------------------------------------------------
 
 function initTabSorter() {
-  fillCache();
+  resetCacheAsync();
   addEventListeners();
 }
 
 // Getter/Setters on Global State
-// -----------------------------------------------------------------------------
 const CACHED_STATE = {};
 
-function fillCache() {
-  getReverseAsync();
-  getAllWindowsAsync();
-  getAutoOnNewTabAsync();
-  getDefaultSortMethodAsync();
+async function resetCacheAsync() {
+  await getReverseAsync();
+  await getAllWindowsAsync();
+  await getAutoOnNewTabAsync();
+  await getDefaultSortMethodAsync();
+  await getAllCommandsFromManifest();
 }
 
 function getReverseCached() {
@@ -130,7 +137,7 @@ function setDefaultSortMethod(choice) {
 async function retrieveFromStorage(key, default_value) {
   console.debug(key);
 
-  const key_value_obj = await browser.storage.sync.get(key);
+  const key_value_obj = await chrome.storage.sync.get(key);
   console.debug(key_value_obj);
 
   const actual_value =
@@ -157,20 +164,42 @@ function persistInStorage(key, value) {
   function onError(error) {
     console.error(`${log_prefix} ${error}`);
   }
-  browser.storage.sync.set(payload).then(onSuccess, onError);
+  chrome.storage.sync.set(payload).then(onSuccess, onError);
 }
 
-// Configure event listening ---------------------------------------------------
-// -----------------------------------------------------------------------------
+// Configure event listening
 
 function addEventListeners() {
-  // Using the sort-tabs shortcut defined in manifest.json -----------------------
+  // Initial State
+  chrome.runtime.onMessage.addListener((message, sender, sendMessage) => {
+    if (message === "queryInitialState") {
+      console.debug("Start queryInitialState handler");
+      (async () => {
+        await resetCacheAsync();
+        const initialState = {
+          isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
+          isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
+          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
+          defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+          availableSortMethods: AVAILABLE_SORT_METHODS,
+          allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
+        };
+        sendMessage(initialState);
+      })();
+      // Be careful with callback hell!!!!
+      // Must return true to indicate that the handler will respond asynchronously!
+      // See https://developer.chrome.com/docs/extensions/mv3/messaging/
+      return true;
+    }
+  });
+
+  // Using the sort-tabs shortcut defined in manifest.json
   chrome.commands.onCommand.addListener((command) => {
     console.debug(`${TAB_SORTER_PREFIX} Command event received: ${command}`);
     commandEventListener(command);
   });
 
-  // Clicking on a popup button --------------------------------------------------
+  // Clicking on a popup button
   chrome.runtime.onMessage.addListener((message) => {
     console.debug(
       `${TAB_SORTER_PREFIX} Message event received: ${message.command} with value=${message.value}`
@@ -179,8 +208,8 @@ function addEventListeners() {
     stateUpdateEventListener(message.command, message.value);
   });
 
-  // Listening on a new tab opening-----------------------------------------------
-  browser.tabs.onCreated.addListener((tab) => {
+  // Listening on a new tab opening
+  chrome.tabs.onCreated.addListener((tab) => {
     if (getAutoOnNewTabCached()) {
       sortTabs(getDefaultSortMethodCached());
     }
@@ -189,40 +218,41 @@ function addEventListeners() {
 
 function commandEventListener(command) {
   switch (command) {
-    case "command-sort-tabs-url":
-      sortTabs("sort-tabs-url");
+    case "command_sort_tabs_url":
+      sortTabs("sort_tabs_url");
       break;
-    case "command-sort-tabs-mru":
-      sortTabs("sort-tabs-mru");
+    case "command_sort_tabs_mru":
+      sortTabs("sort_tabs_mru");
       break;
-    case "command-sort-tabs-title":
-      sortTabs("sort-tabs-title");
+    case "command_sort_tabs_title":
+      sortTabs("sort_tabs_title");
       break;
-    case "command-sort-tabs-favicon-and-title":
-      sortTabs("sort-tabs-favicon-and-title");
+    case "command_sort_tabs_favicon_and_title":
+      sortTabs("sort_tabs_favicon_and_title");
       break;
-    case "command-sort-tabs-shuffle":
-      sortTabs("sort-tabs-mru", true);
+    case "command_sort_tabs_shuffle":
+      sortTabs("sort_tabs_mru", true);
       break;
     default:
   }
 }
 
 function stateUpdateEventListener(command, value) {
-  if (command === "ui-checkbox-sort-tabs-reverse") {
+  if (command === "ui_click_checkbox_sort_tabs_reverse") {
     setReverse(value);
-  } else if (command === "ui-checkbox-sort-tabs-all-windows") {
+  } else if (command === "ui_click_checkbox_sort_tabs_all_windows") {
     setAllWindows(value);
-  } else if (command === "ui-checkbox-sort-tabs-auto-on-new-tab") {
+  } else if (command === "ui_click_checkbox_sort_tabs_auto_on_new_tab") {
     setAutoOnNewTab(value);
-  } else if (command === "ui-sort-select-tabs-default-sort-method") {
+  } else if (
+    command === "ui_change_select_sort_select_tabs_default_sort_method"
+  ) {
     setDefaultSortMethod(value);
   }
 }
 
-// Custom sorts ----------------------------------------------------------------
+// Custom sorts
 // Takes tabs, return tabs
-// -----------------------------------------------------------------------------
 
 // Return classified tabs by favicon then applies comparison function on each
 // (Uses intermediary a dict of tabs, indexed by url and valued by arrays of
@@ -253,8 +283,7 @@ function faviconSort(tabs, comparisonFunction, reverse) {
   return sortedTabs;
 }
 
-// Comparison functions --------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Comparison functions
 
 function comparisonByUrl(tabA, tabB) {
   return tabA.url.localeCompare(tabB.url);
@@ -270,8 +299,7 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
-// Core sorting function -------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Core sorting function
 
 /**
  * Sort Tabs
@@ -289,22 +317,25 @@ function sortTabs(sortingType, shuffle) {
 
   getCurrentWindowTabs(function (tabs) {
     console.debug("Callback of getCurrentWindowTabs 1");
-
     let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
     let comparisonFunction;
     let customSort = undefined;
 
+    console.debug(notPinnedTabs);
+
     switch (sortingType) {
-      case "sort-tabs-url":
+      case "sort_tabs_url":
         comparisonFunction = comparisonByUrl;
         break;
-      case "sort-tabs-mru":
+      case "sort_tabs_mru":
+        // TODO Not working on chromium!
+        // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
         comparisonFunction = comparisonByMru;
         break;
-      case "sort-tabs-title":
+      case "sort_tabs_title":
         comparisonFunction = comparisonByTitle;
         break;
-      case "sort-tabs-favicon-and-title":
+      case "sort_tabs_favicon_and_title":
         comparisonFunction = comparisonByTitle;
         customSort = faviconSort;
         break;
@@ -379,10 +410,9 @@ function sortTabs(sortingType, shuffle) {
   });
 }
 
-// Helpers ---------------------------------------------------------------------
-// -----------------------------------------------------------------------------
+// Helpers
 
-// Zipping two arrays like in python -------------------------------------------
+// Zipping two arrays like in python
 function zip(a, b) {
   if (a.length !== b.length) {
     return null;
@@ -390,7 +420,7 @@ function zip(a, b) {
   return a.map((e, i) => [e, b[i]]);
 }
 
-// Retrieve the tabs from the current window -----------------------------------
+// Retrieve the tabs from the current window
 function getCurrentWindowTabs(callback) {
   console.debug(
     `${TAB_SORTER_PREFIX} getCurrentWindowTabs Before getAllWindowsCached`
@@ -409,7 +439,7 @@ function getCurrentWindowTabs(callback) {
   });
 }
 
-// Easy reverse option for sorting ---------------------------------------------
+// Easy reverse option for sorting
 function simpleSort(array, comparisonFunction, reverse) {
   reverse = reverse || false;
   if (reverse) {
@@ -419,12 +449,12 @@ function simpleSort(array, comparisonFunction, reverse) {
   }
 }
 
-// Remove youtube notifications in title eg "(20) video" -> "video" ------------
+// Remove youtube notifications in title eg "(20) video" -> "video"
 function removeParenthesisNotification(stringToModify) {
   return stringToModify.replace(/\(\d*\)/m, "").trim();
 }
 
-// Convert an object to JSON  --------------------------------------------------
+// Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
 }
