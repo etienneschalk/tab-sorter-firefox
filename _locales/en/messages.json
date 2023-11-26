@@ -19,6 +19,12 @@
   "help_how_to_update_shortcuts_answer": {
     "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
   },
+  "help_encountered_a_problem_question": {
+    "message": "I encountered a problem!"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "The extension comes with predefined shortcuts for some sorting methods. You can change them via Firefox directly. For more information please see: <a href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
+  },
   "preferences": {
     "message": "Preferences"
   },

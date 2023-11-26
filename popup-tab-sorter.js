@@ -1,6 +1,9 @@
+// BROWSER = "firefox";
+BROWSER = "chrome";
+
 renderTemplateAsync();
 
-async function renderTemplateAsync() {
+async function getInitialStateForFirefox() {
   // > This a synchronous function.
   // See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/extension/getBackgroundPage
   const backgroundWindow = chrome.extension.getBackgroundPage();
@@ -11,6 +14,57 @@ async function renderTemplateAsync() {
   const defaultSortMethod = await backgroundWindow.getDefaultSortMethodAsync();
   const availableSortMethods = backgroundWindow.getAvailableSortMethodsSync();
 
+  return {
+    isReverse,
+    isAllWindows,
+    isAutoOnNewTab,
+    defaultSortMethod,
+    availableSortMethods,
+  };
+}
+async function getInitialStateForChrome() {
+  // from bg page
+  const AVAILABLE_SORT_METHODS = [
+    "sort_tabs_url",
+    "sort_tabs_mru",
+    "sort_tabs_title",
+    "sort_tabs_favicon_and_title",
+  ];
+  const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+  // end
+
+  const isReverse = false;
+  const isAllWindows = false;
+  const isAutoOnNewTab = false;
+  const defaultSortMethod = STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD;
+  const availableSortMethods = AVAILABLE_SORT_METHODS;
+
+  return {
+    isReverse,
+    isAllWindows,
+    isAutoOnNewTab,
+    defaultSortMethod,
+    availableSortMethods,
+  };
+}
+
+async function getInitialState() {
+  if (BROWSER === "firefox") {
+    return getInitialStateForFirefox();
+  } else if (BROWSER === "chrome") {
+    return getInitialStateForChrome();
+  }
+  return undefined;
+}
+async function renderTemplateAsync() {
+  const {
+    isReverse,
+    isAllWindows,
+    isAutoOnNewTab,
+    defaultSortMethod,
+    availableSortMethods,
+  } = await getInitialState();
+
   const logPrefix = "[Tab Sorter] Initial State: ";
   console.log(logPrefix + "isReverse", isReverse);
   console.log(logPrefix + "isAllWindows", isAllWindows);
@@ -18,7 +72,8 @@ async function renderTemplateAsync() {
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
-  const allCommands = await browser.commands.getAll();
+  const allCommands = await chrome.commands.getAll();
+
   logCommands(allCommands);
 
   const popupHtmlString = renderPopup({
@@ -27,7 +82,9 @@ async function renderTemplateAsync() {
     isAutoOnNewTab,
     defaultSortMethod,
     availableSortMethods,
-    allCommands,
+    allCommands: allCommands.filter((command) =>
+      command.name.startsWith("command_sort_tabs")
+    ),
   });
 
   const container = new DOMParser()
@@ -49,7 +106,7 @@ function translate(message) {
 
 function logCommands(commands) {
   commands.forEach((command) => {
-    console.debug(command);
+    console.info(command);
   });
 }
 
@@ -160,7 +217,7 @@ function renderPopup(params) {
         </div>
     </div>
     <div class="">
-        <small> Tab Sorter - ${browser.runtime.getManifest().version} </small>
+        <small> Tab Sorter - ${chrome.runtime.getManifest().version} </small>
     </div>
 </div>
   `;

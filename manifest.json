@@ -9,9 +9,6 @@
     "default_title": "Tab Sorter",
     "default_popup": "tab-sorter.html"
   },
-  "background": {
-    "page": "background-tab-sorter.html"
-  },
   "icons": {
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
@@ -42,10 +39,5 @@
   ],
   "options_ui": {
     "page": "options.html"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "tab-sorter@tab-sorter.com"
-    }
   }
 }

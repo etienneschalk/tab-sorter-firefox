@@ -129,7 +129,7 @@ function setDefaultSortMethod(choice) {
 async function retrieveFromStorage(key, default_value) {
   console.debug(key);
 
-  const key_value_obj = await browser.storage.sync.get(key);
+  const key_value_obj = await chrome.storage.sync.get(key);
   console.debug(key_value_obj);
 
   const actual_value =
@@ -156,7 +156,7 @@ function persistInStorage(key, value) {
   function onError(error) {
     console.error(`${log_prefix} ${error}`);
   }
-  browser.storage.sync.set(payload).then(onSuccess, onError);
+  chrome.storage.sync.set(payload).then(onSuccess, onError);
 }
 
 // Configure event listening
@@ -178,7 +178,7 @@ function addEventListeners() {
   });
 
   // Listening on a new tab opening
-  browser.tabs.onCreated.addListener((tab) => {
+  chrome.tabs.onCreated.addListener((tab) => {
     if (getAutoOnNewTabCached()) {
       sortTabs(getDefaultSortMethodCached());
     }
