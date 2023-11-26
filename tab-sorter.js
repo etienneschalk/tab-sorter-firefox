@@ -28,6 +28,8 @@ const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
 const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
 
+const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
+
 // Initialization code
 initTabSorter();
 
@@ -60,6 +62,11 @@ async function getDefaultSortMethodAsync() {
     STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
   );
 }
+async function getAllCommandsFromManifest() {
+  const allCommands = await chrome.commands.getAll();
+  CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
+  return allCommands;
+}
 
 function getAvailableSortMethodsSync() {
   return AVAILABLE_SORT_METHODS;
@@ -80,6 +87,7 @@ function fillCache() {
   getAllWindowsAsync();
   getAutoOnNewTabAsync();
   getDefaultSortMethodAsync();
+  getAllCommandsFromManifest();
 }
 
 function getReverseCached() {
@@ -162,6 +170,22 @@ function persistInStorage(key, value) {
 // Configure event listening
 
 function addEventListeners() {
+  // Initial State
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // 2. A page requested user data, respond with a copy of `user`
+    if (message === "queryInitialState") {
+      const response = {
+        isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
+        isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
+        isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
+        defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+        availableSortMethods: AVAILABLE_SORT_METHODS,
+        allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
+      };
+      sendResponse(response);
+    }
+  });
+
   // Using the sort-tabs shortcut defined in manifest.json
   chrome.commands.onCommand.addListener((command) => {
     console.debug(`${TAB_SORTER_PREFIX} Command event received: ${command}`);

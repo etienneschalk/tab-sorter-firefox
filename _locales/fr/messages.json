@@ -17,13 +17,13 @@
     "message": "Comment mettre à jour les raccourcis clavier pour les différentes méthodes de tri ?"
   },
   "help_how_to_update_shortcuts_answer": {
-    "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines des méthodes de tri proposées. Vous pouvez les modifier directement via Firefox. Pour plus d'informations, voir : <a href=\"https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox\">Gérer les raccourcis d’extensions dans Firefox</a>"
+    "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines des méthodes de tri proposées. Vous pouvez les modifier directement via Firefox. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox\">Gérer les raccourcis d’extensions dans Firefox</a>"
   },
   "help_encountered_a_problem_question": {
     "message": "J'ai rencontré un problème !"
   },
   "help_encountered_a_problem_answer": {
-    "message": "<a href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
   },
   "preferences": {
     "message": "Préférences"
