@@ -1,4 +1,4 @@
-![Tab Sorter icon ](icons/icon-96.png)
+![Tab Sorter icon](icons/icon-96.png)
 
 # Tab Sorter
 

@@ -10,6 +10,15 @@
   "actions": {
     "message": "Sort"
   },
+  "help": {
+    "message": "Help"
+  },
+  "help.how-to-update-shortcuts.question": {
+    "message": "How do I update the keyboard shortcuts mapping for the different sorting methods?"
+  },
+  "help.how-to-update-shortcuts.answer": {
+    "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
+  },
   "preferences": {
     "message": "Preferences"
   },

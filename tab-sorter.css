@@ -7,7 +7,7 @@
 
 .container {
   background: white;
-  max-width: 500px;
+  max-width: 750px;
 }
 
 .flexcontainer {
@@ -19,7 +19,8 @@
 }
 
 .flexcol {
-  width: 50%;
+  /* width should be 100% / ncol */
+  width: 33.33%;
   padding: 10px;
   background-color: #eee;
   border: 1px solid #ccc;
@@ -59,7 +60,7 @@ h3 {
 a {
   display: block;
   text-decoration: none;
-  text-align: right;
+  /* text-align: right; */
   color: blue;
 }
 

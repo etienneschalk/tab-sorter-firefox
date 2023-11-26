@@ -125,6 +125,16 @@ function renderPopup(params) {
     </div>
     <div class="flexcontainer">
         <div class="flexcol">
+            <h2>❓ ${translate("help")} </h2>
+            <br>
+            <h3> ${translate("help.how-to-update-shortcuts.question")} </h3>
+            <p> ${translate("help.how-to-update-shortcuts.answer")}
+            <p>
+            <br>
+            <h3>❗${translate("help.encountered-a-problem.question")} </h3>
+            <p> ${translate("help.encountered-a-problem.answer")}
+        </div>
+        <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>
             <br> 
             <h3> ${translate("preferences-general")}</h3>
