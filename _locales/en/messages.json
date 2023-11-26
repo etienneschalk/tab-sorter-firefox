@@ -13,61 +13,61 @@
   "help": {
     "message": "Help"
   },
-  "help.how-to-update-shortcuts.question": {
+  "help_how_to_update_shortcuts_question": {
     "message": "How do I update the keyboard shortcuts mapping for the different sorting methods?"
   },
-  "help.how-to-update-shortcuts.answer": {
+  "help_how_to_update_shortcuts_answer": {
     "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
   },
   "preferences": {
     "message": "Preferences"
   },
-  "preferences-general": {
+  "preferences_general": {
     "message": "General Preferences"
   },
-  "preferences-auto": {
+  "preferences_auto": {
     "message": "Preferences for automatic sorting"
   },
-  "no-shortcut-configured": {
+  "no_shortcut_configured": {
     "message": "No shortcut configured yet"
   },
-  "command-sort-tabs-url": {
+  "command_sort_tabs_url": {
     "message": "By URL",
     "description": "Button for sorting tabs by URL."
   },
-  "command-sort-tabs-mru": {
+  "command_sort_tabs_mru": {
     "message": "By most recently used",
     "description": "Button for sorting tabs by most recently used"
   },
-  "command-sort-tabs-title": {
+  "command_sort_tabs_title": {
     "message": "By title",
     "description": "Button for sorting tabs by title"
   },
-  "command-sort-tabs-favicon-and-title": {
+  "command_sort_tabs_favicon_and_title": {
     "message": "By icon",
     "description": "Button for sorting tabs by most recently used"
   },
-  "command-sort-tabs-shuffle": {
+  "command_sort_tabs_shuffle": {
     "message": "Shuffle tabs",
     "description": "Link to reorganize tabs randomly"
   },
-  "change-addons-preferences": {
+  "change_addons_preferences": {
     "message": "Access addons preferences",
     "description": "Link to access the Firefox's about:addons page"
   },
-  "ui-click-checkbox-sort-tabs-reverse": {
+  "ui_click_checkbox_sort_tabs_reverse": {
     "message": "Reverse sorting",
     "description": "Reverse sorting order"
   },
-  "ui-click-checkbox-sort-tabs-all-windows": {
+  "ui_click_checkbox_sort_tabs_all_windows": {
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
-  "ui-click-checkbox-sort-tabs-auto-on-new-tab": {
+  "ui_click_checkbox_sort_tabs_auto_on_new_tab": {
     "message": "Sort tabs when a new tab is opened.",
     "description": "Checkbox Sort tabs when a new tab is opened."
   },
-  "ui-change-select-sort-select-tabs-default-sort-method": {
+  "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Default sort method for auto sort on new tab",
     "description": "Select Default sort method for auto sort on new tab"
   }

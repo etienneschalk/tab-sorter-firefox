@@ -189,19 +189,19 @@ function addEventListeners() {
 
 function commandEventListener(command) {
   switch (command) {
-    case "command-sort-tabs-url":
+    case "command_sort_tabs_url":
       sortTabs("sort-tabs-url");
       break;
-    case "command-sort-tabs-mru":
+    case "command_sort_tabs_mru":
       sortTabs("sort-tabs-mru");
       break;
-    case "command-sort-tabs-title":
+    case "command_sort_tabs_title":
       sortTabs("sort-tabs-title");
       break;
-    case "command-sort-tabs-favicon-and-title":
+    case "command_sort_tabs_favicon_and_title":
       sortTabs("sort-tabs-favicon-and-title");
       break;
-    case "command-sort-tabs-shuffle":
+    case "command_sort_tabs_shuffle":
       sortTabs("sort-tabs-mru", true);
       break;
     default:
@@ -209,13 +209,15 @@ function commandEventListener(command) {
 }
 
 function stateUpdateEventListener(command, value) {
-  if (command === "ui-click-checkbox-sort-tabs-reverse") {
+  if (command === "ui_click_checkbox_sort_tabs_reverse") {
     setReverse(value);
-  } else if (command === "ui-click-checkbox-sort-tabs-all-windows") {
+  } else if (command === "ui_click_checkbox_sort_tabs_all_windows") {
     setAllWindows(value);
-  } else if (command === "ui-click-checkbox-sort-tabs-auto-on-new-tab") {
+  } else if (command === "ui_click_checkbox_sort_tabs_auto_on_new_tab") {
     setAutoOnNewTab(value);
-  } else if (command === "ui-change-select-sort-select-tabs-default-sort-method") {
+  } else if (
+    command === "ui_change_select_sort_select_tabs_default_sort_method"
+  ) {
     setDefaultSortMethod(value);
   }
 }

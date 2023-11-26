@@ -17,25 +17,25 @@
     "96": "icons/icon-96.png"
   },
   "commands": {
-    "command-sort-tabs-mru": {
+    "command_sort_tabs_mru": {
       "description": "Command: Sort Tabs by MRU (Most Recently Used)",
       "suggested_key": {
         "default": "Ctrl+Shift+Space"
       }
     },
-    "command-sort-tabs-favicon-and-title": {
+    "command_sort_tabs_favicon_and_title": {
       "description": "Command: Sort Tabs by Favicon then Title",
       "suggested_key": {
         "default": "Ctrl+Alt+Space"
       }
     },
-    "command-sort-tabs-title": {
+    "command_sort_tabs_title": {
       "description": "Command: Sort Tabs by Title"
     },
-    "command-sort-tabs-url": {
+    "command_sort_tabs_url": {
       "description": "Command: Sort Tabs by URL"
     },
-    "command-sort-tabs-shuffle": {
+    "command_sort_tabs_shuffle": {
       "description": "Command: Shuffle Tabs"
     }
   },

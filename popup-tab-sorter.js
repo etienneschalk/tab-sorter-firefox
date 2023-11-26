@@ -37,11 +37,11 @@ async function renderTemplateAsync() {
   document.getElementById("container").appendChild(container);
 }
 
-const CHECKBOX_REVERSE = "ui-click-checkbox-sort-tabs-reverse";
-const CHECKBOX_ALL_WINDOWS = "ui-click-checkbox-sort-tabs-all-windows";
-const CHECKBOX_AUTO_ON_NEW_TAB = "ui-click-checkbox-sort-tabs-auto-on-new-tab";
+const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
+const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
+const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_on_new_tab";
 const SELECT_DEFAULT_SORT_METHOD =
-  "ui-change-select-sort-select-tabs-default-sort-method";
+  "ui_change_select_sort_select_tabs_default_sort_method";
 
 function translate(message) {
   return chrome.i18n.getMessage(message);
@@ -75,7 +75,7 @@ function renderCommandActionButton(command) {
   ${`<p class="has-text-centered"> ${
     shortcut
       ? renderShortcutHint(shortcut)
-      : `<small>${translate("no-shortcut-configured")}</small>`
+      : `<small>${translate("no_shortcut_configured")}</small>`
   } </p>`}
 </div>
   `;
@@ -127,8 +127,8 @@ function renderPopup(params) {
         <div class="flexcol">
             <h2>❓ ${translate("help")} </h2>
             <br>
-            <h3> ${translate("help.how-to-update-shortcuts.question")} </h3>
-            <p> ${translate("help.how-to-update-shortcuts.answer")}
+            <h3> ${translate("help_how_to_update_shortcuts_question")} </h3>
+            <p> ${translate("help_how_to_update_shortcuts_answer")}
             <p>
             <br>
             <h3>❗${translate("help.encountered-a-problem.question")} </h3>
@@ -137,11 +137,11 @@ function renderPopup(params) {
         <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>
             <br> 
-            <h3> ${translate("preferences-general")}</h3>
+            <h3> ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
             <br> 
-            <h3> ${translate("preferences-auto")}</h3>
+            <h3> ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}
             <br>
             ${renderSelect(
