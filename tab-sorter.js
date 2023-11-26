@@ -209,13 +209,13 @@ function commandEventListener(command) {
 }
 
 function stateUpdateEventListener(command, value) {
-  if (command === "ui-checkbox-sort-tabs-reverse") {
+  if (command === "ui-click-checkbox-sort-tabs-reverse") {
     setReverse(value);
-  } else if (command === "ui-checkbox-sort-tabs-all-windows") {
+  } else if (command === "ui-click-checkbox-sort-tabs-all-windows") {
     setAllWindows(value);
-  } else if (command === "ui-checkbox-sort-tabs-auto-on-new-tab") {
+  } else if (command === "ui-click-checkbox-sort-tabs-auto-on-new-tab") {
     setAutoOnNewTab(value);
-  } else if (command === "ui-sort-select-tabs-default-sort-method") {
+  } else if (command === "ui-change-select-sort-select-tabs-default-sort-method") {
     setDefaultSortMethod(value);
   }
 }

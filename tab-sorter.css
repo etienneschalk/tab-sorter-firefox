@@ -3,10 +3,11 @@
   font-size: 14px;
 }
 
+/* Layout */
+
 .container {
   background: white;
   max-width: 500px;
-  /* max-width: 250px; */
 }
 
 .flexcontainer {
@@ -24,22 +25,24 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-.has-text-right-aligned {
-  text-align: right;
-}
-
-button {
-  padding: 0.4em;
-  width: 100%;
-  text-align: center;
-}
 
 .centered,
 .centered h1,
 .centered h2,
+.centered h3,
 .centered p {
   margin: 0 auto;
 }
+
+.has-text-centered {
+  text-align: center;
+}
+
+.has-text-right-aligned {
+  text-align: right;
+}
+
+/* Content */
 
 h1 {
   font-size: 22px;
@@ -53,20 +56,6 @@ h3 {
   font-size: 14px;
 }
 
-.has-text-centered {
-  text-align: center;
-}
-
-label {
-  display: block;
-  width: 100%;
-}
-
-label input[type="checkbox"] {
-  position: relative;
-  top: 1px;
-}
-
 a {
   display: block;
   text-decoration: none;
@@ -77,6 +66,7 @@ a {
 a:hover {
   color: navy;
 }
+
 small {
   color: #999;
 }
@@ -91,6 +81,24 @@ kbd {
   border-radius: 3px;
 }
 
+button {
+  padding: 0.4em;
+  width: 100%;
+  text-align: center;
+}
+
+label {
+  display: block;
+  width: 100%;
+}
+
+label input[type="checkbox"] {
+  position: relative;
+  top: 1px;
+}
+
+/* Auto-generated CSS buttons (slightly modified) */
+
 /* https://www.bestcssbuttongenerator.com/#/12 */
 
 .button-primary {
@@ -102,8 +110,6 @@ kbd {
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
-  /* font-family: Arial; */
-  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #154682;
@@ -126,8 +132,6 @@ kbd {
   display: inline-block;
   cursor: pointer;
   color: #000000;
-  /* font-family: Arial; */
-  /* font-size: 13px; */
   padding: 6px 24px;
   text-decoration: none;
 }

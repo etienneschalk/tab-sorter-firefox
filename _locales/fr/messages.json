@@ -42,19 +42,19 @@
     "message": "Mélanger les onglets",
     "description": "Reorganizes tabs randomly"
   },
-  "ui-checkbox-sort-tabs-reverse": {
+  "ui-click-checkbox-sort-tabs-reverse": {
     "message": "Inverser l'ordre de tri",
     "description": "Reverse sorting order"
   },
-  "ui-checkbox-sort-tabs-all-windows": {
+  "ui-click-checkbox-sort-tabs-all-windows": {
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
-  "ui-checkbox-sort-tabs-auto-on-new-tab": {
+  "ui-click-checkbox-sort-tabs-auto-on-new-tab": {
     "message": "Trier automatiquement les onglets lors de l'ouverture d'un nouvel onglet",
     "description": "Checkbox Sort tabs when a new tab is opened."
   },
-  "ui-sort-select-tabs-default-sort-method": {
+  "ui-change-select-sort-select-tabs-default-sort-method": {
     "message": "Méthode de tri à utiliser lors du tri automatique",
     "description": "Select Default sort method for auto sort on new tab"
   }

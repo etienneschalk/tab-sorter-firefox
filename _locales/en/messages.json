@@ -46,19 +46,19 @@
     "message": "Access addons preferences",
     "description": "Link to access the Firefox's about:addons page"
   },
-  "ui-checkbox-sort-tabs-reverse": {
+  "ui-click-checkbox-sort-tabs-reverse": {
     "message": "Reverse sorting",
     "description": "Reverse sorting order"
   },
-  "ui-checkbox-sort-tabs-all-windows": {
+  "ui-click-checkbox-sort-tabs-all-windows": {
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
-  "ui-checkbox-sort-tabs-auto-on-new-tab": {
+  "ui-click-checkbox-sort-tabs-auto-on-new-tab": {
     "message": "Sort tabs when a new tab is opened.",
     "description": "Checkbox Sort tabs when a new tab is opened."
   },
-  "ui-sort-select-tabs-default-sort-method": {
+  "ui-change-select-sort-select-tabs-default-sort-method": {
     "message": "Default sort method for auto sort on new tab",
     "description": "Select Default sort method for auto sort on new tab"
   }
