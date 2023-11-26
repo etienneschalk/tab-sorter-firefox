@@ -25,6 +25,12 @@
   "help_encountered_a_problem_answer": {
     "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
   },
+  "help_mru_not_working_chrome_question": {
+    "message": "Le tri par utilisation la plus récente ne fonctionne pas sur Chrome."
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "En effet, cette fonctionnalité n'est pas disponible sur Chrome."
+  },
   "preferences": {
     "message": "Préférences"
   },
