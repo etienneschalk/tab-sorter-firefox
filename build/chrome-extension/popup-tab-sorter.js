@@ -1,73 +1,14 @@
-// BROWSER = "firefox";
-// BROWSER = "chrome";
+// chrome.runtime.sendMessage("queryInitialState", (initialState) => {
+//   console.log("Received initial state", initialState);
+//   initializeUserInterface(initialState);
+// });
 
-chrome.runtime.sendMessage("queryInitialState", (initialState) => {
-  console.log("Received initial state", initialState);
+(async () => {
+  const initialState = await chrome.runtime.sendMessage("queryInitialState");
+  console.debug("== After await chrome.runtime.sendMessage");
   initializeUserInterface(initialState);
-});
+})();
 
-// async function getInitialStateForFirefox() {
-//   // > This a synchronous function.
-//   // See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/extension/getBackgroundPage
-//   const backgroundWindow = chrome.extension.getBackgroundPage();
-
-//   const isReverse = await backgroundWindow.getReverseAsync();
-//   const isAllWindows = await backgroundWindow.getAllWindowsAsync();
-//   const isAutoOnNewTab = await backgroundWindow.getAutoOnNewTabAsync();
-//   const defaultSortMethod = await backgroundWindow.getDefaultSortMethodAsync();
-//   const availableSortMethods = backgroundWindow.getAvailableSortMethodsSync();
-
-//   return {
-//     isReverse,
-//     isAllWindows,
-//     isAutoOnNewTab,
-//     defaultSortMethod,
-//     availableSortMethods,
-//   };
-// }
-// async function getInitialStateForChrome() {
-//   // > Send data from the service worker to a content script
-//   // See https://developer.chrome.com/docs/extensions/reference/runtime/
-
-//   chrome.runtime.sendMessage({
-//     type: "getInitialStateForChrome",
-//     command: "getInitialStateForChrome",
-//     value: null,
-//   });
-
-//   // from bg page
-//   const AVAILABLE_SORT_METHODS = [
-//     "sort_tabs_url",
-//     "sort_tabs_mru",
-//     "sort_tabs_title",
-//     "sort_tabs_favicon_and_title",
-//   ];
-//   const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
-//   // end
-
-//   const isReverse = false;
-//   const isAllWindows = false;
-//   const isAutoOnNewTab = false;
-//   const defaultSortMethod = STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD;
-//   const availableSortMethods = AVAILABLE_SORT_METHODS;
-
-//   return {
-//     isReverse,
-//     isAllWindows,
-//     isAutoOnNewTab,
-//     defaultSortMethod,
-//     availableSortMethods,
-//   };
-// }
-
-// async function getInitialState() {
-//   if (BROWSER === "firefox") {
-//     return getInitialStateForFirefox();
-//   } else if (BROWSER === "chrome") {
-//     return getInitialStateForChrome();
-//   }
-//   return undefined;
-// }
 function initializeUserInterface(initialState) {
   const {
     isReverse,
@@ -143,6 +84,8 @@ function renderCommandActionButton(command) {
   const { name, shortcut } = command;
 
   const className = shortcut ? "button-primary" : "button-simple";
+
+  console.log(command);
 
   return `
 <div>

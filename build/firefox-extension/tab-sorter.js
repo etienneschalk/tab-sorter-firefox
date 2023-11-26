@@ -75,19 +75,19 @@ function getAvailableSortMethodsSync() {
 // private
 
 function initTabSorter() {
-  fillCache();
+  resetCacheAsync();
   addEventListeners();
 }
 
 // Getter/Setters on Global State
 const CACHED_STATE = {};
 
-function fillCache() {
-  getReverseAsync();
-  getAllWindowsAsync();
-  getAutoOnNewTabAsync();
-  getDefaultSortMethodAsync();
-  getAllCommandsFromManifest();
+async function resetCacheAsync() {
+  await getReverseAsync();
+  await getAllWindowsAsync();
+  await getAutoOnNewTabAsync();
+  await getDefaultSortMethodAsync();
+  await getAllCommandsFromManifest();
 }
 
 function getReverseCached() {
@@ -171,18 +171,25 @@ function persistInStorage(key, value) {
 
 function addEventListeners() {
   // Initial State
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    // 2. A page requested user data, respond with a copy of `user`
+  chrome.runtime.onMessage.addListener((message, sender, sendMessage) => {
     if (message === "queryInitialState") {
-      const response = {
-        isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
-        isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
-        isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
-        defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
-        availableSortMethods: AVAILABLE_SORT_METHODS,
-        allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
-      };
-      sendResponse(response);
+      console.debug("Start queryInitialState handler");
+      (async () => {
+        await resetCacheAsync();
+        const initialState = {
+          isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
+          isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
+          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
+          defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+          availableSortMethods: AVAILABLE_SORT_METHODS,
+          allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
+        };
+        sendMessage(initialState);
+      })();
+      // Be careful with callback hell!!!!
+      // Must return true to indicate that the handler will respond asynchronously!
+      // See https://developer.chrome.com/docs/extensions/mv3/messaging/
+      return true;
     }
   });
 
