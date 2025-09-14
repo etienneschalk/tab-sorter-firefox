@@ -153,7 +153,7 @@ function persistInStorage(key, value) {
     [key]: value,
   };
 
-  const log_prefix = `${TAB_SORTER_PREFIX} ${arguments.callee.name}:`;
+  const log_prefix = `${TAB_SORTER_PREFIX} (persistInStorage):`;
 
   console.debug(`${log_prefix} ${key}=${value}`);
 
@@ -168,6 +168,9 @@ function persistInStorage(key, value) {
 }
 
 // Configure event listening
+
+// Track pending sort operations for new tabs
+let pendingSortTabs = new Set();
 
 function addEventListeners() {
   // Initial State
@@ -208,9 +211,23 @@ function addEventListeners() {
     stateUpdateEventListener(message.command, message.value);
   });
 
-  // Listening on a new tab opening
+  // Listening on a new tab opening with delay and retry mechanism
   chrome.tabs.onCreated.addListener((tab) => {
     if (getAutoOnNewTabCached()) {
+      pendingSortTabs.add(tab.id);
+      console.debug(`${TAB_SORTER_PREFIX} New tab created: ${tab.id}, scheduling sort with delay`);
+      // Add a small delay to ensure the tab is fully integrated
+      setTimeout(() => {
+        sortTabsWithRetry(getDefaultSortMethodCached(), tab.id);
+      }, 50); // 50ms delay should be sufficient
+    }
+  });
+
+  // Backup mechanism: listen for tab updates to catch any missed tabs
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete' && pendingSortTabs.has(tabId)) {
+      console.debug(`${TAB_SORTER_PREFIX} Tab updated and completed: ${tabId}, triggering sort`);
+      pendingSortTabs.delete(tabId);
       sortTabs(getDefaultSortMethodCached());
     }
   });
@@ -299,6 +316,44 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
+// Enhanced sorting function with retry mechanism for new tabs
+
+/**
+ * Sort Tabs with Retry Mechanism
+ * 
+ * This function attempts to sort tabs with retry logic to handle race conditions
+ * where newly created tabs might not be immediately available in the query results.
+ *
+ * @param {string} sortingType - the type of sorting desired
+ * @param {number} newTabId - the ID of the newly created tab
+ * @param {number} retryCount - current retry attempt (internal use)
+ */
+function sortTabsWithRetry(sortingType, newTabId, retryCount = 0) {
+  const maxRetries = 3;
+  const retryDelay = 100; // 100ms between retries
+  const log_prefix = `${TAB_SORTER_PREFIX} (sortTabsWithRetry):`;
+
+  console.debug(`${log_prefix} Attempt ${retryCount + 1}/${maxRetries + 1} for tab ${newTabId}`);
+
+  getCurrentWindowTabs(function (tabs) {
+    // Check if the new tab is included in the results
+    const newTabExists = tabs.some(tab => tab.id === newTabId);
+    
+    if (newTabExists || retryCount >= maxRetries) {
+      // Either the tab is found or we've exhausted retries
+      console.debug(`${log_prefix} Tab ${newTabId} ${newTabExists ? 'found' : 'not found after max retries'}, proceeding with sort`);
+      pendingSortTabs.delete(newTabId);
+      sortTabs(sortingType);
+    } else {
+      // Retry after a short delay
+      console.debug(`${log_prefix} Tab ${newTabId} not found, retrying in ${retryDelay}ms`);
+      setTimeout(() => {
+        sortTabsWithRetry(sortingType, newTabId, retryCount + 1);
+      }, retryDelay);
+    }
+  });
+}
+
 // Core sorting function
 
 /**
@@ -311,7 +366,7 @@ function comparisonByTitle(tabA, tabB) {
  */
 function sortTabs(sortingType, shuffle) {
   const doShuffle = shuffle || false;
-  const log_prefix = `${TAB_SORTER_PREFIX} ${arguments.callee.name}:`;
+  const log_prefix = `${TAB_SORTER_PREFIX} (sortTabs):`;
 
   console.debug(`${log_prefix} with '${sortingType}'`);
 
