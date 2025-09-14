@@ -24,8 +24,8 @@ zip -r ../firefox-extension.zip *
 cd ../..
 echo "Build complete! Extension zip files created in build/ directory."
 
-# Remove build directory
-echo "Removing build directory..."
-rm -rf build/chrome-extension
-rm -rf build/firefox-extension
-echo "Build directory removed."
+# # Remove build directory
+# echo "Removing build directory..."
+# rm -rf build/chrome-extension
+# rm -rf build/firefox-extension
+# echo "Build directory removed."
