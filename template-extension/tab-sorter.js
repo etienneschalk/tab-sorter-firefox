@@ -215,11 +215,12 @@ function addEventListeners() {
   chrome.tabs.onCreated.addListener((tab) => {
     if (getAutoOnNewTabCached()) {
       pendingSortTabs.add(tab.id);
-      console.debug(`${TAB_SORTER_PREFIX} New tab created: ${tab.id}, scheduling sort with delay`);
+      const delay = 50; // 50ms delay should be sufficient
+      console.debug(`${TAB_SORTER_PREFIX} New tab created: ${tab.id}, scheduling sort with delay ${delay}ms`);
       // Add a small delay to ensure the tab is fully integrated
       setTimeout(() => {
         sortTabsWithRetry(getDefaultSortMethodCached(), tab.id);
-      }, 50); // 50ms delay should be sufficient
+      }, delay); 
     }
   });
 
@@ -478,7 +479,7 @@ function zip(a, b) {
 // Retrieve the tabs from the current window
 function getCurrentWindowTabs(callback) {
   console.debug(
-    `${TAB_SORTER_PREFIX} getCurrentWindowTabs Before getAllWindowsCached`
+    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before getAllWindowsCached`
   );
 
   // /!\ currentWindow: false != no argument currentWindow given
@@ -487,7 +488,7 @@ function getCurrentWindowTabs(callback) {
     : {
         currentWindow: true,
       };
-  console.debug(`${TAB_SORTER_PREFIX} getCurrentWindowTabs Before tab query`);
+  console.debug(`${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before tab query`);
 
   chrome.tabs.query(options, function (tabs) {
     callback(tabs);
