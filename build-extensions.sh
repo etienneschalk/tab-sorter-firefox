@@ -14,3 +14,18 @@ mkdir -p build/firefox-extension
 cp -R template-extension/** build/firefox-extension
 # Firefox does not support yet service workers
 jq '.background = { "page": "background-tab-sorter.html" }' template-extension/manifest.json > build/firefox-extension/manifest.json
+
+# CREATE ZIP FILES
+echo "Creating zip files..."
+cd build/chrome-extension
+zip -r ../chrome-extension.zip *
+cd ../firefox-extension
+zip -r ../firefox-extension.zip *
+cd ../..
+echo "Build complete! Extension zip files created in build/ directory."
+
+# Remove build directory
+echo "Removing build directory..."
+rm -rf build/chrome-extension
+rm -rf build/firefox-extension
+echo "Build directory removed."
