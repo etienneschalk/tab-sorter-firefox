@@ -553,7 +553,7 @@ async function extractDomainTabs() {
     const allTabs = await chrome.tabs.query({});
     const matchingTabs = allTabs.filter(tab => {
       const tabDomain = extractDomain(tab.url);
-      return tabDomain === currentDomain;
+      return tabDomain === currentDomain && tab.id !== currentTab.id; // Exclude current tab
     });
 
     if (matchingTabs.length === 0) {
@@ -561,22 +561,34 @@ async function extractDomainTabs() {
       return;
     }
 
-    console.debug(`${log_prefix} Found ${matchingTabs.length} tabs for domain: ${currentDomain}`);
+    // Check if current window has all tabs in the same domain
+    const currentWindowTabs = await chrome.tabs.query({ currentWindow: true });
+    const currentWindowMatchingTabs = currentWindowTabs.filter(tab => {
+      const tabDomain = extractDomain(tab.url);
+      return tabDomain === currentDomain;
+    });
 
-    // Create new window
+    if (currentWindowMatchingTabs.length === currentWindowTabs.length) {
+      console.log(`${log_prefix} All tabs in current window are from the same domain (${currentDomain}). No extraction needed.`);
+      return;
+    }
+
+    console.debug(`${log_prefix} Found ${matchingTabs.length} other tabs for domain: ${currentDomain}`);
+
+    // Create new empty window
     const newWindow = await chrome.windows.create({
       focused: true,
       type: 'normal'
     });
 
-    // Move all matching tabs to the new window
-    const tabIds = matchingTabs.map(tab => tab.id);
-    await chrome.tabs.move(tabIds, {
+    // Move current tab and all other matching tabs to the new window
+    const allTabIdsToMove = [currentTab.id, ...matchingTabs.map(tab => tab.id)];
+    await chrome.tabs.move(allTabIdsToMove, {
       windowId: newWindow.id,
       index: 0
     });
 
-    console.debug(`${log_prefix} Successfully moved ${tabIds.length} tabs to new window`);
+    console.debug(`${log_prefix} Successfully moved current tab and ${matchingTabs.length} other tabs to new window`);
 
   } catch (error) {
     console.error(`${log_prefix} Error during domain extraction:`, error);

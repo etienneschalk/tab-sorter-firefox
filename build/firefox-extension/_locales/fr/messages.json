@@ -63,6 +63,10 @@
     "message": "Mélanger les onglets",
     "description": "Reorganizes tabs randomly"
   },
+  "command_extract_domain": {
+    "message": "Extraire le domaine",
+    "description": "Button for extracting domain tabs to new window"
+  },
   "ui_click_checkbox_sort_tabs_reverse": {
     "message": "Inverser l'ordre de tri",
     "description": "Reverse sorting order"

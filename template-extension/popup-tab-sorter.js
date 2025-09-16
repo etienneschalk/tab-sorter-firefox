@@ -44,7 +44,7 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     availableSortMethods,
     allCommands: allCommands
-      .filter((command) => command.name.startsWith("command_sort_tabs"))
+      .filter((command) => command.name.startsWith("command_sort_tabs") || command.name === "command_extract_domain")
       .sort(
         (a, b) =>
           commandDisplayPriority[a.name] - commandDisplayPriority[b.name]
