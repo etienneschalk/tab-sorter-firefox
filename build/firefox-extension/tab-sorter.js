@@ -561,15 +561,16 @@ async function extractDomainTabs() {
       return;
     }
 
-    // Check if current window has all tabs in the same domain
+    // Check if there are any tabs from the same domain in other windows
     const currentWindowTabs = await chrome.tabs.query({ currentWindow: true });
-    const currentWindowMatchingTabs = currentWindowTabs.filter(tab => {
+    const otherWindowsTabs = allTabs.filter(tab => !currentWindowTabs.some(currentTab => currentTab.id === tab.id));
+    const otherWindowsMatchingTabs = otherWindowsTabs.filter(tab => {
       const tabDomain = extractDomain(tab.url);
       return tabDomain === currentDomain;
     });
 
-    if (currentWindowMatchingTabs.length === currentWindowTabs.length) {
-      console.log(`${log_prefix} All tabs in current window are from the same domain (${currentDomain}). No extraction needed.`);
+    if (otherWindowsMatchingTabs.length === 0) {
+      console.log(`${log_prefix} No tabs from domain ${currentDomain} found in other windows. No extraction needed.`);
       return;
     }
 
