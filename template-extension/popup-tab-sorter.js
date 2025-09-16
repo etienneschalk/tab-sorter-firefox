@@ -34,6 +34,7 @@ function initializeUserInterface(initialState) {
     command_sort_tabs_url: 3,
     command_sort_tabs_mru: 4,
     command_sort_tabs_shuffle: 5,
+    command_extract_domain: 6,
   };
 
   const popupHtmlString = renderPopup({

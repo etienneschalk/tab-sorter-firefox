@@ -251,6 +251,9 @@ function commandEventListener(command) {
     case "command_sort_tabs_shuffle":
       sortTabs("sort_tabs_mru", true);
       break;
+    case "command_extract_domain":
+      extractDomainTabs();
+      break;
     default:
   }
 }
@@ -513,4 +516,69 @@ function removeParenthesisNotification(stringToModify) {
 // Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
+}
+
+// Domain extraction utility
+function extractDomain(url) {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname.replace(/^www\./, ''); // Remove www prefix
+  } catch (error) {
+    console.error('Failed to extract domain from URL:', url, error);
+    return null;
+  }
+}
+
+// Main extract domain function
+async function extractDomainTabs() {
+  const log_prefix = `${TAB_SORTER_PREFIX} (extractDomainTabs):`;
+  
+  try {
+    // Get current active tab
+    const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!currentTab) {
+      console.error(`${log_prefix} No active tab found`);
+      return;
+    }
+
+    const currentDomain = extractDomain(currentTab.url);
+    if (!currentDomain) {
+      console.error(`${log_prefix} Could not extract domain from current tab`);
+      return;
+    }
+
+    console.debug(`${log_prefix} Extracting domain: ${currentDomain}`);
+
+    // Get all tabs from all windows
+    const allTabs = await chrome.tabs.query({});
+    const matchingTabs = allTabs.filter(tab => {
+      const tabDomain = extractDomain(tab.url);
+      return tabDomain === currentDomain;
+    });
+
+    if (matchingTabs.length === 0) {
+      console.log(`${log_prefix} No matching tabs found for domain: ${currentDomain}`);
+      return;
+    }
+
+    console.debug(`${log_prefix} Found ${matchingTabs.length} tabs for domain: ${currentDomain}`);
+
+    // Create new window
+    const newWindow = await chrome.windows.create({
+      focused: true,
+      type: 'normal'
+    });
+
+    // Move all matching tabs to the new window
+    const tabIds = matchingTabs.map(tab => tab.id);
+    await chrome.tabs.move(tabIds, {
+      windowId: newWindow.id,
+      index: 0
+    });
+
+    console.debug(`${log_prefix} Successfully moved ${tabIds.length} tabs to new window`);
+
+  } catch (error) {
+    console.error(`${log_prefix} Error during domain extraction:`, error);
+  }
 }

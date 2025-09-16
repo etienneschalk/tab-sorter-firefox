@@ -63,6 +63,10 @@
     "message": "Shuffle tabs",
     "description": "Link to reorganize tabs randomly"
   },
+  "command_extract_domain": {
+    "message": "Extract Domain",
+    "description": "Button for extracting domain tabs to new window"
+  },
   "change_addons_preferences": {
     "message": "Access addons preferences",
     "description": "Link to access the Firefox's about:addons page"

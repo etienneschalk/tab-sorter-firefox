@@ -34,6 +34,12 @@
     },
     "command_sort_tabs_shuffle": {
       "description": "Command: Shuffle Tabs"
+    },
+    "command_extract_domain": {
+      "description": "Command: Extract Domain - Move current tab and all same-domain tabs to new window",
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      }
     }
   },
   "permissions": [
