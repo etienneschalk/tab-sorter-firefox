@@ -573,7 +573,7 @@ async function extractDomainTabs() {
     
     const matchingTabs = allTabs.filter(tab => {
       const tabDomain = extractDomain(tab.url);
-      const isMatch = tabDomain === currentDomain && tab.id !== currentTab.id;
+      const isMatch = tabDomain === currentDomain;
       if (isMatch) {
         console.log(`${log_prefix} Found matching tab: ${tab.id} (domain: ${tabDomain}) - ${tab.url} `);
       }
