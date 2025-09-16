@@ -210,6 +210,15 @@ Transform chaotic tab collections into organized, manageable workspaces
 ### 🙏 **Questions?**
 We're here to help! Reach out through GitHub issues or email.
 
+Question: How do I update the keyboard shortcuts mapping for the different sorting methods?
+Answer: The extension comes with predefined shortcuts for some of the proposed sorting methods. Changing them is handled by Chrome itself. You can change these here: chrome://extensions/shortcuts to change 
+
+Question: Sort by most recently used do not work on Chrome.
+Answer: Indeed, this feature is not yet available on Chrome.
+
+Question: I encountered a problem!
+Answer: Please create an issue on GitHub: https://github.com/etienneschalk/tab-sorter-firefox/issues
+
 ### ⭐ **Love it?**
 Please rate and review on your browser's extension store!
 
