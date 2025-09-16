@@ -1,0 +1,57 @@
+{
+  "default_locale": "en",
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "author": "Etienne Schalk",
+  "version": "0.7",
+  "action": {
+    "default_title": "Tab Sorter",
+    "default_popup": "tab-sorter.html"
+  },
+  "background": {
+    "page": "background-tab-sorter.html"
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "commands": {
+    "command_sort_tabs_mru": {
+      "description": "Command: Sort Tabs by MRU (Most Recently Used)"
+    },
+    "command_sort_tabs_favicon_and_title": {
+      "description": "Command: Sort Tabs by Favicon then Title",
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space"
+      }
+    },
+    "command_sort_tabs_title": {
+      "description": "Command: Sort Tabs by Title"
+    },
+    "command_sort_tabs_url": {
+      "description": "Command: Sort Tabs by URL"
+    },
+    "command_sort_tabs_shuffle": {
+      "description": "Command: Shuffle Tabs"
+    },
+    "command_extract_domain": {
+      "description": "Command: Extract Domain - Move current tab and all same-domain tabs to new window",
+      "suggested_key": {
+        "default": "Ctrl+Shift+L"
+      }
+    }
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-sorter@tab-sorter.com"
+    }
+  }
+}
