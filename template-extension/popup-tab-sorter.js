@@ -188,7 +188,7 @@ function renderPopup(params) {
         </div>
     </div>
     <div class="">
-        <small> Tab Sorter - ${chrome.runtime.getManifest().version} </small>
+        <small> Tab Sorter - v${chrome.runtime.getManifest().version} </small>
     </div>
 </div>
   `;
