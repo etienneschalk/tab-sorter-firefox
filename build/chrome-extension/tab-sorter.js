@@ -576,18 +576,21 @@ async function extractDomainTabs() {
 
     console.debug(`${log_prefix} Found ${matchingTabs.length} other tabs for domain: ${currentDomain}`);
 
-    // Create new empty window
+    // Create new window with the current tab (no new tab created)
     const newWindow = await chrome.windows.create({
+      tabId: currentTab.id,
       focused: true,
       type: 'normal'
     });
 
-    // Move current tab and all other matching tabs to the new window
-    const allTabIdsToMove = [currentTab.id, ...matchingTabs.map(tab => tab.id)];
-    await chrome.tabs.move(allTabIdsToMove, {
-      windowId: newWindow.id,
-      index: 0
-    });
+    // Move all other matching tabs to the new window
+    if (matchingTabs.length > 0) {
+      const tabIds = matchingTabs.map(tab => tab.id);
+      await chrome.tabs.move(tabIds, {
+        windowId: newWindow.id,
+        index: 1
+      });
+    }
 
     console.debug(`${log_prefix} Successfully moved current tab and ${matchingTabs.length} other tabs to new window`);
 
