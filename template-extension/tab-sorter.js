@@ -389,6 +389,9 @@ function sortTabs(sortingType, shuffle) {
       case "sort_tabs_mru":
         // TODO Not working on chromium!
         // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
+        // Addition 2025-09-16: This is now working on chromium!
+        // https://developer.chrome.com/docs/extensions/reference/api/tabs 
+        // lastAccessed property is now available in Chrome 121+
         comparisonFunction = comparisonByMru;
         break;
       case "sort_tabs_title":
