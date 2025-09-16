@@ -651,6 +651,22 @@ async function extractDomainTabs() {
 
     console.log(`${log_prefix} Domain extraction completed successfully`);
 
+    // Auto-sort after successful extraction if enabled
+    if (getAutoOnNewTabCached()) {
+      console.log(`${log_prefix} Auto-sort is enabled, performing sort after extraction`);
+      const defaultSortMethod = getDefaultSortMethodCached();
+      console.log(`${log_prefix} Using default sort method: ${defaultSortMethod}`);
+      
+      // Sort tabs in the new window
+      // Note: No retry mechanism here is done (to be checked if needed)
+      chrome.tabs.query({ windowId: newWindow.id }, (tabs) => {
+        if (tabs && tabs.length > 0) {
+          console.log(`${log_prefix} Sorting ${tabs.length} tabs in the new window`);
+          sortTabs(defaultSortMethod);
+        }
+      });
+    }
+
   } catch (error) {
     console.error(`${log_prefix} Error during domain extraction:`, error);
     console.error(`${log_prefix} Error stack:`, error.stack);
