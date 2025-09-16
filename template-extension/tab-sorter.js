@@ -225,11 +225,22 @@ function addEventListeners() {
   });
 
   // Backup mechanism: listen for tab updates to catch any missed tabs
+  // Also listen for URL changes to trigger auto sort after navigation
   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // Handle pending new tabs that completed loading
     if (changeInfo.status === 'complete' && pendingSortTabs.has(tabId)) {
       console.debug(`${TAB_SORTER_PREFIX} Tab updated and completed: ${tabId}, triggering sort`);
       pendingSortTabs.delete(tabId);
       sortTabs(getDefaultSortMethodCached());
+    }
+    
+    // Handle URL changes for auto sort (e.g., after search navigation)
+    if (changeInfo.url && getAutoOnNewTabCached() && !tab.pinned) {
+      console.debug(`${TAB_SORTER_PREFIX} Tab URL changed: ${tabId}, triggering auto sort`);
+      // Add a small delay to ensure the tab is fully loaded
+      setTimeout(() => {
+        sortTabs(getDefaultSortMethodCached());
+      }, 100);
     }
   });
 }
