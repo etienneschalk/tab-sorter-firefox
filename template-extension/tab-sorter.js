@@ -21,8 +21,8 @@ const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
 const STORAGE_DEFAULT_VALUE_REVERSE = false;
 const STORAGE_KEY_SORT_ALL_WINDOWS = "TAB_SORTER_STORAGE_KEY_SORT_ALL_WINDOWS";
 const STORAGE_DEFAULT_VALUE_SORT_ALL_WINDOWS = false;
-const STORAGE_KEY_AUTO_SORT_ON_NEW_TAB =
-  "TAB_SORTER_STORAGE_KEY_AUTO_SORT_ON_NEW_TAB";
+const STORAGE_KEY_AUTO_SORT_BEST_EFFORT =
+  "TAB_SORTER_STORAGE_KEY_AUTO_SORT_BEST_EFFORT";
 const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
@@ -51,7 +51,7 @@ async function getAllWindowsAsync() {
 
 async function getAutoOnNewTabAsync() {
   return await retrieveFromStorage(
-    STORAGE_KEY_AUTO_SORT_ON_NEW_TAB,
+    STORAGE_KEY_AUTO_SORT_BEST_EFFORT,
     STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB
   );
 }
@@ -106,7 +106,7 @@ function getAllWindowsCached() {
 
 function getAutoOnNewTabCached() {
   console.debug("getAutoOnNewTabCached 1");
-  const value = CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB];
+  const value = CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT];
   console.debug("getAutoOnNewTabCached 2", `${value}`);
   return value;
 }
@@ -126,8 +126,8 @@ function setAllWindows(choice) {
   persistInStorage(STORAGE_KEY_SORT_ALL_WINDOWS, choice);
 }
 
-function setAutoOnNewTab(choice) {
-  persistInStorage(STORAGE_KEY_AUTO_SORT_ON_NEW_TAB, choice);
+function setAutoSortBestEffort(choice) {
+  persistInStorage(STORAGE_KEY_AUTO_SORT_BEST_EFFORT, choice);
 }
 
 function setDefaultSortMethod(choice) {
@@ -179,7 +179,7 @@ function addEventListeners() {
         const initialState = {
           isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
           isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
-          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
+          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT],
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -345,8 +345,8 @@ function stateUpdateEventListener(command, value) {
     setReverse(value);
   } else if (command === "ui_click_checkbox_sort_tabs_all_windows") {
     setAllWindows(value);
-  } else if (command === "ui_click_checkbox_sort_tabs_auto_on_new_tab") {
-    setAutoOnNewTab(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_auto_best_effort") {
+    setAutoSortBestEffort(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {

@@ -79,9 +79,9 @@
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
-  "ui_click_checkbox_sort_tabs_auto_on_new_tab": {
-    "message": "Sort tabs when a new tab is opened.",
-    "description": "Checkbox Sort tabs when a new tab is opened."
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sort tabs automatically (best effort).",
+    "description": "Sort tabs automatically (best effort)."
   },
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Default sort method for auto sort on new tab",
