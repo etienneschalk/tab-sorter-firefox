@@ -77,3 +77,5 @@ The original issue was caused by a race condition where `chrome.tabs.onCreated` 
 - **Efficient Validation**: Simple `Array.some()` check for tab existence
 
 This implementation should resolve the issue reported in GitHub Issue #14 where auto-sort only happened on the second new tab.
+
+
