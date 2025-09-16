@@ -20,10 +20,10 @@
     "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a target=\"_blank\" href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
   },
   "help_mru_not_working_chrome_question": {
-    "message": "Sort by most recently used do not work on Chrome."
+    "message": "Sort by most recently used works on Chrome 121+."
   },
   "help_mru_not_working_chrome_answer": {
-    "message": "Indeed, this feature is not available on Chrome."
+    "message": "This feature is now available in Chrome 121+ thanks to the lastAccessed property in the tabs API. For more information, see: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API documentation</a>"
   },
   "help_encountered_a_problem_question": {
     "message": "I encountered a problem!"

@@ -98,7 +98,7 @@ _Disclaimer: these were written 4 years ago_
   - Quicker sort for MRU (comparison between numbers)
   - Put current group of tabs at the end / the beginning
   - Detect duplicate table
-  - implement MRU even for chrome
+  - MRU is now implemented for Chrome 121+
   - Decouple firefox and chrome code
   - Better sorting of integer
 
