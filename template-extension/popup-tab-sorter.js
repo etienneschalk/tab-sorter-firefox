@@ -34,6 +34,7 @@ function initializeUserInterface(initialState) {
     command_sort_tabs_url: 3,
     command_sort_tabs_mru: 4,
     command_sort_tabs_shuffle: 5,
+    command_extract_domain: 6,
   };
 
   const popupHtmlString = renderPopup({
@@ -43,7 +44,7 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     availableSortMethods,
     allCommands: allCommands
-      .filter((command) => command.name.startsWith("command_sort_tabs"))
+      .filter((command) => command.name.startsWith("command_sort_tabs") || command.name === "command_extract_domain")
       .sort(
         (a, b) =>
           commandDisplayPriority[a.name] - commandDisplayPriority[b.name]
@@ -59,7 +60,7 @@ function initializeUserInterface(initialState) {
 
 const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
 const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
-const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_on_new_tab";
+const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
 
@@ -187,7 +188,7 @@ function renderPopup(params) {
         </div>
     </div>
     <div class="">
-        <small> Tab Sorter - ${chrome.runtime.getManifest().version} </small>
+        <small> Tab Sorter - v${chrome.runtime.getManifest().version} </small>
     </div>
 </div>
   `;

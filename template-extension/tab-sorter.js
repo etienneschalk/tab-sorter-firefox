@@ -21,8 +21,8 @@ const STORAGE_KEY_REVERSE = "TAB_SORTER_STORAGE_KEY_REVERSE";
 const STORAGE_DEFAULT_VALUE_REVERSE = false;
 const STORAGE_KEY_SORT_ALL_WINDOWS = "TAB_SORTER_STORAGE_KEY_SORT_ALL_WINDOWS";
 const STORAGE_DEFAULT_VALUE_SORT_ALL_WINDOWS = false;
-const STORAGE_KEY_AUTO_SORT_ON_NEW_TAB =
-  "TAB_SORTER_STORAGE_KEY_AUTO_SORT_ON_NEW_TAB";
+const STORAGE_KEY_AUTO_SORT_BEST_EFFORT =
+  "TAB_SORTER_STORAGE_KEY_AUTO_SORT_BEST_EFFORT";
 const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
@@ -51,7 +51,7 @@ async function getAllWindowsAsync() {
 
 async function getAutoOnNewTabAsync() {
   return await retrieveFromStorage(
-    STORAGE_KEY_AUTO_SORT_ON_NEW_TAB,
+    STORAGE_KEY_AUTO_SORT_BEST_EFFORT,
     STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB
   );
 }
@@ -106,7 +106,7 @@ function getAllWindowsCached() {
 
 function getAutoOnNewTabCached() {
   console.debug("getAutoOnNewTabCached 1");
-  const value = CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB];
+  const value = CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT];
   console.debug("getAutoOnNewTabCached 2", `${value}`);
   return value;
 }
@@ -126,8 +126,8 @@ function setAllWindows(choice) {
   persistInStorage(STORAGE_KEY_SORT_ALL_WINDOWS, choice);
 }
 
-function setAutoOnNewTab(choice) {
-  persistInStorage(STORAGE_KEY_AUTO_SORT_ON_NEW_TAB, choice);
+function setAutoSortBestEffort(choice) {
+  persistInStorage(STORAGE_KEY_AUTO_SORT_BEST_EFFORT, choice);
 }
 
 function setDefaultSortMethod(choice) {
@@ -153,7 +153,7 @@ function persistInStorage(key, value) {
     [key]: value,
   };
 
-  const log_prefix = `${TAB_SORTER_PREFIX} ${arguments.callee.name}:`;
+  const log_prefix = `${TAB_SORTER_PREFIX} (persistInStorage):`;
 
   console.debug(`${log_prefix} ${key}=${value}`);
 
@@ -179,7 +179,7 @@ function addEventListeners() {
         const initialState = {
           isReverse: CACHED_STATE[STORAGE_KEY_REVERSE],
           isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
-          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_ON_NEW_TAB],
+          isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT],
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -208,11 +208,111 @@ function addEventListeners() {
     stateUpdateEventListener(message.command, message.value);
   });
 
-  // Listening on a new tab opening
+  // Tabs listeners are for Auto Sort.
+  // ------------------------------------------------------------
+  // Listening on a new tab opening. Sort if auto sort is enabled and sort method is MRU
+  // NOTE: not needed anymore, as we now listen on onActivated instead, that also is fired.
+  // NOTE 2: its, the onActivated is cannot be used.
   chrome.tabs.onCreated.addListener((tab) => {
-    if (getAutoOnNewTabCached()) {
-      sortTabs(getDefaultSortMethodCached());
+    if (!getAutoOnNewTabCached()) {
+      return;
     }
+    sortMethod = getDefaultSortMethodCached();
+    if (sortMethod != "sort_tabs_mru") {
+      return;
+    }
+    console.debug(
+      `New tab created, sorting as soon as possible. ${tab.lastAccessed}`
+    );
+    sortTabs(sortMethod);
+  });
+
+  // Listening on a tab focusing, for MRU sorting
+  chrome.tabs.onActivated.addListener((tab) => {
+    if (!getAutoOnNewTabCached()) {
+      return;
+    }
+    sortMethod = getDefaultSortMethodCached();
+    if (sortMethod != "sort_tabs_mru") {
+      return;
+    }
+    console.debug("Tab activated, sorting as soon as possible");
+    console.debug(tab.lastAccessed);
+
+    // It's not extremely clean, but should handle most cases.
+    // https://stackoverflow.com/questions/67806779/im-getting-an-error-tabs-cannot-be-edited-right-now-user-may-be-dragging-a-tab
+    // Explicitly ignore error, as it's not critical
+    // Expected: Error: Tabs cannot be edited right now (user may be dragging a tab).
+    // Rationale: a quick click means the user is not dragging a tab, so we can ignore the error.
+    // If they are indeed dragging a tab, then we catch and ignore the error. It is OK.
+    // Empirically, 100ms is the duration of a quick click.
+    // NOTE: Unfortunately I am not able to catch the error here.
+    setTimeout(() => {
+      sortTabs(sortMethod);
+    }, 100);
+  });
+
+  // Listening for tab updates to catch any missed tabs and trigger auto sort after navigation
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    console.debug(
+      `${TAB_SORTER_PREFIX} Tab updated: ${tabId} ${changeInfo.status} ${changeInfo.title} ${changeInfo.url}...`
+    );
+    console.debug(changeInfo);
+    console.debug(tab);
+
+    if (!getAutoOnNewTabCached()) {
+      return;
+    }
+
+    // Sort as soon as possible
+    sortMethod = getDefaultSortMethodCached();
+
+    if (changeInfo.url && sortMethod === "sort_tabs_url") {
+      console.debug(
+        `URL changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.url}`
+      );
+      sortTabs(sortMethod);
+    } else if (changeInfo.title && sortMethod === "sort_tabs_title") {
+      console.debug(
+        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title}`
+      );
+      sortTabs(sortMethod);
+    } else if (
+      changeInfo.title &&
+      tab.favIconUrl &&
+      sortMethod === "sort_tabs_favicon_and_title"
+    ) {
+      console.debug(
+        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title} ${tab.favIconUrl}`
+      );
+      sortTabs(sortMethod);
+    } else if (
+      changeInfo.favIconUrl &&
+      tab.title &&
+      sortMethod === "sort_tabs_favicon_and_title"
+    ) {
+      // Note: this case should be mutually exclusive with the one above
+      console.debug(
+        `Favicon changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.favIconUrl} ${tab.title}`
+      );
+      sortTabs(sortMethod);
+    }
+    // Note: Right now, a new tab cannot be sorted directly with sorting methods other than MRU.
+    // It is okay, other methods need a tab content (with change of title, url etc).
+    // So we keep the new tab until it has real content, and then it's sorted.
+
+    // Case MRU is handled in the onActivated listener, but a click on tab should sort it directly,
+    // but do it only if tab is already complete to not sort twice (create + complete)
+    // NOTE: this does not work, Error: Tabs cannot be edited right now (user may be dragging a tab).
+    // else if (tab.status === 'complete' && sortMethod === "sort_tabs_mru") {
+    //   console.debug(`Status changed to complete and sort method is ${sortMethod}, sorting as soon as possible`);
+    //   sortTabs(sortMethod);
+    // }
+    // Should not be needed if all cases above are handled ^
+    // else if (changeInfo.status === 'complete') {
+    //   console.debug("Status changed to complete, sorting anyway.");
+    //   sortTabs(sortMethod);
+    // }
   });
 }
 
@@ -233,6 +333,9 @@ function commandEventListener(command) {
     case "command_sort_tabs_shuffle":
       sortTabs("sort_tabs_mru", true);
       break;
+    case "command_extract_domain":
+      extractDomainTabs();
+      break;
     default:
   }
 }
@@ -242,8 +345,8 @@ function stateUpdateEventListener(command, value) {
     setReverse(value);
   } else if (command === "ui_click_checkbox_sort_tabs_all_windows") {
     setAllWindows(value);
-  } else if (command === "ui_click_checkbox_sort_tabs_auto_on_new_tab") {
-    setAutoOnNewTab(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_auto_best_effort") {
+    setAutoSortBestEffort(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
@@ -299,6 +402,8 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
+// Enhanced sorting function with retry mechanism for new tabs
+
 // Core sorting function
 
 /**
@@ -311,7 +416,7 @@ function comparisonByTitle(tabA, tabB) {
  */
 function sortTabs(sortingType, shuffle) {
   const doShuffle = shuffle || false;
-  const log_prefix = `${TAB_SORTER_PREFIX} ${arguments.callee.name}:`;
+  const log_prefix = `${TAB_SORTER_PREFIX} (sortTabs):`;
 
   console.debug(`${log_prefix} with '${sortingType}'`);
 
@@ -330,6 +435,9 @@ function sortTabs(sortingType, shuffle) {
       case "sort_tabs_mru":
         // TODO Not working on chromium!
         // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
+        // Addition 2025-09-16: This is now working on chromium!
+        // https://developer.chrome.com/docs/extensions/reference/api/tabs
+        // lastAccessed property is now available in Chrome 121+
         comparisonFunction = comparisonByMru;
         break;
       case "sort_tabs_title":
@@ -423,7 +531,7 @@ function zip(a, b) {
 // Retrieve the tabs from the current window
 function getCurrentWindowTabs(callback) {
   console.debug(
-    `${TAB_SORTER_PREFIX} getCurrentWindowTabs Before getAllWindowsCached`
+    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before getAllWindowsCached`
   );
 
   // /!\ currentWindow: false != no argument currentWindow given
@@ -432,7 +540,9 @@ function getCurrentWindowTabs(callback) {
     : {
         currentWindow: true,
       };
-  console.debug(`${TAB_SORTER_PREFIX} getCurrentWindowTabs Before tab query`);
+  console.debug(
+    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before tab query`
+  );
 
   chrome.tabs.query(options, function (tabs) {
     callback(tabs);
@@ -457,4 +567,205 @@ function removeParenthesisNotification(stringToModify) {
 // Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
+}
+
+// Domain extraction utility
+function extractDomain(url) {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname.replace(/^www\./, ""); // Remove www prefix
+  } catch (error) {
+    console.error("Failed to extract domain from URL:", url, error);
+    return null;
+  }
+}
+
+// Main extract domain function
+async function extractDomainTabs() {
+  const log_prefix = `${TAB_SORTER_PREFIX} (extractDomainTabs):`;
+
+  try {
+    console.log(`${log_prefix} Starting domain extraction...`);
+
+    // Debug: Check API availability
+    console.log(`${log_prefix} Chrome APIs available:`, {
+      windows: !!chrome.windows,
+      tabs: !!chrome.tabs,
+      runtime: !!chrome.runtime,
+    });
+
+    // Debug: Check manifest permissions
+    const manifest = chrome.runtime.getManifest();
+    console.log(`${log_prefix} Manifest permissions:`, manifest.permissions);
+
+    // Get current active tab
+    const [currentTab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    console.log(`${log_prefix} Current tab:`, currentTab);
+
+    if (!currentTab) {
+      console.error(`${log_prefix} No active tab found`);
+      return;
+    }
+
+    const currentDomain = extractDomain(currentTab.url);
+    console.log(
+      `${log_prefix} Extracted domain: ${currentDomain} from URL: ${currentTab.url}`
+    );
+
+    if (!currentDomain) {
+      console.error(
+        `${log_prefix} Could not extract domain from current tab URL: ${currentTab.url}`
+      );
+      return;
+    }
+
+    // Get all tabs from all windows
+    const allTabs = await chrome.tabs.query({});
+    console.log(`${log_prefix} Total tabs found: ${allTabs.length}`);
+
+    const matchingTabs = allTabs.filter((tab) => {
+      const tabDomain = extractDomain(tab.url);
+      const isMatch = tabDomain === currentDomain;
+      if (isMatch) {
+        console.log(
+          `${log_prefix} Found matching tab: ${tab.id} (domain: ${tabDomain}) - ${tab.url} `
+        );
+      }
+      return isMatch;
+    });
+
+    console.log(`${log_prefix} Matching tabs count: ${matchingTabs.length}`);
+
+    if (matchingTabs.length === 0) {
+      console.log(
+        `${log_prefix} No other tabs found for domain: ${currentDomain}. No extraction needed.`
+      );
+      return;
+    }
+
+    // Check if current window has all tabs of same domain and no other windows have this domain
+    const currentWindowTabs = await chrome.tabs.query({ currentWindow: true });
+    console.log(
+      `${log_prefix} Current window tabs count: ${currentWindowTabs.length}`
+    );
+
+    const otherWindowsTabs = allTabs.filter(
+      (tab) => !currentWindowTabs.some((currentTab) => currentTab.id === tab.id)
+    );
+    console.log(
+      `${log_prefix} Other windows tabs count: ${otherWindowsTabs.length}`
+    );
+
+    const otherWindowsMatchingTabs = otherWindowsTabs.filter((tab) => {
+      const tabDomain = extractDomain(tab.url);
+      return tabDomain === currentDomain;
+    });
+
+    console.log(
+      `${log_prefix} Other windows matching tabs count: ${otherWindowsMatchingTabs.length}`
+    );
+
+    // Check if current window has all tabs of same domain
+    const currentWindowOtherDomains = currentWindowTabs.filter((tab) => {
+      const tabDomain = extractDomain(tab.url);
+      return tabDomain !== currentDomain;
+    });
+
+    console.log(
+      `${log_prefix} Current window tabs with other domains: ${currentWindowOtherDomains.length}`
+    );
+
+    // If current window has all tabs of same domain AND no other windows have this domain, skip extraction
+    if (
+      currentWindowOtherDomains.length === 0 &&
+      otherWindowsMatchingTabs.length === 0
+    ) {
+      console.log(
+        `${log_prefix} Current window already contains all tabs of domain ${currentDomain} and no other windows have this domain. No extraction needed.`
+      );
+      return;
+    }
+
+    console.log(
+      `${log_prefix} About to create new window with tabId: ${currentTab.id}`
+    );
+
+    // Create new window with the current tab (no new tab created)
+    const newWindow = await chrome.windows.create({
+      tabId: currentTab.id,
+      focused: true,
+      type: "normal",
+    });
+
+    console.log(`${log_prefix} New window created:`, newWindow);
+
+    if (chrome.runtime.lastError) {
+      console.error(
+        `${log_prefix} Chrome runtime error after window creation:`,
+        chrome.runtime.lastError
+      );
+      return;
+    }
+
+    // Move all other matching tabs to the new window
+    if (matchingTabs.length > 0) {
+      const tabIds = matchingTabs.map((tab) => tab.id);
+      console.log(
+        `${log_prefix} Moving ${tabIds.length} tabs to new window:`,
+        tabIds
+      );
+
+      await chrome.tabs.move(tabIds, {
+        windowId: newWindow.id,
+        index: 1,
+      });
+
+      if (chrome.runtime.lastError) {
+        console.error(
+          `${log_prefix} Chrome runtime error after moving tabs:`,
+          chrome.runtime.lastError
+        );
+        return;
+      }
+
+      console.log(`${log_prefix} Successfully moved tabs to new window`);
+    }
+
+    console.log(`${log_prefix} Domain extraction completed successfully`);
+
+    // Auto-sort after successful extraction if enabled
+    if (getAutoOnNewTabCached()) {
+      console.log(
+        `${log_prefix} Auto-sort is enabled, performing sort after extraction`
+      );
+      const defaultSortMethod = getDefaultSortMethodCached();
+      console.log(
+        `${log_prefix} Using default sort method: ${defaultSortMethod}`
+      );
+
+      // Sort tabs in the new window
+      // Note: No retry mechanism here is done (to be checked if needed)
+      chrome.tabs.query({ windowId: newWindow.id }, (tabs) => {
+        if (tabs && tabs.length > 0) {
+          console.log(
+            `${log_prefix} Sorting ${tabs.length} tabs in the new window`
+          );
+          sortTabs(defaultSortMethod);
+        }
+      });
+    }
+  } catch (error) {
+    console.error(`${log_prefix} Error during domain extraction:`, error);
+    console.error(`${log_prefix} Error stack:`, error.stack);
+
+    if (chrome.runtime.lastError) {
+      console.error(
+        `${log_prefix} Chrome runtime error:`,
+        chrome.runtime.lastError
+      );
+    }
+  }
 }

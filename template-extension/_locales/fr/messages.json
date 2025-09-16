@@ -26,10 +26,10 @@
     "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
   },
   "help_mru_not_working_chrome_question": {
-    "message": "Le tri par utilisation la plus récente ne fonctionne pas sur Chrome."
+    "message": "Le tri par utilisation la plus récente fonctionne sur Chrome 121+."
   },
   "help_mru_not_working_chrome_answer": {
-    "message": "En effet, cette fonctionnalité n'est pas disponible sur Chrome."
+    "message": "Cette fonctionnalité est maintenant disponible dans Chrome 121+ grâce à la propriété lastAccessed de l'API tabs. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentation de l'API Chrome Tabs</a>"
   },
   "preferences": {
     "message": "Préférences"
@@ -63,6 +63,10 @@
     "message": "Mélanger les onglets",
     "description": "Reorganizes tabs randomly"
   },
+  "command_extract_domain": {
+    "message": "Extraire le domaine",
+    "description": "Button for extracting domain tabs to new window"
+  },
   "ui_click_checkbox_sort_tabs_reverse": {
     "message": "Inverser l'ordre de tri",
     "description": "Reverse sorting order"
@@ -71,9 +75,9 @@
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
-  "ui_click_checkbox_sort_tabs_auto_on_new_tab": {
-    "message": "Trier automatiquement les onglets lors de l'ouverture d'un nouvel onglet",
-    "description": "Checkbox Sort tabs when a new tab is opened."
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Trier automatiquement les onglets (meilleur effort)",
+    "description": "Sort tabs automatically (best effort)."
   },
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Méthode de tri à utiliser lors du tri automatique",

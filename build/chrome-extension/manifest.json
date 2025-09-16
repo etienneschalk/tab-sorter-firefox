@@ -4,7 +4,7 @@
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
   "author": "Etienne Schalk",
-  "version": "0.6",
+  "version": "0.7",
   "action": {
     "default_title": "Tab Sorter",
     "default_popup": "tab-sorter.html"
@@ -34,6 +34,12 @@
     },
     "command_sort_tabs_shuffle": {
       "description": "Command: Shuffle Tabs"
+    },
+    "command_extract_domain": {
+      "description": "Command: Extract Domain - Move current tab and all same-domain tabs to new window",
+      "suggested_key": {
+        "default": "Ctrl+Shift+L"
+      }
     }
   },
   "permissions": [
