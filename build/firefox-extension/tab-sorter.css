@@ -1,0 +1,146 @@
+* {
+  font-family: system-ui;
+  font-size: 14px;
+}
+
+/* Layout */
+
+.container {
+  background: white;
+  width: 750px;
+}
+
+.flexcontainer {
+  display: flex;
+  flex-direction: col;
+  gap: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.flexcol {
+  /* width should be 100% / ncol */
+  width: 33.33%;
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.centered,
+.centered h1,
+.centered h2,
+.centered h3,
+.centered p {
+  margin: 0 auto;
+}
+
+.has-text-centered {
+  text-align: center;
+}
+
+.has-text-right-aligned {
+  text-align: right;
+}
+
+/* Content */
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  /* text-align: right; */
+  color: blue;
+}
+
+a:hover {
+  color: navy;
+}
+
+small {
+  color: #999;
+}
+
+kbd {
+  background-color: #eee;
+  box-sizing: border-box;
+  padding: 2px;
+  border: #ccc solid 1px;
+  border-bottom: #ccc solid 3px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+
+button {
+  padding: 0.4em;
+  width: 100%;
+  text-align: center;
+}
+
+label {
+  display: block;
+  width: 100%;
+}
+
+label input[type="checkbox"] {
+  position: relative;
+  top: 1px;
+}
+
+/* Auto-generated CSS buttons (slightly modified) */
+
+/* https://www.bestcssbuttongenerator.com/#/12 */
+
+.button-primary {
+  box-shadow: inset 0px 1px 0px 0px #54a3f7;
+  background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+  background-color: #007dc1;
+  border-radius: 3px;
+  border: 1px solid #124d77;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #154682;
+}
+.button-primary:hover {
+  background: linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+  background-color: #0061a7;
+}
+.button-primary:active {
+  position: relative;
+  top: 1px;
+}
+
+.button-simple {
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  background: linear-gradient(to bottom, #f2f2f2 5%, #d4d4d4 100%);
+  background-color: #f2f2f2;
+  border-radius: 3px;
+  border: 1px solid #696969;
+  display: inline-block;
+  cursor: pointer;
+  color: #000000;
+  padding: 6px 24px;
+  text-decoration: none;
+}
+.button-simple:hover {
+  background: linear-gradient(to bottom, #d4d4d4 5%, #f2f2f2 100%);
+  background-color: #d4d4d4;
+}
+.button-simple:active {
+  position: relative;
+  top: 1px;
+}

@@ -1,0 +1,90 @@
+{
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Extension for sorting your tabs.",
+    "description": "Description of the extension."
+  },
+  "actions": {
+    "message": "Sort"
+  },
+  "help": {
+    "message": "Help"
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "How do I update the keyboard shortcuts mapping for the different sorting methods?"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a target=\"_blank\" href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sort by most recently used works on Chrome 121+."
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "This feature is now available in Chrome 121+ thanks to the lastAccessed property in the tabs API. For more information, see: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API documentation</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "I encountered a problem!"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Please create an issue on GitHub</a>"
+  },
+  "preferences": {
+    "message": "Preferences"
+  },
+  "preferences_general": {
+    "message": "General Preferences"
+  },
+  "preferences_auto": {
+    "message": "Preferences for automatic sorting"
+  },
+  "no_shortcut_configured": {
+    "message": "No shortcut configured yet"
+  },
+  "command_sort_tabs_url": {
+    "message": "By URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "command_sort_tabs_mru": {
+    "message": "By most recently used",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_title": {
+    "message": "By title",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "By icon",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Shuffle tabs",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_extract_domain": {
+    "message": "Extract Domain",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "change_addons_preferences": {
+    "message": "Access addons preferences",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Reverse sorting",
+    "description": "Reverse sorting order"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Sort tabs in all windows",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sort tabs automatically (best effort).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Default sort method for auto sort on new tab",
+    "description": "Select Default sort method for auto sort on new tab"
+  }
+}

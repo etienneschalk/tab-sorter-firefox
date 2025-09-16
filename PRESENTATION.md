@@ -8,12 +8,11 @@
 ### 😵‍💫 Tab Chaos
 - **50+ tabs open** across multiple windows
 - **Lost productivity** searching for specific tabs
-- **Browser slowdown** from excessive tab overhead
 - **Mental fatigue** from visual clutter
 
 ### 📊 The Reality
-- Average user has **8-15 tabs** open simultaneously
-- **40% of users** report tab management stress
+- Average user has **8-15 tabs** open simultaneously (some even more!)
+- **40% of users** report tab management stress (source: trust me)
 - **Lost time** searching for tabs: 2-3 minutes per session
 
 ---
@@ -25,7 +24,7 @@ Transform chaotic tab collections into organized, manageable workspaces
 
 ### ⚡ **Lightning Fast**
 - Instant sorting with keyboard shortcuts
-- No performance impact on your browser
+- No performance impact on your browser (in theory)
 - Works seamlessly in the background
 
 ### 🔧 **Multiple Sorting Options**
@@ -40,22 +39,21 @@ Transform chaotic tab collections into organized, manageable workspaces
 ## Key Features
 
 ### ⌨️ **Keyboard Shortcuts**
-- `Ctrl+Shift+Space` - Sort by Favicon + Title
+- `Ctrl+Shift+Space` - Sort with your favorite method (by Icon, Title, URL or Most Recently Used)
 - `Ctrl+Shift+L` - Extract Domain (move same-domain tabs to new window)
 - Customizable shortcuts for all sorting methods
 
 ### 🌍 **Bilingual Support**
-- **English** and **Français** interfaces
-- Localized keyboard shortcuts
-- Cultural adaptation for different user preferences
+
+**English** and **Français** interfaces
 
 ### 🔒 **Privacy First**
 - **No data collection** - your tabs stay private
 - **Local processing only** - no external servers
-- **Minimal permissions** - only what's necessary
+- **Minimal permissions** - only what's necessary: tabs and local storage for preferences
 
 ### ⚙️ **Smart Automation**
-- **Auto-sort on new tab** - keeps organization automatic
+- **Auto-sort (best effort)** - keeps organization automatic (especially powerful with Most Recently Used method, as clicking on a tab will sort it immediately!)
 - **Persistent settings** - remembers your preferences
 - **Cross-window support** - works across all browser windows
 
@@ -70,7 +68,7 @@ Transform chaotic tab collections into organized, manageable workspaces
 3. **Enjoy** your perfectly organized tabs instantly
 
 ### 🖼️ **Visual Interface**
-- Clean, intuitive popup interface
+- Clean, intuitive popup interface: Help, Preferences and Actions
 - Clear sorting options with icons
 - Real-time preview of sorting results
 
@@ -92,18 +90,29 @@ Transform chaotic tab collections into organized, manageable workspaces
 
 ## User Testimonials
 
-### ⭐ **5.0/5 Rating** (Chrome Web Store)
-> *"Finally, a simple and effective way to organize my tabs! The keyboard shortcuts are a game-changer."*
+(fetched 2025-09-16) 
 
-### 🏆 **Featured Extension** (Chrome Web Store)
+### Chrome Web Store
+
 - **616+ active users**
-- **Featured** in Chrome Web Store
-- **Follows recommended practices**
+- ⭐⭐⭐⭐⭐ **5.0/5 Rating** 
+- 🏆 **Featured Extension**
 
-### 💬 **What Users Say**
-- *"Saves me 10+ minutes every day"*
-- *"My browser feels so much cleaner now"*
-- *"The domain extraction feature is brilliant"*
+💬 **What Users Say**
+
+- ⭐⭐⭐⭐⭐ *"can sort by titles."*
+- ⭐⭐⭐⭐⭐ *"perfect"*
+
+###  Firefox Add-Ons
+
+- **83+ active users**
+- ⭐⭐⭐⭐ **4.5/5 Rating** 
+
+
+💬 **What Users Say**
+
+- *"Does exactly as it says! Pretty useful, thanks!"*
+- *"Dangerous!!! It reordered my 9000+ tabs without warning!"*
 
 ---
 
@@ -161,8 +170,8 @@ Transform chaotic tab collections into organized, manageable workspaces
 
 ### 🆘 **Need Help?**
 - **GitHub Issues**: [Report bugs or request features](https://github.com/etienneschalk/tab-sorter-firefox/issues)
-- **Documentation**: Complete user guide included
-- **Community**: Join discussions and share tips
+- **Documentation**: Self-included in the extension pop-up window!
+- **Community**: Join discussions and share tips on GitHub
 
 ---
 
@@ -173,33 +182,13 @@ Transform chaotic tab collections into organized, manageable workspaces
 - Intuitive interface
 - Works out of the box
 
-### ⚡ **Performance**
-- Lightweight and fast
-- No impact on browser speed
-- Efficient memory usage
-
 ### 🔄 **Reliability**
 - Regular updates and maintenance
 - Cross-browser compatibility
-- Active community support
 
 ### 🆓 **Free & Open**
 - Completely free to use
 - Open source code
-- Community-driven development
-
----
-
-## The Future of Tab Management
-
-### 🚀 **Upcoming Features**
-- **Tab grouping** by color or category
-- **Smart suggestions** based on usage patterns
-- **Integration** with popular productivity tools
-- **Advanced filtering** options
-
-### 🌟 **Vision**
-Transform tab management from a chore into a seamless, productive experience that enhances your browsing workflow.
 
 ---
 
