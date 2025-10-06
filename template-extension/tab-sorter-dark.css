@@ -22,8 +22,8 @@
   /* width should be 100% / ncol */
   width: 33.33%;
   padding: 10px;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #111;
+  border: 1px solid #333;
   border-radius: 5px;
 }
 
@@ -69,15 +69,15 @@ a:hover {
 }
 
 small {
-  color: #999;
+  color: #777;
 }
 
 kbd {
-  background-color: #eee;
+  background-color: #111;
   box-sizing: border-box;
   padding: 2px;
-  border: #ccc solid 1px;
-  border-bottom: #ccc solid 3px;
+  border: #333 solid 1px;
+  border-bottom: #333 solid 3px;
   font-size: 10px;
   border-radius: 3px;
 }
@@ -110,7 +110,7 @@ label input[type="checkbox"] {
   border: 1px solid #124d77;
   display: inline-block;
   cursor: pointer;
-  color: #ffffff;
+  color: #ccc;
   padding: 6px 24px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #154682;
@@ -125,9 +125,9 @@ label input[type="checkbox"] {
 }
 
 .button-simple {
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
-  background: linear-gradient(to bottom, #f2f2f2 5%, #d4d4d4 100%);
-  background-color: #f2f2f2;
+  box-shadow: inset 0px 1px 0px 0px #000;
+  background: linear-gradient(to bottom, #0d0d0d 5%, #2b2b2b 100%);
+  background-color: #0d0d0d;
   border-radius: 3px;
   border: 1px solid #696969;
   display: inline-block;
@@ -137,10 +137,12 @@ label input[type="checkbox"] {
   text-decoration: none;
 }
 .button-simple:hover {
-  background: linear-gradient(to bottom, #d4d4d4 5%, #f2f2f2 100%);
-  background-color: #d4d4d4;
+  background: linear-gradient(to bottom, #2b2b2b 5%, #0d0d0d 100%);
+  background-color: #2b2b2b;
 }
 .button-simple:active {
   position: relative;
   top: 1px;
 }
+
+/* python -c 'print(f"{0xff-0xd4:X}")' */
