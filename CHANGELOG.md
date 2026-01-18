@@ -95,9 +95,7 @@ All notable changes to this project will be documented in this file.
 - **Tab Groups Support** ([#19](https://github.com/etienneschalk/tab-sorter-firefox/issues/19)) - New functionality to preserve tab groups during sorting
   - Tabs within each group are sorted separately, keeping them in their groups
   - New "Respect Tab Groups" checkbox in preferences (enabled by default)
-  - New "Also reorder groups themselves" checkbox (enabled by default)
-    - When checked: Groups are reordered by their "representative" tab (first tab after sorting)
-    - When unchecked: Groups maintain their original positions, only content is sorted
+  - Groups maintain their original positions (only content within groups is sorted)
   - Compatible with Chrome 89+ and Firefox 137+
   - Graceful degradation for older browsers without Tab Groups API
   - Full localization support for English and French
@@ -109,21 +107,23 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Manifest Version**: Bumped from 0.7 to 0.8
 - **Sorting Logic**: Refactored core sorting to support group-aware modes:
-  - Sort within groups only (preserve group positions)
-  - Sort within groups and reorder groups
+  - Sort within groups (preserve group positions)
   - Legacy mode (ignore groups)
-- **UI**: Added new "Tab Groups" section in preferences panel with nested sub-option
+- **UI**: Added new "Tab Groups" section in preferences panel
 
 ### Technical Improvements
 - **API Detection**: Runtime detection of `chrome.tabGroups` availability
 - **Group Organization**: New helper functions for organizing tabs by group membership
 - **Backward Compatibility**: Legacy sorting mode preserved when groups are disabled or API unavailable
-- **Conditional UI**: Reorder groups checkbox disabled when respect groups is unchecked
+
+### Note
+- The "Respect Tab Groups" checkbox should remain ON for modern browsers (Chrome 89+, Firefox 137+). Setting it to OFF will break groups during sorting.
+- Maybe later we can sort the groups themselves, using their names if available, or the first tab of the group as a rank
 
 ### Files Changed
 - `template-extension/tab-sorter.js` - Tab groups sorting logic
-- `template-extension/popup-tab-sorter.js` - UI updates for new checkboxes
-- `template-extension/tab-sorter.css` - Styles for disabled state and sub-checkbox
+- `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
+- `template-extension/tab-sorter.css` - Styles for disabled state
 - `template-extension/manifest.json` - Version bump and tabGroups permission
 - `template-extension/_locales/en/messages.json` - English translations
 - `template-extension/_locales/fr/messages.json` - French translations

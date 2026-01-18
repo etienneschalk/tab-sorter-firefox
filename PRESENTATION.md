@@ -16,7 +16,7 @@ Sorting Options
 Tab Groups Support
 - Respects browser Tab Groups during sorting (Chrome 89+, Firefox 137+)
 - Tabs within each group are sorted separately
-- Option to reorder groups by their first sorted tab, or preserve group positions
+- Groups maintain their original positions
 - Option to disable for legacy behavior
 
 Keyboard Shortcuts

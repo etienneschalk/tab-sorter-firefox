@@ -16,7 +16,7 @@ Options de Tri
 Support des Groupes d'Onglets
 - Respecte les groupes d'onglets du navigateur lors du tri (Chrome 89+, Firefox 137+)
 - Les onglets au sein de chaque groupe sont triés séparément
-- Option pour réordonner les groupes par leur premier onglet trié, ou conserver les positions des groupes
+- Les groupes conservent leurs positions d'origine
 - Option pour désactiver et revenir au comportement classique
 
 Raccourcis Clavier

@@ -38,7 +38,7 @@
     "message": "Paramètres généraux"
   },
   "preferences_auto": {
-    "message": "Paramètres de tri automatique "
+    "message": "Tri automatique "
   },
   "no_shortcut_configured": {
     "message": "Pas encore de raccourci configuré"
@@ -111,20 +111,12 @@
     "message": "Respecter les groupes d'onglets (trier au sein des groupes)",
     "description": "Keep tabs in their groups and sort within each group"
   },
-  "ui_click_checkbox_sort_tabs_reorder_tab_groups": {
-    "message": "Réordonner également les groupes eux-mêmes",
-    "description": "Reorder groups by their representative tab"
-  },
   "tab_groups_not_supported": {
     "message": "Les groupes d'onglets ne sont pas supportés dans cette version du navigateur",
     "description": "Message shown when Tab Groups API is not available"
   },
-  "reorder_groups_requires_respect": {
-    "message": "Nécessite que 'Respecter les groupes d'onglets' soit activé",
-    "description": "Message shown when reorder groups is disabled because respect tab groups is off"
-  },
   "preferences_tab_groups": {
-    "message": "Groupes d'onglets (Chrome 89+, Firefox 137+)",
+    "message": "Groupes d'onglets",
     "description": "Section header for tab groups preferences"
   },
   "preferences_appearance": {
