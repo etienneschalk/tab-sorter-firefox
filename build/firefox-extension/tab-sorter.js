@@ -33,6 +33,9 @@ const STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS = true;
 const STORAGE_KEY_REORDER_TAB_GROUPS =
   "TAB_SORTER_STORAGE_KEY_REORDER_TAB_GROUPS";
 const STORAGE_DEFAULT_VALUE_REORDER_TAB_GROUPS = true;
+const STORAGE_KEY_GROUP_SUSPENDED_TABS =
+  "TAB_SORTER_STORAGE_KEY_GROUP_SUSPENDED_TABS";
+const STORAGE_DEFAULT_VALUE_GROUP_SUSPENDED_TABS = false;
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 
@@ -86,6 +89,13 @@ async function getReorderTabGroupsAsync() {
   );
 }
 
+async function getGroupSuspendedTabsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_GROUP_SUSPENDED_TABS,
+    STORAGE_DEFAULT_VALUE_GROUP_SUSPENDED_TABS
+  );
+}
+
 async function getAllCommandsFromManifest() {
   const allCommands = await chrome.commands.getAll();
   CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
@@ -113,6 +123,7 @@ async function resetCacheAsync() {
   await getDefaultSortMethodAsync();
   await getRespectTabGroupsAsync();
   await getReorderTabGroupsAsync();
+  await getGroupSuspendedTabsAsync();
   await getAllCommandsFromManifest();
 }
 
@@ -158,6 +169,13 @@ function getReorderTabGroupsCached() {
   return value;
 }
 
+function getGroupSuspendedTabsCached() {
+  console.debug("getGroupSuspendedTabsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_GROUP_SUSPENDED_TABS];
+  console.debug("getGroupSuspendedTabsCached 2", `${value}`);
+  return value;
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
@@ -180,6 +198,10 @@ function setRespectTabGroups(choice) {
 
 function setReorderTabGroups(choice) {
   persistInStorage(STORAGE_KEY_REORDER_TAB_GROUPS, choice);
+}
+
+function setGroupSuspendedTabs(choice) {
+  persistInStorage(STORAGE_KEY_GROUP_SUSPENDED_TABS, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -231,6 +253,7 @@ function addEventListeners() {
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
           isRespectTabGroups: CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS],
           isReorderTabGroups: CACHED_STATE[STORAGE_KEY_REORDER_TAB_GROUPS],
+          isGroupSuspendedTabs: CACHED_STATE[STORAGE_KEY_GROUP_SUSPENDED_TABS],
           isTabGroupsApiAvailable: TAB_GROUPS_API_AVAILABLE,
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -402,6 +425,8 @@ function stateUpdateEventListener(command, value) {
     setRespectTabGroups(value);
   } else if (command === "ui_click_checkbox_sort_tabs_reorder_tab_groups") {
     setReorderTabGroups(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_group_suspended") {
+    setGroupSuspendedTabs(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
@@ -455,6 +480,30 @@ function comparisonByTitle(tabA, tabB) {
   cleanTitleA = removeParenthesisNotification(tabA.title);
   cleanTitleB = removeParenthesisNotification(tabB.title);
   return cleanTitleA.localeCompare(cleanTitleB);
+}
+
+// Suspended Tabs Helper Functions
+
+/**
+ * Separate suspended (discarded) tabs from active tabs
+ * @param {Array} tabs - Array of tab objects (already sorted)
+ * @returns {Array} Array with active tabs first, then suspended tabs
+ */
+function groupSuspendedTabsAtEnd(tabs) {
+  const activeTabs = [];
+  const suspendedTabs = [];
+
+  for (const tab of tabs) {
+    // tab.discarded is true when the tab is suspended/unloaded from memory
+    if (tab.discarded) {
+      suspendedTabs.push(tab);
+    } else {
+      activeTabs.push(tab);
+    }
+  }
+
+  console.debug(`[Tab Sorter] Grouped ${suspendedTabs.length} suspended tabs at the end`);
+  return [...activeTabs, ...suspendedTabs];
 }
 
 // Tab Groups Helper Functions
@@ -774,6 +823,26 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
     }
   }
 
+  // Group suspended tabs at the end if enabled
+  if (getGroupSuspendedTabsCached()) {
+    // Create a map of tab ID to tab object for quick lookup
+    const tabMap = new Map(notPinnedTabs.map(t => [t.id, t]));
+    const activeIds = [];
+    const suspendedIds = [];
+
+    for (const tabId of finalOrder) {
+      const tab = tabMap.get(tabId);
+      if (tab && tab.discarded) {
+        suspendedIds.push(tabId);
+      } else {
+        activeIds.push(tabId);
+      }
+    }
+
+    finalOrder = [...activeIds, ...suspendedIds];
+    console.debug(`${log_prefix} Grouped ${suspendedIds.length} suspended tabs at the end`);
+  }
+
   const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
 
   console.debug(`${log_prefix} Moving ${finalOrder.length} tabs with group support`);
@@ -830,6 +899,11 @@ function sortTabsLegacy(notPinnedTabs, allTabs, comparisonFunction, customSort, 
     } else {
       notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
     }
+  }
+
+  // Group suspended tabs at the end if enabled (and not shuffling)
+  if (getGroupSuspendedTabsCached() && !doShuffle) {
+    notPinnedTabs = groupSuspendedTabsAtEnd(notPinnedTabs);
   }
 
   console.debug("Callback of getCurrentWindowTabs 3");

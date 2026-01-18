@@ -79,6 +79,10 @@
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
+  "ui_click_checkbox_sort_tabs_group_suspended": {
+    "message": "Group suspended tabs at the end",
+    "description": "Move suspended/discarded tabs to the end when sorting"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Sort tabs automatically (best effort).",
     "description": "Sort tabs automatically (best effort)."

@@ -23,6 +23,11 @@ Keyboard Shortcuts
 - Ctrl+Shift+Space - Sort tabs with your preferred method
 - Ctrl+Shift+L - Extract domain (move same-domain tabs to new window)
 
+Suspended Tabs Support
+- Option to group suspended (discarded) tabs at the end when sorting
+- Helps keep active tabs easily accessible
+- Works with all sorting methods
+
 Additional Features
 - Auto-sort - Automatically organize new tabs
 - Cross-window support - Works across all browser windows

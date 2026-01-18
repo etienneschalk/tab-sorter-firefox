@@ -23,6 +23,11 @@ Raccourcis Clavier
 - Ctrl+Shift+Espace - Trier les onglets avec votre méthode préférée
 - Ctrl+Shift+L - Extraire le domaine (déplacer les onglets du même domaine vers une nouvelle fenêtre)
 
+Support des Onglets Suspendus
+- Option pour grouper les onglets suspendus à la fin lors du tri
+- Permet de garder les onglets actifs facilement accessibles
+- Fonctionne avec toutes les méthodes de tri
+
 Fonctionnalités Supplémentaires
 - Tri automatique - Organiser automatiquement les nouveaux onglets
 - Support multi-fenêtres - Fonctionne dans toutes les fenêtres du navigateur

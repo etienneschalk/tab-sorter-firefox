@@ -75,6 +75,10 @@
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
+  "ui_click_checkbox_sort_tabs_group_suspended": {
+    "message": "Grouper les onglets suspendus à la fin",
+    "description": "Move suspended/discarded tabs to the end when sorting"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Trier automatiquement les onglets (meilleur effort)",
     "description": "Sort tabs automatically (best effort)."

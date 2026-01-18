@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9] - 2026-01-18
+
+### Added
+- **Suspended Tabs Grouping** ([#18](https://github.com/etienneschalk/tab-sorter-firefox/issues/18)) - New option to group suspended tabs at the end when sorting
+  - New "Group suspended tabs at the end" checkbox in General Preferences (disabled by default)
+  - Suspended (discarded) tabs are moved to the end of the sorted list
+  - Works with all sorting methods (URL, title, MRU, favicon)
+  - Compatible with Tab Groups feature
+  - Full localization support for English and French
+
+### Changed
+- **Manifest Version**: Bumped from 0.8 to 0.9
+
+### Technical Improvements
+- **Suspended Detection**: Uses `tab.discarded` property to identify suspended tabs
+- **Helper Function**: New `groupSuspendedTabsAtEnd()` function for separating active and suspended tabs
+
+### Files Changed
+- `template-extension/tab-sorter.js` - Suspended tabs grouping logic
+- `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
+- `template-extension/manifest.json` - Version bump
+- `template-extension/_locales/en/messages.json` - English translations
+- `template-extension/_locales/fr/messages.json` - French translations
+- Added `test-suspended-tabs-issue-18.md` - Comprehensive testing documentation
+
+---
+
 ## [0.8] - 2026-01-18
 
 ### Added

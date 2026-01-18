@@ -17,6 +17,7 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
+    isGroupSuspendedTabs,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
@@ -29,6 +30,7 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
   console.log(logPrefix + "isRespectTabGroups", isRespectTabGroups);
   console.log(logPrefix + "isReorderTabGroups", isReorderTabGroups);
+  console.log(logPrefix + "isGroupSuspendedTabs", isGroupSuspendedTabs);
   console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
@@ -50,6 +52,7 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
+    isGroupSuspendedTabs,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands: allCommands
@@ -72,6 +75,7 @@ const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
 const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
 const CHECKBOX_RESPECT_TAB_GROUPS = "ui_click_checkbox_sort_tabs_respect_tab_groups";
 const CHECKBOX_REORDER_TAB_GROUPS = "ui_click_checkbox_sort_tabs_reorder_tab_groups";
+const CHECKBOX_GROUP_SUSPENDED = "ui_click_checkbox_sort_tabs_group_suspended";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
 
@@ -163,6 +167,7 @@ function renderPopup(params) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
+    isGroupSuspendedTabs,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
@@ -198,6 +203,7 @@ function renderPopup(params) {
             <h3> ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
+            ${renderCheckbox(CHECKBOX_GROUP_SUSPENDED, isGroupSuspendedTabs)}
             <br> 
             <h3> ${translate("preferences_tab_groups")}</h3>
             ${renderCheckboxWithDisabled(
