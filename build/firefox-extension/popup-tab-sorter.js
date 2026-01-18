@@ -15,6 +15,9 @@ function initializeUserInterface(initialState) {
     isAllWindows,
     isAutoOnNewTab,
     defaultSortMethod,
+    isRespectTabGroups,
+    isReorderTabGroups,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
   } = initialState;
@@ -24,6 +27,9 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isAllWindows", isAllWindows);
   console.log(logPrefix + "isAutoOnNewTab", isAutoOnNewTab);
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
+  console.log(logPrefix + "isRespectTabGroups", isRespectTabGroups);
+  console.log(logPrefix + "isReorderTabGroups", isReorderTabGroups);
+  console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
   logCommands(allCommands);
@@ -42,6 +48,9 @@ function initializeUserInterface(initialState) {
     isAllWindows,
     isAutoOnNewTab,
     defaultSortMethod,
+    isRespectTabGroups,
+    isReorderTabGroups,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands: allCommands
       .filter((command) => command.name.startsWith("command_sort_tabs") || command.name === "command_extract_domain")
@@ -61,6 +70,8 @@ function initializeUserInterface(initialState) {
 const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
 const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
 const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
+const CHECKBOX_RESPECT_TAB_GROUPS = "ui_click_checkbox_sort_tabs_respect_tab_groups";
+const CHECKBOX_REORDER_TAB_GROUPS = "ui_click_checkbox_sort_tabs_reorder_tab_groups";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
 
@@ -112,6 +123,19 @@ function renderCheckbox(id, initialValue) {
 </label>
   `;
 }
+
+function renderCheckboxWithDisabled(id, initialValue, disabled, disabledMessage) {
+  if (disabled) {
+    return `
+<label for=${id} class="disabled-checkbox">
+  <input type="checkbox" id=${id} disabled />
+   ${translate(id)} 
+  <br><small class="warning-text">${translate(disabledMessage)}</small>
+</label>
+    `;
+  }
+  return renderCheckbox(id, initialValue);
+}
 function renderSelect(id, options, initialSelectedValue) {
   return `
 <label for="${id}">${translate(id)}</label>
@@ -137,9 +161,15 @@ function renderPopup(params) {
     isAllWindows,
     isAutoOnNewTab,
     defaultSortMethod,
+    isRespectTabGroups,
+    isReorderTabGroups,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
   } = params;
+
+  // Reorder groups checkbox is only enabled when respect tab groups is enabled
+  const isReorderDisabled = !isTabGroupsApiAvailable || !isRespectTabGroups;
 
   return `
 <div id="container">
@@ -168,6 +198,22 @@ function renderPopup(params) {
             <h3> ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
+            <br> 
+            <h3> ${translate("preferences_tab_groups")}</h3>
+            ${renderCheckboxWithDisabled(
+              CHECKBOX_RESPECT_TAB_GROUPS,
+              isRespectTabGroups,
+              !isTabGroupsApiAvailable,
+              "tab_groups_not_supported"
+            )}
+            <div class="sub-checkbox">
+            ${renderCheckboxWithDisabled(
+              CHECKBOX_REORDER_TAB_GROUPS,
+              isReorderTabGroups,
+              isReorderDisabled,
+              isTabGroupsApiAvailable ? "reorder_groups_requires_respect" : "tab_groups_not_supported"
+            )}
+            </div>
             <br> 
             <h3> ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}

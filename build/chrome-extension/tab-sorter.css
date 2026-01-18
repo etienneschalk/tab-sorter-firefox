@@ -98,6 +98,25 @@ label input[type="checkbox"] {
   top: 1px;
 }
 
+label.disabled-checkbox {
+  color: #999;
+}
+
+label.disabled-checkbox input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+.warning-text {
+  color: #996600;
+  font-style: italic;
+}
+
+.sub-checkbox {
+  margin-left: 18px;
+  padding-left: 8px;
+  border-left: 2px solid #ccc;
+}
+
 /* Auto-generated CSS buttons (slightly modified) */
 
 /* https://www.bestcssbuttongenerator.com/#/12 */

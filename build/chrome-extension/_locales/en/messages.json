@@ -86,5 +86,25 @@
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Default sort method for auto sort on new tab",
     "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respect Tab Groups (sort within groups)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reorder_tab_groups": {
+    "message": "Also reorder groups themselves",
+    "description": "Reorder groups by their representative tab"
+  },
+  "tab_groups_not_supported": {
+    "message": "Tab Groups not supported in this browser version",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "reorder_groups_requires_respect": {
+    "message": "Requires 'Respect Tab Groups' to be enabled",
+    "description": "Message shown when reorder groups is disabled because respect tab groups is off"
+  },
+  "preferences_tab_groups": {
+    "message": "Tab Groups (Chrome 89+, Firefox 137+)",
+    "description": "Section header for tab groups preferences"
   }
 }

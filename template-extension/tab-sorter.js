@@ -27,8 +27,17 @@ const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
 const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+const STORAGE_KEY_RESPECT_TAB_GROUPS =
+  "TAB_SORTER_STORAGE_KEY_RESPECT_TAB_GROUPS";
+const STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS = true;
+const STORAGE_KEY_REORDER_TAB_GROUPS =
+  "TAB_SORTER_STORAGE_KEY_REORDER_TAB_GROUPS";
+const STORAGE_DEFAULT_VALUE_REORDER_TAB_GROUPS = true;
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
+
+// Tab Groups API availability (Chrome 89+, Firefox 137+)
+const TAB_GROUPS_API_AVAILABLE = typeof chrome.tabGroups !== "undefined";
 
 // Initialization code
 initTabSorter();
@@ -62,6 +71,21 @@ async function getDefaultSortMethodAsync() {
     STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
   );
 }
+
+async function getRespectTabGroupsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_RESPECT_TAB_GROUPS,
+    STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS
+  );
+}
+
+async function getReorderTabGroupsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_REORDER_TAB_GROUPS,
+    STORAGE_DEFAULT_VALUE_REORDER_TAB_GROUPS
+  );
+}
+
 async function getAllCommandsFromManifest() {
   const allCommands = await chrome.commands.getAll();
   CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
@@ -87,6 +111,8 @@ async function resetCacheAsync() {
   await getAllWindowsAsync();
   await getAutoOnNewTabAsync();
   await getDefaultSortMethodAsync();
+  await getRespectTabGroupsAsync();
+  await getReorderTabGroupsAsync();
   await getAllCommandsFromManifest();
 }
 
@@ -118,6 +144,20 @@ function getDefaultSortMethodCached() {
   return value;
 }
 
+function getRespectTabGroupsCached() {
+  console.debug("getRespectTabGroupsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS];
+  console.debug("getRespectTabGroupsCached 2", `${value}`);
+  return value;
+}
+
+function getReorderTabGroupsCached() {
+  console.debug("getReorderTabGroupsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_REORDER_TAB_GROUPS];
+  console.debug("getReorderTabGroupsCached 2", `${value}`);
+  return value;
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
@@ -132,6 +172,14 @@ function setAutoSortBestEffort(choice) {
 
 function setDefaultSortMethod(choice) {
   persistInStorage(STORAGE_KEY_DEFAULT_SORT_METHOD, choice);
+}
+
+function setRespectTabGroups(choice) {
+  persistInStorage(STORAGE_KEY_RESPECT_TAB_GROUPS, choice);
+}
+
+function setReorderTabGroups(choice) {
+  persistInStorage(STORAGE_KEY_REORDER_TAB_GROUPS, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -181,6 +229,9 @@ function addEventListeners() {
           isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
           isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT],
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+          isRespectTabGroups: CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS],
+          isReorderTabGroups: CACHED_STATE[STORAGE_KEY_REORDER_TAB_GROUPS],
+          isTabGroupsApiAvailable: TAB_GROUPS_API_AVAILABLE,
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
         };
@@ -347,6 +398,10 @@ function stateUpdateEventListener(command, value) {
     setAllWindows(value);
   } else if (command === "ui_click_checkbox_sort_tabs_auto_best_effort") {
     setAutoSortBestEffort(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_respect_tab_groups") {
+    setRespectTabGroups(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_reorder_tab_groups") {
+    setReorderTabGroups(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
@@ -402,6 +457,59 @@ function comparisonByTitle(tabA, tabB) {
   return cleanTitleA.localeCompare(cleanTitleB);
 }
 
+// Tab Groups Helper Functions
+
+/**
+ * Organize tabs by their group membership
+ * @param {Array} tabs - Array of tab objects
+ * @returns {Object} Object with groups Map and ungrouped array
+ */
+function organizeTabsByGroup(tabs) {
+  const groups = new Map(); // groupId -> { tabs: [], firstIndex: number }
+  const ungrouped = [];
+
+  tabs.forEach((tab, index) => {
+    // groupId of -1 or undefined means not in a group
+    if (tab.groupId && tab.groupId !== -1 && tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE) {
+      if (!groups.has(tab.groupId)) {
+        groups.set(tab.groupId, { tabs: [], firstIndex: index });
+      }
+      groups.get(tab.groupId).tabs.push(tab);
+    } else {
+      ungrouped.push(tab);
+    }
+  });
+
+  return { groups, ungrouped };
+}
+
+/**
+ * Sort an array of tabs using the specified comparison function
+ * @param {Array} tabs - Array of tab objects
+ * @param {Function} comparisonFunction - Comparison function for sorting
+ * @param {boolean} reverse - Whether to reverse the sort order
+ * @returns {Array} Sorted array of tabs
+ */
+function sortTabArray(tabs, comparisonFunction, reverse) {
+  const sorted = [...tabs];
+  if (reverse) {
+    sorted.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
+  } else {
+    sorted.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
+  }
+  return sorted;
+}
+
+/**
+ * Get representative tab for a group (first tab after sorting)
+ * Used to determine group ordering
+ * @param {Array} groupTabs - Sorted array of tabs in a group
+ * @returns {Object} The first tab in the sorted group
+ */
+function getGroupRepresentative(groupTabs) {
+  return groupTabs[0];
+}
+
 // Enhanced sorting function with retry mechanism for new tabs
 
 // Core sorting function
@@ -417,8 +525,9 @@ function comparisonByTitle(tabA, tabB) {
 function sortTabs(sortingType, shuffle) {
   const doShuffle = shuffle || false;
   const log_prefix = `${TAB_SORTER_PREFIX} (sortTabs):`;
+  const respectTabGroups = getRespectTabGroupsCached() && TAB_GROUPS_API_AVAILABLE;
 
-  console.debug(`${log_prefix} with '${sortingType}'`);
+  console.debug(`${log_prefix} with '${sortingType}', respectTabGroups=${respectTabGroups}`);
 
   getCurrentWindowTabs(function (tabs) {
     console.debug("Callback of getCurrentWindowTabs 1");
@@ -456,66 +565,317 @@ function sortTabs(sortingType, shuffle) {
       `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
     );
 
-    if (customSort) {
-      notPinnedTabs = customSort(
+    // Check if we should respect tab groups
+    if (respectTabGroups && !doShuffle) {
+      sortTabsWithGroupSupport(
         notPinnedTabs,
+        tabs,
         comparisonFunction,
-        getReverseCached()
+        customSort,
+        log_prefix
       );
     } else {
-      if (getReverseCached()) {
-        notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-        console.debug(`${log_prefix} Reverse sorting`);
+      // Legacy behavior: sort all tabs together (ignoring groups)
+      sortTabsLegacy(
+        notPinnedTabs,
+        tabs,
+        comparisonFunction,
+        customSort,
+        doShuffle,
+        log_prefix
+      );
+    }
+  });
+}
+
+/**
+ * Sort tabs while respecting tab groups (new behavior)
+ * Tabs within each group are sorted, and groups are ordered by their representative tab
+ */
+function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, customSort, log_prefix) {
+  const reorderGroups = getReorderTabGroupsCached();
+  console.debug(`${log_prefix} Sorting with tab groups support, reorderGroups=${reorderGroups}`);
+
+  const { groups, ungrouped } = organizeTabsByGroup(notPinnedTabs);
+  const reverse = getReverseCached();
+
+  console.debug(`${log_prefix} Found ${groups.size} groups and ${ungrouped.length} ungrouped tabs`);
+
+  // Sort tabs within each group
+  const sortedGroups = [];
+  for (const [groupId, groupData] of groups) {
+    let sortedGroupTabs;
+    if (customSort) {
+      sortedGroupTabs = customSort(groupData.tabs, comparisonFunction, reverse);
+    } else {
+      sortedGroupTabs = sortTabArray(groupData.tabs, comparisonFunction, reverse);
+    }
+    const representative = getGroupRepresentative(sortedGroupTabs);
+    sortedGroups.push({
+      groupId,
+      tabs: sortedGroupTabs,
+      representative,
+      originalFirstIndex: groupData.firstIndex, // Preserve original position
+    });
+  }
+
+  // Sort ungrouped tabs
+  let sortedUngrouped;
+  if (customSort) {
+    sortedUngrouped = customSort(ungrouped, comparisonFunction, reverse);
+  } else {
+    sortedUngrouped = sortTabArray(ungrouped, comparisonFunction, reverse);
+  }
+
+  let finalOrder = [];
+
+  if (reorderGroups) {
+    // Reorder mode: Sort groups by their representative tab and interleave with ungrouped tabs
+    console.debug(`${log_prefix} Reordering groups by representative tab`);
+
+    // Sort groups by their representative tab
+    sortedGroups.sort((a, b) => {
+      const cmp = comparisonFunction(a.representative, b.representative);
+      return reverse ? -cmp : cmp;
+    });
+
+    // Build final tab order: interleave groups and ungrouped tabs based on representative comparison
+    let groupIndex = 0;
+    let ungroupedIndex = 0;
+
+    while (groupIndex < sortedGroups.length || ungroupedIndex < sortedUngrouped.length) {
+      if (groupIndex >= sortedGroups.length) {
+        // No more groups, add remaining ungrouped
+        finalOrder.push(...sortedUngrouped.slice(ungroupedIndex).map(t => t.id));
+        break;
+      }
+      if (ungroupedIndex >= sortedUngrouped.length) {
+        // No more ungrouped, add remaining groups
+        for (let i = groupIndex; i < sortedGroups.length; i++) {
+          finalOrder.push(...sortedGroups[i].tabs.map(t => t.id));
+        }
+        break;
+      }
+
+      // Compare group representative with next ungrouped tab
+      const groupRep = sortedGroups[groupIndex].representative;
+      const ungroupedTab = sortedUngrouped[ungroupedIndex];
+      let cmp = comparisonFunction(groupRep, ungroupedTab);
+      if (reverse) cmp = -cmp;
+
+      if (cmp <= 0) {
+        // Group comes first
+        finalOrder.push(...sortedGroups[groupIndex].tabs.map(t => t.id));
+        groupIndex++;
       } else {
-        notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
+        // Ungrouped tab comes first
+        finalOrder.push(ungroupedTab.id);
+        ungroupedIndex++;
       }
     }
+  } else {
+    // Preserve group positions mode: Keep groups in their original order, only sort within
+    console.debug(`${log_prefix} Preserving group positions, only sorting within groups`);
 
-    console.debug("Callback of getCurrentWindowTabs 3");
+    // Sort groups by their original first index to maintain position
+    sortedGroups.sort((a, b) => a.originalFirstIndex - b.originalFirstIndex);
 
-    let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
+    // Build a position map for ungrouped tabs based on their original index
+    const ungroupedWithIndex = ungrouped.map((tab, idx) => ({
+      tab,
+      originalIndex: notPinnedTabs.indexOf(tab),
+    }));
 
-    console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
+    // Create segments: each group as a segment, each ungrouped tab as a segment
+    const segments = [];
 
-    if (doShuffle) {
-      console.debug(`${log_prefix} Shuffling tabs`);
-      let i = newIds.length;
-      let j, temp;
-      if (i != 0) {
-        while (--i) {
-          j = Math.floor(Math.random() * (i + 1));
-          temp = newIds[j];
-          newIds[j] = newIds[i];
-          newIds[i] = temp;
+    for (const group of sortedGroups) {
+      segments.push({
+        type: 'group',
+        originalIndex: group.originalFirstIndex,
+        tabs: group.tabs,
+        groupId: group.groupId,
+      });
+    }
+
+    for (const item of ungroupedWithIndex) {
+      segments.push({
+        type: 'ungrouped',
+        originalIndex: item.originalIndex,
+        tab: item.tab,
+      });
+    }
+
+    // Sort segments by original index
+    segments.sort((a, b) => a.originalIndex - b.originalIndex);
+
+    // Build final order from segments
+    for (const segment of segments) {
+      if (segment.type === 'group') {
+        finalOrder.push(...segment.tabs.map(t => t.id));
+      } else {
+        // Find the sorted position for this ungrouped tab
+        const sortedIdx = sortedUngrouped.findIndex(t => t.id === segment.tab.id);
+        if (sortedIdx !== -1) {
+          finalOrder.push(segment.tab.id);
         }
       }
     }
 
-    let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
+    // Note: In preserve mode, ungrouped tabs maintain relative position to groups but are sorted among themselves
+    // Let's simplify: groups stay in place with sorted content, ungrouped tabs are sorted and placed after all groups
+    // Actually, let's reconsider: keep the interleaved structure but don't reorder groups
 
-    if (DEBUG) {
-      performance.mark("begin");
+    // Simpler approach: rebuild using original positions
+    finalOrder = [];
+    
+    // Create a map of groupId -> sorted tabs
+    const groupTabsMap = new Map();
+    for (const group of sortedGroups) {
+      groupTabsMap.set(group.groupId, [...group.tabs]);
     }
 
-    console.debug(
-      `Callback of getCurrentWindowTabs 5 - Before actual tab move`
-    );
-
-    // The index seems to be useless in this case of moving all the tabs
-    chrome.tabs.move(newIds, {
-      index: numberOfPinnedTabs,
+    // Sort ungrouped tabs
+    const sortedUngroupedMap = new Map();
+    sortedUngrouped.forEach((tab, idx) => {
+      sortedUngroupedMap.set(tab.id, idx);
     });
 
-    if (DEBUG) {
-      performance.mark("end");
-      performance.measure("Tab reorganizing time", "begin", "end");
-      console.table(
-        performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
-      );
-      performance.clearMarks();
-      performance.clearMeasures();
+    // Track which groups and ungrouped tabs we've processed
+    const processedGroups = new Set();
+    const processedUngrouped = new Set();
+
+    // Go through original tab order
+    for (const tab of notPinnedTabs) {
+      if (tab.groupId && tab.groupId !== -1 && tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE) {
+        // This tab is in a group
+        if (!processedGroups.has(tab.groupId)) {
+          // First time seeing this group - add all its sorted tabs
+          const groupTabs = groupTabsMap.get(tab.groupId);
+          if (groupTabs) {
+            finalOrder.push(...groupTabs.map(t => t.id));
+          }
+          processedGroups.add(tab.groupId);
+        }
+        // Skip - already added with group
+      } else {
+        // Ungrouped tab - add in sorted order among ungrouped
+        if (!processedUngrouped.has(tab.id)) {
+          // Find next ungrouped tab from sorted list that hasn't been processed
+          for (const sortedTab of sortedUngrouped) {
+            if (!processedUngrouped.has(sortedTab.id)) {
+              finalOrder.push(sortedTab.id);
+              processedUngrouped.add(sortedTab.id);
+              break;
+            }
+          }
+        }
+      }
     }
+  }
+
+  const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
+
+  console.debug(`${log_prefix} Moving ${finalOrder.length} tabs with group support`);
+
+  if (DEBUG) {
+    performance.mark("begin");
+  }
+
+  // Move all tabs to their new positions
+  chrome.tabs.move(finalOrder, {
+    index: numberOfPinnedTabs,
   });
+
+  // Re-apply group membership to ensure tabs stay in their groups after moving
+  // This is necessary because moving tabs can sometimes break group associations
+  for (const group of sortedGroups) {
+    const tabIds = group.tabs.map(t => t.id);
+    if (tabIds.length > 0) {
+      chrome.tabs.group({ tabIds, groupId: group.groupId }).catch((error) => {
+        // Silently ignore errors - group may have been deleted or tabs already in correct group
+        console.debug(`${log_prefix} Could not re-apply group ${group.groupId}:`, error);
+      });
+    }
+  }
+
+  if (DEBUG) {
+    performance.mark("end");
+    performance.measure("Tab reorganizing time (with groups)", "begin", "end");
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
+    );
+    performance.clearMarks();
+    performance.clearMeasures();
+  }
+}
+
+/**
+ * Sort tabs without respecting tab groups (legacy behavior)
+ * All tabs are sorted together regardless of group membership
+ */
+function sortTabsLegacy(notPinnedTabs, allTabs, comparisonFunction, customSort, doShuffle, log_prefix) {
+  console.debug(`${log_prefix} Sorting without tab groups support (legacy mode)`);
+
+  if (customSort) {
+    notPinnedTabs = customSort(
+      notPinnedTabs,
+      comparisonFunction,
+      getReverseCached()
+    );
+  } else {
+    if (getReverseCached()) {
+      notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
+      console.debug(`${log_prefix} Reverse sorting`);
+    } else {
+      notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
+    }
+  }
+
+  console.debug("Callback of getCurrentWindowTabs 3");
+
+  let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
+
+  console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
+
+  if (doShuffle) {
+    console.debug(`${log_prefix} Shuffling tabs`);
+    let i = newIds.length;
+    let j, temp;
+    if (i != 0) {
+      while (--i) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = newIds[j];
+        newIds[j] = newIds[i];
+        newIds[i] = temp;
+      }
+    }
+  }
+
+  let numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
+
+  if (DEBUG) {
+    performance.mark("begin");
+  }
+
+  console.debug(
+    `Callback of getCurrentWindowTabs 5 - Before actual tab move`
+  );
+
+  // The index seems to be useless in this case of moving all the tabs
+  chrome.tabs.move(newIds, {
+    index: numberOfPinnedTabs,
+  });
+
+  if (DEBUG) {
+    performance.mark("end");
+    performance.measure("Tab reorganizing time", "begin", "end");
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
+    );
+    performance.clearMarks();
+    performance.clearMeasures();
+  }
 }
 
 // Helpers

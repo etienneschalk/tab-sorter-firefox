@@ -10,8 +10,14 @@ Options de Tri
 - Par Titre - Organisation alphabétique
 - Par URL/Domaine - Grouper les sites web similaires
 - Par Favicon - Regroupement visuel par icônes de sites
-- Plus Récemment Utilisé - Trier par activité récente (Firefox uniquement)
+- Plus Récemment Utilisé - Trier par activité récente (Chrome 121+, Firefox)
 - Mélanger - Randomiser l'ordre des onglets
+
+Support des Groupes d'Onglets
+- Respecte les groupes d'onglets du navigateur lors du tri (Chrome 89+, Firefox 137+)
+- Les onglets au sein de chaque groupe sont triés séparément
+- Option pour réordonner les groupes par leur premier onglet trié, ou conserver les positions des groupes
+- Option pour désactiver et revenir au comportement classique
 
 Raccourcis Clavier
 - Ctrl+Shift+Espace - Trier les onglets avec votre méthode préférée

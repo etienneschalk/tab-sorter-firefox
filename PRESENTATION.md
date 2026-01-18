@@ -10,8 +10,14 @@ Sorting Options
 - By Title - Alphabetical organization
 - By URL/Domain - Group similar websites together
 - By Favicon - Visual grouping by site icons
-- Most Recently Used - Sort by recent activity (Firefox only)
+- Most Recently Used - Sort by recent activity
 - Shuffle - Randomize tab order
+
+Tab Groups Support
+- Respects browser Tab Groups during sorting (Chrome 89+, Firefox 137+)
+- Tabs within each group are sorted separately
+- Option to reorder groups by their first sorted tab, or preserve group positions
+- Option to disable for legacy behavior
 
 Keyboard Shortcuts
 - Ctrl+Shift+Space - Sort tabs with your preferred method

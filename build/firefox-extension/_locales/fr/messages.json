@@ -82,5 +82,25 @@
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Méthode de tri à utiliser lors du tri automatique",
     "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respecter les groupes d'onglets (trier au sein des groupes)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reorder_tab_groups": {
+    "message": "Réordonner également les groupes eux-mêmes",
+    "description": "Reorder groups by their representative tab"
+  },
+  "tab_groups_not_supported": {
+    "message": "Les groupes d'onglets ne sont pas supportés dans cette version du navigateur",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "reorder_groups_requires_respect": {
+    "message": "Nécessite que 'Respecter les groupes d'onglets' soit activé",
+    "description": "Message shown when reorder groups is disabled because respect tab groups is off"
+  },
+  "preferences_tab_groups": {
+    "message": "Groupes d'onglets (Chrome 89+, Firefox 137+)",
+    "description": "Section header for tab groups preferences"
   }
 }
