@@ -13,7 +13,8 @@ jq 'del(.browser_specific_settings)' template-extension/manifest.json > build/ch
 mkdir -p build/firefox-extension
 cp -R template-extension/** build/firefox-extension
 # Firefox does not support yet service workers
-jq '.background = { "page": "background-tab-sorter.html" }' template-extension/manifest.json > build/firefox-extension/manifest.json
+# Firefox does not recognize the "tabGroups" permission (it's Chrome-specific)
+jq '.background = { "page": "background-tab-sorter.html" } | .permissions = (.permissions | map(select(. != "tabGroups")))' template-extension/manifest.json > build/firefox-extension/manifest.json
 
 # CREATE ZIP FILES
 echo "Creating zip files..."
