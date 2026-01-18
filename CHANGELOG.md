@@ -2,126 +2,119 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.11] - 2026-01-18
+## [0.8] - 2026-01-18
 
-### Added
-- **Dark Mode** ([#16](https://github.com/etienneschalk/tab-sorter-firefox/issues/16)) - Full dark mode support
-  - Dark mode is now the default theme for new users
-  - Automatic system theme detection (follows OS preference)
-  - Manual theme selection: Auto, Dark, or Light
-  - New "Appearance" section in preferences
-  - Full localization support for English and French
+### Dark Mode ([#16](https://github.com/etienneschalk/tab-sorter-firefox/issues/16))
 
-### Changed
-- **Manifest Version**: Bumped from 0.10 to 0.11
+Full dark mode support with automatic system theme detection.
+
+#### Added
+- Dark mode is now the default theme for new users
+- Automatic system theme detection (follows OS preference)
+- Manual theme selection: Auto, Dark, or Light
+- New "Appearance" section in preferences
+- Full localization support for English and French
+
+#### Changed
 - **CSS Architecture**: Refactored to use CSS custom properties for theming
 
-### Technical Improvements
+#### Technical Improvements
 - **CSS Variables**: Theme colors defined using CSS custom properties (`:root` and `[data-theme="dark"]`)
 - **System Detection**: Uses `prefers-color-scheme` media query for auto theme detection
 - **Instant Updates**: Theme changes are applied immediately without page reload
 
-### Files Changed
+#### Files Changed
 - `template-extension/tab-sorter.js` - Theme storage and retrieval
 - `template-extension/popup-tab-sorter.js` - Theme UI and application logic
 - `template-extension/tab-sorter.css` - Dark mode styles with CSS variables
-- `template-extension/manifest.json` - Version bump
 - `template-extension/_locales/en/messages.json` - English translations
 - `template-extension/_locales/fr/messages.json` - French translations
 - Added `test-dark-mode-issue-16.md` - Comprehensive testing documentation
 
 ---
 
-## [0.10] - 2026-01-18
+### Sort Pinned Tabs ([#9](https://github.com/etienneschalk/tab-sorter-firefox/issues/9))
 
-### Added
-- **Sort Pinned Tabs** ([#9](https://github.com/etienneschalk/tab-sorter-firefox/issues/9)) - New option to sort pinned tabs independently
-  - New "Also sort pinned tabs" checkbox in General Preferences (disabled by default)
-  - Pinned tabs are sorted among themselves while remaining in the pinned area
-  - Works with all sorting methods (URL, title, MRU, favicon)
-  - Compatible with suspended tabs grouping feature
-  - Full localization support for English and French
+New option to sort pinned tabs independently.
 
-### Changed
-- **Manifest Version**: Bumped from 0.9 to 0.10
+#### Added
+- New "Also sort pinned tabs" checkbox in General Preferences (disabled by default)
+- Pinned tabs are sorted among themselves while remaining in the pinned area
+- Works with all sorting methods (URL, title, MRU, favicon)
+- Compatible with suspended tabs grouping feature
+- Full localization support for English and French
 
-### Technical Improvements
+#### Technical Improvements
 - **Pinned Tabs Detection**: Separates pinned and non-pinned tabs before sorting
 - **Independent Sorting**: New `sortPinnedTabsOnly()` function for sorting pinned tabs separately
 
-### Files Changed
+#### Files Changed
 - `template-extension/tab-sorter.js` - Pinned tabs sorting logic
 - `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
-- `template-extension/manifest.json` - Version bump
 - `template-extension/_locales/en/messages.json` - English translations
 - `template-extension/_locales/fr/messages.json` - French translations
 - Added `test-pinned-tabs-issue-9.md` - Comprehensive testing documentation
 
 ---
 
-## [0.9] - 2026-01-18
+### Suspended Tabs Position Control ([#18](https://github.com/etienneschalk/tab-sorter-firefox/issues/18))
 
-### Added
-- **Suspended Tabs Position Control** ([#18](https://github.com/etienneschalk/tab-sorter-firefox/issues/18)) - Flexible options for handling suspended tabs when sorting
-  - New "Suspended Tabs" section in preferences with dropdown selector
-  - Three position options:
-    - **Ignore discarded status** (default): Sort tabs normally without considering suspended state
-    - **Group at the end**: Move suspended tabs to the end of the sorted list
-    - **Group at the beginning**: Move suspended tabs to the beginning of the sorted list
-  - Works with all sorting methods (URL, title, MRU, favicon)
-  - Compatible with Tab Groups feature
-  - Full localization support for English and French
+Flexible options for handling suspended tabs when sorting.
 
-### Changed
-- **Manifest Version**: Bumped from 0.8 to 0.9
+#### Added
+- New "Suspended Tabs" section in preferences with dropdown selector
+- Three position options:
+  - **Ignore discarded status** (default): Sort tabs normally without considering suspended state
+  - **Group at the end**: Move suspended tabs to the end of the sorted list
+  - **Group at the beginning**: Move suspended tabs to the beginning of the sorted list
+- Works with all sorting methods (URL, title, MRU, favicon)
+- Compatible with Tab Groups feature
+- Full localization support for English and French
 
-### Technical Improvements
+#### Technical Improvements
 - **Suspended Detection**: Uses `tab.discarded` property to identify suspended tabs
 - **Helper Function**: New `groupSuspendedTabs(tabs, position)` function supporting both "end" and "beginning" positions
 - **Tab Groups Integration**: Suspended tabs grouping is applied within each Tab Group, not globally, preserving group integrity
 
-### Files Changed
+#### Files Changed
 - `template-extension/tab-sorter.js` - Suspended tabs positioning logic
 - `template-extension/popup-tab-sorter.js` - UI updates with dropdown selector
-- `template-extension/manifest.json` - Version bump
 - `template-extension/_locales/en/messages.json` - English translations
 - `template-extension/_locales/fr/messages.json` - French translations
 - Added `test-suspended-tabs-issue-18.md` - Comprehensive testing documentation
 
 ---
 
-## [0.8] - 2026-01-18
+### Tab Groups Support ([#19](https://github.com/etienneschalk/tab-sorter-firefox/issues/19))
 
-### Added
-- **Tab Groups Support** ([#19](https://github.com/etienneschalk/tab-sorter-firefox/issues/19)) - New functionality to preserve tab groups during sorting
-  - Tabs within each group are sorted separately, keeping them in their groups
-  - New "Respect Tab Groups" checkbox in preferences (enabled by default)
-  - Groups maintain their original positions (only content within groups is sorted)
-  - Compatible with Chrome 89+ and Firefox 137+
-  - Graceful degradation for older browsers without Tab Groups API
-  - Full localization support for English and French
+New functionality to preserve tab groups during sorting.
 
-- **Tab Groups API Permission**
-  - Added `tabGroups` permission to manifest for accessing tab group information
-  - Automatic detection of Tab Groups API availability
+#### Added
+- Tabs within each group are sorted separately, keeping them in their groups
+- New "Respect Tab Groups" checkbox in preferences (enabled by default)
+- Groups maintain their original positions (only content within groups is sorted)
+- Compatible with Chrome 89+ and Firefox 137+
+- Graceful degradation for older browsers without Tab Groups API
+- Full localization support for English and French
+- Added `tabGroups` permission to manifest for accessing tab group information
+- Automatic detection of Tab Groups API availability
 
-### Changed
-- **Manifest Version**: Bumped from 0.7 to 0.8
+#### Changed
 - **Sorting Logic**: Refactored core sorting to support group-aware modes:
   - Sort within groups (preserve group positions)
   - Legacy mode (ignore groups)
 - **UI**: Added new "Tab Groups" section in preferences panel
 
-### Technical Improvements
+#### Technical Improvements
 - **API Detection**: Runtime detection of `chrome.tabGroups` availability
 - **Group Organization**: New helper functions for organizing tabs by group membership
 - **Backward Compatibility**: Legacy sorting mode preserved when groups are disabled or API unavailable
 
-### Note
+#### Note
 - The "Respect Tab Groups" checkbox should remain ON for modern browsers (Chrome 89+, Firefox 137+). Setting it to OFF will break groups during sorting.
 - Maybe later we can sort the groups themselves, using their names if available, or the first tab of the group as a rank
 
-### Files Changed
+#### Files Changed
 - `template-extension/tab-sorter.js` - Tab groups sorting logic
 - `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
 - `template-extension/tab-sorter.css` - Styles for disabled state
