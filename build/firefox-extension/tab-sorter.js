@@ -40,8 +40,8 @@ const STORAGE_KEY_SORT_PINNED_TABS =
 const STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS = false;
 const STORAGE_KEY_THEME = "TAB_SORTER_STORAGE_KEY_THEME";
 // Theme options: "auto" (detect system), "dark", "light"
-// Default to "dark" as per issue #16
-const STORAGE_DEFAULT_VALUE_THEME = "dark";
+// Default to "auto" to follow system preference
+const STORAGE_DEFAULT_VALUE_THEME = "auto";
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 

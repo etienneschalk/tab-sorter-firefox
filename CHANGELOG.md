@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 Full dark mode support with automatic system theme detection.
 
 #### Added
-- Dark mode is now the default theme for new users
+- Auto theme (follows system preference) is the default for new users
 - Automatic system theme detection (follows OS preference)
 - Manual theme selection: Auto, Dark, or Light
 - New "Appearance" section in preferences

@@ -35,7 +35,7 @@ Support des Onglets Épinglés
 - Fonctionne avec toutes les méthodes de tri
 
 Mode Sombre
-- Le mode sombre est le thème par défaut
+- Le thème Auto (suit le système) est le défaut
 - Détection automatique du thème système
 - Sélection manuelle du thème (Auto, Sombre, Clair)
 - Changement de thème instantané

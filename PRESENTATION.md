@@ -35,7 +35,7 @@ Pinned Tabs Support
 - Works with all sorting methods
 
 Dark Mode Support
-- Dark mode is the default theme
+- Auto theme (follows system) is the default
 - Automatic system theme detection
 - Manual theme selection (Auto, Dark, Light)
 - Instant theme switching
