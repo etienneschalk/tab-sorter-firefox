@@ -835,6 +835,16 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
     }
   }
 
+  // Explicitly ungroup the ungrouped tabs to prevent Chrome from auto-grouping them
+  // with adjacent groups after the move operation
+  if (sortedUngrouped.length > 0 && chrome.tabs.ungroup) {
+    const ungroupedTabIds = sortedUngrouped.map(t => t.id);
+    chrome.tabs.ungroup(ungroupedTabIds).catch((error) => {
+      // Silently ignore errors - tabs may already be ungrouped
+      console.debug(`${log_prefix} Could not ungroup tabs:`, error);
+    });
+  }
+
   if (DEBUG) {
     performance.mark("end");
     performance.measure("Tab reorganizing time (with groups)", "begin", "end");
