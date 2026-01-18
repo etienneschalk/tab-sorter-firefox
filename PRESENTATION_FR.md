@@ -28,6 +28,11 @@ Support des Onglets Suspendus
 - Permet de garder les onglets actifs facilement accessibles
 - Fonctionne avec toutes les méthodes de tri
 
+Support des Onglets Épinglés
+- Option pour trier les onglets épinglés indépendamment
+- Les onglets épinglés sont triés entre eux tout en restant épinglés
+- Fonctionne avec toutes les méthodes de tri
+
 Fonctionnalités Supplémentaires
 - Tri automatique - Organiser automatiquement les nouveaux onglets
 - Support multi-fenêtres - Fonctionne dans toutes les fenêtres du navigateur

@@ -36,6 +36,9 @@ const STORAGE_DEFAULT_VALUE_REORDER_TAB_GROUPS = true;
 const STORAGE_KEY_GROUP_SUSPENDED_TABS =
   "TAB_SORTER_STORAGE_KEY_GROUP_SUSPENDED_TABS";
 const STORAGE_DEFAULT_VALUE_GROUP_SUSPENDED_TABS = false;
+const STORAGE_KEY_SORT_PINNED_TABS =
+  "TAB_SORTER_STORAGE_KEY_SORT_PINNED_TABS";
+const STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS = false;
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 
@@ -96,6 +99,13 @@ async function getGroupSuspendedTabsAsync() {
   );
 }
 
+async function getSortPinnedTabsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_SORT_PINNED_TABS,
+    STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS
+  );
+}
+
 async function getAllCommandsFromManifest() {
   const allCommands = await chrome.commands.getAll();
   CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
@@ -124,6 +134,7 @@ async function resetCacheAsync() {
   await getRespectTabGroupsAsync();
   await getReorderTabGroupsAsync();
   await getGroupSuspendedTabsAsync();
+  await getSortPinnedTabsAsync();
   await getAllCommandsFromManifest();
 }
 
@@ -176,6 +187,13 @@ function getGroupSuspendedTabsCached() {
   return value;
 }
 
+function getSortPinnedTabsCached() {
+  console.debug("getSortPinnedTabsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_SORT_PINNED_TABS];
+  console.debug("getSortPinnedTabsCached 2", `${value}`);
+  return value;
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
@@ -202,6 +220,10 @@ function setReorderTabGroups(choice) {
 
 function setGroupSuspendedTabs(choice) {
   persistInStorage(STORAGE_KEY_GROUP_SUSPENDED_TABS, choice);
+}
+
+function setSortPinnedTabs(choice) {
+  persistInStorage(STORAGE_KEY_SORT_PINNED_TABS, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -254,6 +276,7 @@ function addEventListeners() {
           isRespectTabGroups: CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS],
           isReorderTabGroups: CACHED_STATE[STORAGE_KEY_REORDER_TAB_GROUPS],
           isGroupSuspendedTabs: CACHED_STATE[STORAGE_KEY_GROUP_SUSPENDED_TABS],
+          isSortPinnedTabs: CACHED_STATE[STORAGE_KEY_SORT_PINNED_TABS],
           isTabGroupsApiAvailable: TAB_GROUPS_API_AVAILABLE,
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -427,6 +450,8 @@ function stateUpdateEventListener(command, value) {
     setReorderTabGroups(value);
   } else if (command === "ui_click_checkbox_sort_tabs_group_suspended") {
     setGroupSuspendedTabs(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_pinned") {
+    setSortPinnedTabs(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
@@ -575,16 +600,20 @@ function sortTabs(sortingType, shuffle) {
   const doShuffle = shuffle || false;
   const log_prefix = `${TAB_SORTER_PREFIX} (sortTabs):`;
   const respectTabGroups = getRespectTabGroupsCached() && TAB_GROUPS_API_AVAILABLE;
+  const sortPinnedTabs = getSortPinnedTabsCached();
 
-  console.debug(`${log_prefix} with '${sortingType}', respectTabGroups=${respectTabGroups}`);
+  console.debug(`${log_prefix} with '${sortingType}', respectTabGroups=${respectTabGroups}, sortPinnedTabs=${sortPinnedTabs}`);
 
   getCurrentWindowTabs(function (tabs) {
     console.debug("Callback of getCurrentWindowTabs 1");
-    let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
+    
+    // Separate pinned and non-pinned tabs
+    let pinnedTabs = tabs.filter((tab) => tab.pinned);
+    let notPinnedTabs = tabs.filter((tab) => !tab.pinned);
     let comparisonFunction;
     let customSort = undefined;
 
-    console.debug(notPinnedTabs);
+    console.debug(`${log_prefix} Found ${pinnedTabs.length} pinned tabs and ${notPinnedTabs.length} non-pinned tabs`);
 
     switch (sortingType) {
       case "sort_tabs_url":
@@ -614,6 +643,11 @@ function sortTabs(sortingType, shuffle) {
       `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
     );
 
+    // Sort pinned tabs if enabled (and not shuffling)
+    if (sortPinnedTabs && pinnedTabs.length > 0 && !doShuffle) {
+      sortPinnedTabsOnly(pinnedTabs, comparisonFunction, customSort, log_prefix);
+    }
+
     // Check if we should respect tab groups
     if (respectTabGroups && !doShuffle) {
       sortTabsWithGroupSupport(
@@ -635,6 +669,40 @@ function sortTabs(sortingType, shuffle) {
       );
     }
   });
+}
+
+/**
+ * Sort only pinned tabs independently
+ * Pinned tabs are sorted among themselves and moved to positions 0, 1, 2...
+ */
+function sortPinnedTabsOnly(pinnedTabs, comparisonFunction, customSort, log_prefix) {
+  console.debug(`${log_prefix} Sorting ${pinnedTabs.length} pinned tabs`);
+
+  const reverse = getReverseCached();
+  let sortedPinnedTabs;
+
+  if (customSort) {
+    sortedPinnedTabs = customSort(pinnedTabs, comparisonFunction, reverse);
+  } else {
+    sortedPinnedTabs = [...pinnedTabs];
+    if (reverse) {
+      sortedPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
+    } else {
+      sortedPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
+    }
+  }
+
+  // Group suspended tabs at the end if enabled
+  if (getGroupSuspendedTabsCached()) {
+    sortedPinnedTabs = groupSuspendedTabsAtEnd(sortedPinnedTabs);
+  }
+
+  // Move pinned tabs to their new positions (starting at index 0)
+  const pinnedTabIds = sortedPinnedTabs.map((tab) => tab.id);
+  
+  console.debug(`${log_prefix} Moving pinned tabs to positions 0-${pinnedTabIds.length - 1}`);
+  
+  chrome.tabs.move(pinnedTabIds, { index: 0 });
 }
 
 /**

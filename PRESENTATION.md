@@ -28,6 +28,11 @@ Suspended Tabs Support
 - Helps keep active tabs easily accessible
 - Works with all sorting methods
 
+Pinned Tabs Support
+- Option to sort pinned tabs independently
+- Pinned tabs sorted among themselves while remaining pinned
+- Works with all sorting methods
+
 Additional Features
 - Auto-sort - Automatically organize new tabs
 - Cross-window support - Works across all browser windows

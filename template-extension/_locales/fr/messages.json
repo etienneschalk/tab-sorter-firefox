@@ -79,6 +79,10 @@
     "message": "Grouper les onglets suspendus à la fin",
     "description": "Move suspended/discarded tabs to the end when sorting"
   },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Trier aussi les onglets épinglés",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Trier automatiquement les onglets (meilleur effort)",
     "description": "Sort tabs automatically (best effort)."

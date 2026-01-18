@@ -83,6 +83,10 @@
     "message": "Group suspended tabs at the end",
     "description": "Move suspended/discarded tabs to the end when sorting"
   },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Also sort pinned tabs",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Sort tabs automatically (best effort).",
     "description": "Sort tabs automatically (best effort)."

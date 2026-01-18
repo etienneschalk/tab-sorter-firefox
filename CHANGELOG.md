@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10] - 2026-01-18
+
+### Added
+- **Sort Pinned Tabs** ([#9](https://github.com/etienneschalk/tab-sorter-firefox/issues/9)) - New option to sort pinned tabs independently
+  - New "Also sort pinned tabs" checkbox in General Preferences (disabled by default)
+  - Pinned tabs are sorted among themselves while remaining in the pinned area
+  - Works with all sorting methods (URL, title, MRU, favicon)
+  - Compatible with suspended tabs grouping feature
+  - Full localization support for English and French
+
+### Changed
+- **Manifest Version**: Bumped from 0.9 to 0.10
+
+### Technical Improvements
+- **Pinned Tabs Detection**: Separates pinned and non-pinned tabs before sorting
+- **Independent Sorting**: New `sortPinnedTabsOnly()` function for sorting pinned tabs separately
+
+### Files Changed
+- `template-extension/tab-sorter.js` - Pinned tabs sorting logic
+- `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
+- `template-extension/manifest.json` - Version bump
+- `template-extension/_locales/en/messages.json` - English translations
+- `template-extension/_locales/fr/messages.json` - French translations
+- Added `test-pinned-tabs-issue-9.md` - Comprehensive testing documentation
+
+---
+
 ## [0.9] - 2026-01-18
 
 ### Added
