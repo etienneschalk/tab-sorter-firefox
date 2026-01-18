@@ -24,8 +24,9 @@ Keyboard Shortcuts
 - Ctrl+Shift+L - Extract domain (move same-domain tabs to new window)
 
 Suspended Tabs Support
-- Option to group suspended (discarded) tabs at the end when sorting
-- Helps keep active tabs easily accessible
+- Flexible options for handling suspended (discarded) tabs when sorting
+- Three position choices: Ignore, Group at the end, or Group at the beginning
+- Helps keep active tabs easily accessible or review suspended tabs first
 - Works with all sorting methods
 
 Pinned Tabs Support

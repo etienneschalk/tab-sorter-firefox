@@ -24,8 +24,9 @@ Raccourcis Clavier
 - Ctrl+Shift+L - Extraire le domaine (déplacer les onglets du même domaine vers une nouvelle fenêtre)
 
 Support des Onglets Suspendus
-- Option pour grouper les onglets suspendus à la fin lors du tri
-- Permet de garder les onglets actifs facilement accessibles
+- Options flexibles pour gérer les onglets suspendus lors du tri
+- Trois choix de position : Ignorer, Grouper à la fin, ou Grouper au début
+- Permet de garder les onglets actifs facilement accessibles ou de revoir les onglets suspendus en premier
 - Fonctionne avec toutes les méthodes de tri
 
 Support des Onglets Épinglés

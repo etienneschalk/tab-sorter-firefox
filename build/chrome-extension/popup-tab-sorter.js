@@ -48,7 +48,8 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
-    isGroupSuspendedTabs,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
     isSortPinnedTabs,
     theme,
     isTabGroupsApiAvailable,
@@ -63,7 +64,7 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
   console.log(logPrefix + "isRespectTabGroups", isRespectTabGroups);
   console.log(logPrefix + "isReorderTabGroups", isReorderTabGroups);
-  console.log(logPrefix + "isGroupSuspendedTabs", isGroupSuspendedTabs);
+  console.log(logPrefix + "suspendedTabsPosition", suspendedTabsPosition);
   console.log(logPrefix + "isSortPinnedTabs", isSortPinnedTabs);
   console.log(logPrefix + "theme", theme);
   console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
@@ -87,7 +88,8 @@ function initializeUserInterface(initialState) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
-    isGroupSuspendedTabs,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
     isSortPinnedTabs,
     theme,
     isTabGroupsApiAvailable,
@@ -112,10 +114,10 @@ const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
 const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
 const CHECKBOX_RESPECT_TAB_GROUPS = "ui_click_checkbox_sort_tabs_respect_tab_groups";
 const CHECKBOX_REORDER_TAB_GROUPS = "ui_click_checkbox_sort_tabs_reorder_tab_groups";
-const CHECKBOX_GROUP_SUSPENDED = "ui_click_checkbox_sort_tabs_group_suspended";
 const CHECKBOX_SORT_PINNED = "ui_click_checkbox_sort_tabs_pinned";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
+const SELECT_SUSPENDED_TABS_POSITION = "ui_change_select_suspended_tabs_position";
 const SELECT_THEME = "ui_change_select_theme";
 
 function translate(message) {
@@ -206,6 +208,14 @@ function renderThemeOption(themeValue, selectedTheme) {
   `;
 }
 
+function renderSuspendedTabsPositionOption(positionValue, selectedPosition) {
+  return `
+<option value="${positionValue}" ${positionValue === selectedPosition ? "selected" : ""}>
+    ${translate(`suspended_tabs_position_${positionValue}`)}
+</option>
+  `;
+}
+
 function renderPopup(params) {
   const {
     isReverse,
@@ -214,7 +224,8 @@ function renderPopup(params) {
     defaultSortMethod,
     isRespectTabGroups,
     isReorderTabGroups,
-    isGroupSuspendedTabs,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
     isSortPinnedTabs,
     theme,
     isTabGroupsApiAvailable,
@@ -252,8 +263,15 @@ function renderPopup(params) {
             <h3> ⭐ ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
-            ${renderCheckbox(CHECKBOX_GROUP_SUSPENDED, isGroupSuspendedTabs)}
             ${renderCheckbox(CHECKBOX_SORT_PINNED, isSortPinnedTabs)}
+            <br>
+            <h3> 💤 ${translate("preferences_suspended_tabs")}</h3>
+            <div class="suspended-tabs-selector">
+              <label for="${SELECT_SUSPENDED_TABS_POSITION}">${translate("suspended_tabs_position_label")}</label>
+              <select id="${SELECT_SUSPENDED_TABS_POSITION}">
+                ${availableSuspendedTabsPositions.map((p) => renderSuspendedTabsPositionOption(p, suspendedTabsPosition)).join("")}
+              </select>
+            </div>
             <br> 
             <h3> 📁 ${translate("preferences_tab_groups")}</h3>
             ${renderCheckboxWithDisabled(

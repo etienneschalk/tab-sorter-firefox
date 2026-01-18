@@ -75,9 +75,25 @@
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
-  "ui_click_checkbox_sort_tabs_group_suspended": {
-    "message": "Grouper les onglets suspendus à la fin",
-    "description": "Move suspended/discarded tabs to the end when sorting"
+  "preferences_suspended_tabs": {
+    "message": "Onglets Suspendus",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Position des onglets suspendus :",
+    "description": "Label for suspended tabs position selector"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorer le statut suspendu",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Grouper à la fin",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Grouper au début",
+    "description": "Move suspended tabs to the beginning when sorting"
   },
   "ui_click_checkbox_sort_tabs_pinned": {
     "message": "Trier aussi les onglets épinglés",

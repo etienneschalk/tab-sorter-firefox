@@ -79,9 +79,25 @@
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
-  "ui_click_checkbox_sort_tabs_group_suspended": {
-    "message": "Group suspended tabs at the end",
-    "description": "Move suspended/discarded tabs to the end when sorting"
+  "preferences_suspended_tabs": {
+    "message": "Suspended Tabs",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Suspended tabs position:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignore discarded status",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Group at the end",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Group at the beginning",
+    "description": "Move suspended tabs to the beginning when sorting"
   },
   "ui_click_checkbox_sort_tabs_pinned": {
     "message": "Also sort pinned tabs",

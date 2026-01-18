@@ -62,9 +62,12 @@ All notable changes to this project will be documented in this file.
 ## [0.9] - 2026-01-18
 
 ### Added
-- **Suspended Tabs Grouping** ([#18](https://github.com/etienneschalk/tab-sorter-firefox/issues/18)) - New option to group suspended tabs at the end when sorting
-  - New "Group suspended tabs at the end" checkbox in General Preferences (disabled by default)
-  - Suspended (discarded) tabs are moved to the end of the sorted list
+- **Suspended Tabs Position Control** ([#18](https://github.com/etienneschalk/tab-sorter-firefox/issues/18)) - Flexible options for handling suspended tabs when sorting
+  - New "Suspended Tabs" section in preferences with dropdown selector
+  - Three position options:
+    - **Ignore discarded status** (default): Sort tabs normally without considering suspended state
+    - **Group at the end**: Move suspended tabs to the end of the sorted list
+    - **Group at the beginning**: Move suspended tabs to the beginning of the sorted list
   - Works with all sorting methods (URL, title, MRU, favicon)
   - Compatible with Tab Groups feature
   - Full localization support for English and French
@@ -74,11 +77,11 @@ All notable changes to this project will be documented in this file.
 
 ### Technical Improvements
 - **Suspended Detection**: Uses `tab.discarded` property to identify suspended tabs
-- **Helper Function**: New `groupSuspendedTabsAtEnd()` function for separating active and suspended tabs
+- **Helper Function**: New `groupSuspendedTabs(tabs, position)` function supporting both "end" and "beginning" positions
 
 ### Files Changed
-- `template-extension/tab-sorter.js` - Suspended tabs grouping logic
-- `template-extension/popup-tab-sorter.js` - UI updates for new checkbox
+- `template-extension/tab-sorter.js` - Suspended tabs positioning logic
+- `template-extension/popup-tab-sorter.js` - UI updates with dropdown selector
 - `template-extension/manifest.json` - Version bump
 - `template-extension/_locales/en/messages.json` - English translations
 - `template-extension/_locales/fr/messages.json` - French translations
