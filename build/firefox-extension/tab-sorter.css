@@ -44,12 +44,17 @@
   --button-simple-shadow: #3a3a5a;
 }
 
+html {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 /* Layout */
 
 .container {
   background: var(--bg-primary);
   color: var(--text-primary);
-  width: 750px;
+  width: 780px;
 }
 
 .flexcontainer {

@@ -249,13 +249,13 @@ function renderPopup(params) {
         <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>
             <br> 
-            <h3> ${translate("preferences_general")}</h3>
+            <h3> ⭐ ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
             ${renderCheckbox(CHECKBOX_GROUP_SUSPENDED, isGroupSuspendedTabs)}
             ${renderCheckbox(CHECKBOX_SORT_PINNED, isSortPinnedTabs)}
             <br> 
-            <h3> ${translate("preferences_tab_groups")}</h3>
+            <h3> 📁 ${translate("preferences_tab_groups")}</h3>
             ${renderCheckboxWithDisabled(
               CHECKBOX_RESPECT_TAB_GROUPS,
               isRespectTabGroups,
@@ -271,7 +271,7 @@ function renderPopup(params) {
             )}
             </div>
             <br> 
-            <h3> ${translate("preferences_auto")}</h3>
+            <h3> 🤖 ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}
             <br>
             ${renderSelect(
@@ -279,6 +279,7 @@ function renderPopup(params) {
               availableSortMethods,
               defaultSortMethod
             )}
+            <br>
             <br>
             <h3> 🎨 ${translate("preferences_appearance")}</h3>
             <div class="theme-selector">
