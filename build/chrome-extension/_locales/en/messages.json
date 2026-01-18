@@ -114,5 +114,25 @@
   "preferences_tab_groups": {
     "message": "Tab Groups (Chrome 89+, Firefox 137+)",
     "description": "Section header for tab groups preferences"
+  },
+  "preferences_appearance": {
+    "message": "Appearance",
+    "description": "Section header for appearance preferences"
+  },
+  "theme_label": {
+    "message": "Theme:",
+    "description": "Label for theme selector"
+  },
+  "theme_auto": {
+    "message": "Auto (follow system)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Dark",
+    "description": "Dark theme option"
+  },
+  "theme_light": {
+    "message": "Light",
+    "description": "Light theme option"
   }
 }

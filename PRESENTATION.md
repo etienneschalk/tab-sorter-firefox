@@ -33,6 +33,12 @@ Pinned Tabs Support
 - Pinned tabs sorted among themselves while remaining pinned
 - Works with all sorting methods
 
+Dark Mode Support
+- Dark mode is the default theme
+- Automatic system theme detection
+- Manual theme selection (Auto, Dark, Light)
+- Instant theme switching
+
 Additional Features
 - Auto-sort - Automatically organize new tabs
 - Cross-window support - Works across all browser windows

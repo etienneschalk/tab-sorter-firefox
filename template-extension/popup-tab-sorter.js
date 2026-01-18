@@ -3,9 +3,40 @@
 //   initializeUserInterface(initialState);
 // });
 
+// Theme options
+const THEME_AUTO = "auto";
+const THEME_DARK = "dark";
+const THEME_LIGHT = "light";
+const AVAILABLE_THEMES = [THEME_AUTO, THEME_DARK, THEME_LIGHT];
+
+/**
+ * Detect the system's preferred color scheme
+ * @returns {"dark" | "light"} The resolved theme
+ */
+function getSystemTheme() {
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return THEME_DARK;
+  }
+  return THEME_LIGHT;
+}
+
+/**
+ * Apply the theme to the document
+ * @param {string} theme - "auto", "dark", or "light"
+ */
+function applyTheme(theme) {
+  const resolvedTheme = theme === THEME_AUTO ? getSystemTheme() : theme;
+  document.documentElement.setAttribute("data-theme", resolvedTheme);
+  console.log(`[Tab Sorter] Applied theme: ${theme} (resolved to: ${resolvedTheme})`);
+}
+
 (async () => {
   const initialState = await chrome.runtime.sendMessage("queryInitialState");
   console.debug("== After await chrome.runtime.sendMessage");
+  
+  // Apply theme immediately before rendering
+  applyTheme(initialState.theme);
+  
   initializeUserInterface(initialState);
 })();
 
@@ -19,6 +50,7 @@ function initializeUserInterface(initialState) {
     isReorderTabGroups,
     isGroupSuspendedTabs,
     isSortPinnedTabs,
+    theme,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
@@ -33,6 +65,7 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isReorderTabGroups", isReorderTabGroups);
   console.log(logPrefix + "isGroupSuspendedTabs", isGroupSuspendedTabs);
   console.log(logPrefix + "isSortPinnedTabs", isSortPinnedTabs);
+  console.log(logPrefix + "theme", theme);
   console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
@@ -56,6 +89,7 @@ function initializeUserInterface(initialState) {
     isReorderTabGroups,
     isGroupSuspendedTabs,
     isSortPinnedTabs,
+    theme,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands: allCommands
@@ -82,6 +116,7 @@ const CHECKBOX_GROUP_SUSPENDED = "ui_click_checkbox_sort_tabs_group_suspended";
 const CHECKBOX_SORT_PINNED = "ui_click_checkbox_sort_tabs_pinned";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
+const SELECT_THEME = "ui_change_select_theme";
 
 function translate(message) {
   return chrome.i18n.getMessage(message);
@@ -163,6 +198,14 @@ function renderOption(value, initialSelectedValue) {
     `;
 }
 
+function renderThemeOption(themeValue, selectedTheme) {
+  return `
+<option value="${themeValue}" ${themeValue === selectedTheme ? "selected" : ""}>
+    ${translate(`theme_${themeValue}`)}
+</option>
+  `;
+}
+
 function renderPopup(params) {
   const {
     isReverse,
@@ -173,6 +216,7 @@ function renderPopup(params) {
     isReorderTabGroups,
     isGroupSuspendedTabs,
     isSortPinnedTabs,
+    theme,
     isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
@@ -235,6 +279,14 @@ function renderPopup(params) {
               availableSortMethods,
               defaultSortMethod
             )}
+            <br>
+            <h3> 🎨 ${translate("preferences_appearance")}</h3>
+            <div class="theme-selector">
+              <label for="${SELECT_THEME}">${translate("theme_label")}</label>
+              <select id="${SELECT_THEME}">
+                ${AVAILABLE_THEMES.map((t) => renderThemeOption(t, theme)).join("")}
+              </select>
+            </div>
         </div>
         <div class="flexcol">
             <h2> 🧹 ${translate("actions")} </h2>
@@ -285,6 +337,11 @@ document.addEventListener("change", (e) => {
   if (id.startsWith("ui_change_select_")) {
     command = id;
     value = e.target.value;
+    
+    // Apply theme immediately when changed
+    if (id === SELECT_THEME) {
+      applyTheme(value);
+    }
   }
 
   chrome.runtime.sendMessage({

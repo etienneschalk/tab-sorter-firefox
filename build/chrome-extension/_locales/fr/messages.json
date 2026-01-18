@@ -110,5 +110,25 @@
   "preferences_tab_groups": {
     "message": "Groupes d'onglets (Chrome 89+, Firefox 137+)",
     "description": "Section header for tab groups preferences"
+  },
+  "preferences_appearance": {
+    "message": "Apparence",
+    "description": "Section header for appearance preferences"
+  },
+  "theme_label": {
+    "message": "Thème :",
+    "description": "Label for theme selector"
+  },
+  "theme_auto": {
+    "message": "Auto (suivre le système)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Sombre",
+    "description": "Dark theme option"
+  },
+  "theme_light": {
+    "message": "Clair",
+    "description": "Light theme option"
   }
 }

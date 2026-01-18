@@ -39,6 +39,10 @@ const STORAGE_DEFAULT_VALUE_GROUP_SUSPENDED_TABS = false;
 const STORAGE_KEY_SORT_PINNED_TABS =
   "TAB_SORTER_STORAGE_KEY_SORT_PINNED_TABS";
 const STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS = false;
+const STORAGE_KEY_THEME = "TAB_SORTER_STORAGE_KEY_THEME";
+// Theme options: "auto" (detect system), "dark", "light"
+// Default to "dark" as per issue #16
+const STORAGE_DEFAULT_VALUE_THEME = "dark";
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 
@@ -106,6 +110,13 @@ async function getSortPinnedTabsAsync() {
   );
 }
 
+async function getThemeAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_THEME,
+    STORAGE_DEFAULT_VALUE_THEME
+  );
+}
+
 async function getAllCommandsFromManifest() {
   const allCommands = await chrome.commands.getAll();
   CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
@@ -135,6 +146,7 @@ async function resetCacheAsync() {
   await getReorderTabGroupsAsync();
   await getGroupSuspendedTabsAsync();
   await getSortPinnedTabsAsync();
+  await getThemeAsync();
   await getAllCommandsFromManifest();
 }
 
@@ -194,6 +206,13 @@ function getSortPinnedTabsCached() {
   return value;
 }
 
+function getThemeCached() {
+  console.debug("getThemeCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_THEME];
+  console.debug("getThemeCached 2", `${value}`);
+  return value;
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
@@ -224,6 +243,10 @@ function setGroupSuspendedTabs(choice) {
 
 function setSortPinnedTabs(choice) {
   persistInStorage(STORAGE_KEY_SORT_PINNED_TABS, choice);
+}
+
+function setTheme(choice) {
+  persistInStorage(STORAGE_KEY_THEME, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -277,6 +300,7 @@ function addEventListeners() {
           isReorderTabGroups: CACHED_STATE[STORAGE_KEY_REORDER_TAB_GROUPS],
           isGroupSuspendedTabs: CACHED_STATE[STORAGE_KEY_GROUP_SUSPENDED_TABS],
           isSortPinnedTabs: CACHED_STATE[STORAGE_KEY_SORT_PINNED_TABS],
+          theme: CACHED_STATE[STORAGE_KEY_THEME],
           isTabGroupsApiAvailable: TAB_GROUPS_API_AVAILABLE,
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -456,6 +480,8 @@ function stateUpdateEventListener(command, value) {
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
     setDefaultSortMethod(value);
+  } else if (command === "ui_change_select_theme") {
+    setTheme(value);
   }
 }
 

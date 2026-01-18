@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11] - 2026-01-18
+
+### Added
+- **Dark Mode** ([#16](https://github.com/etienneschalk/tab-sorter-firefox/issues/16)) - Full dark mode support
+  - Dark mode is now the default theme for new users
+  - Automatic system theme detection (follows OS preference)
+  - Manual theme selection: Auto, Dark, or Light
+  - New "Appearance" section in preferences
+  - Full localization support for English and French
+
+### Changed
+- **Manifest Version**: Bumped from 0.10 to 0.11
+- **CSS Architecture**: Refactored to use CSS custom properties for theming
+
+### Technical Improvements
+- **CSS Variables**: Theme colors defined using CSS custom properties (`:root` and `[data-theme="dark"]`)
+- **System Detection**: Uses `prefers-color-scheme` media query for auto theme detection
+- **Instant Updates**: Theme changes are applied immediately without page reload
+
+### Files Changed
+- `template-extension/tab-sorter.js` - Theme storage and retrieval
+- `template-extension/popup-tab-sorter.js` - Theme UI and application logic
+- `template-extension/tab-sorter.css` - Dark mode styles with CSS variables
+- `template-extension/manifest.json` - Version bump
+- `template-extension/_locales/en/messages.json` - English translations
+- `template-extension/_locales/fr/messages.json` - French translations
+- Added `test-dark-mode-issue-16.md` - Comprehensive testing documentation
+
+---
+
 ## [0.10] - 2026-01-18
 
 ### Added

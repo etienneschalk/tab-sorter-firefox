@@ -33,6 +33,12 @@ Support des Onglets Épinglés
 - Les onglets épinglés sont triés entre eux tout en restant épinglés
 - Fonctionne avec toutes les méthodes de tri
 
+Mode Sombre
+- Le mode sombre est le thème par défaut
+- Détection automatique du thème système
+- Sélection manuelle du thème (Auto, Sombre, Clair)
+- Changement de thème instantané
+
 Fonctionnalités Supplémentaires
 - Tri automatique - Organiser automatiquement les nouveaux onglets
 - Support multi-fenêtres - Fonctionne dans toutes les fenêtres du navigateur
