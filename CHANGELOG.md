@@ -78,6 +78,7 @@ All notable changes to this project will be documented in this file.
 ### Technical Improvements
 - **Suspended Detection**: Uses `tab.discarded` property to identify suspended tabs
 - **Helper Function**: New `groupSuspendedTabs(tabs, position)` function supporting both "end" and "beginning" positions
+- **Tab Groups Integration**: Suspended tabs grouping is applied within each Tab Group, not globally, preserving group integrity
 
 ### Files Changed
 - `template-extension/tab-sorter.js` - Suspended tabs positioning logic

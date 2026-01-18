@@ -156,26 +156,59 @@ amazon.com (suspended) | github.com (active) | google.com (active) | reddit.com 
 
 ### Scenario 4: Suspended Tabs with Tab Groups
 
-**Objective:** Verify suspended tabs grouping works correctly with Tab Groups feature.
+**Objective:** Verify suspended tabs grouping works correctly with Tab Groups feature - suspended tabs are grouped **within each group**, not globally.
 
 **Note:** This test requires a browser that supports Tab Groups (Chrome 89+, Firefox 137+).
 
 #### Setup
 
-1. Create tabs and group some of them
-2. Suspend some tabs within the groups
+1. Open a browser window
+2. Create **6 tabs**:
+   - `https://github.com`
+   - `https://youtube.com`
+   - `https://google.com`
+   - `https://amazon.com`
+   - `https://wikipedia.org`
+   - `https://reddit.com`
+
+3. Create **Tab Group A** ("Work"):
+   - Add: `github.com`, `google.com`, `wikipedia.org`
+   
+4. Create **Tab Group B** ("Entertainment"):
+   - Add: `youtube.com`, `reddit.com`
+   
+5. Leave `amazon.com` ungrouped
+
+6. Suspend some tabs in each group:
+   - In Work group: suspend `google.com`
+   - In Entertainment group: suspend `reddit.com`
+
+**Initial State:**
+```
+[Work: github.com (active), google.com (suspended), wikipedia.org (active)] [Entertainment: youtube.com (active), reddit.com (suspended)] amazon.com (active)
+```
 
 #### Test Steps
 
 1. Enable "Respect Tab Groups"
-2. Select "Group at the end" for suspended tabs
+2. Select **"Group at the end"** for suspended tabs
 3. Sort by URL
 
 #### Expected Result
 
-- Tab Groups are preserved
-- Within each group, active tabs come first, then suspended tabs
-- Suspended tabs remain in their groups
+- **Tab Groups are preserved** - tabs stay in their groups
+- **Within each group**, active tabs come first, then suspended tabs
+- Suspended tabs are NOT moved globally - they stay within their groups
+
+**Final State:**
+```
+[Work: github.com (active), wikipedia.org (active), google.com (suspended)] [Entertainment: youtube.com (active), reddit.com (suspended)] amazon.com (active)
+```
+
+Notice:
+- In Work group: `google.com` (suspended) moved to the end of the group
+- In Entertainment group: `reddit.com` (suspended) is at the end
+- Groups remain intact and in their original positions
 
 ---
 

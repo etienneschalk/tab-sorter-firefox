@@ -719,16 +719,18 @@ function sortPinnedTabsOnly(pinnedTabs, comparisonFunction, customSort, log_pref
 /**
  * Sort tabs while respecting tab groups (new behavior)
  * Tabs within each group are sorted, groups maintain their original positions
+ * Suspended tabs grouping is applied within each group (not globally)
  */
 function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, customSort, log_prefix) {
   console.debug(`${log_prefix} Sorting with tab groups support (preserving group positions)`);
 
   const { groups, ungrouped } = organizeTabsByGroup(notPinnedTabs);
   const reverse = getReverseCached();
+  const suspendedPosition = getSuspendedTabsPositionCached();
 
   console.debug(`${log_prefix} Found ${groups.size} groups and ${ungrouped.length} ungrouped tabs`);
 
-  // Sort tabs within each group
+  // Sort tabs within each group, then apply suspended tabs grouping within each group
   const sortedGroups = [];
   for (const [groupId, groupData] of groups) {
     let sortedGroupTabs;
@@ -737,6 +739,12 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
     } else {
       sortedGroupTabs = sortTabArray(groupData.tabs, comparisonFunction, reverse);
     }
+    
+    // Apply suspended tabs grouping within this group
+    if (suspendedPosition !== "ignore") {
+      sortedGroupTabs = groupSuspendedTabs(sortedGroupTabs, suspendedPosition);
+    }
+    
     sortedGroups.push({
       groupId,
       tabs: sortedGroupTabs,
@@ -744,12 +752,17 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
     });
   }
 
-  // Sort ungrouped tabs
+  // Sort ungrouped tabs, then apply suspended tabs grouping
   let sortedUngrouped;
   if (customSort) {
     sortedUngrouped = customSort(ungrouped, comparisonFunction, reverse);
   } else {
     sortedUngrouped = sortTabArray(ungrouped, comparisonFunction, reverse);
+  }
+  
+  // Apply suspended tabs grouping within ungrouped tabs
+  if (suspendedPosition !== "ignore") {
+    sortedUngrouped = groupSuspendedTabs(sortedUngrouped, suspendedPosition);
   }
 
   // Build final order: preserve group positions, only sort within groups
@@ -790,32 +803,6 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
           }
         }
       }
-    }
-  }
-
-  // Group suspended tabs if enabled
-  const suspendedPositionGroups = getSuspendedTabsPositionCached();
-  if (suspendedPositionGroups !== "ignore") {
-    // Create a map of tab ID to tab object for quick lookup
-    const tabMap = new Map(notPinnedTabs.map(t => [t.id, t]));
-    const activeIds = [];
-    const suspendedIds = [];
-
-    for (const tabId of finalOrder) {
-      const tab = tabMap.get(tabId);
-      if (tab && tab.discarded) {
-        suspendedIds.push(tabId);
-      } else {
-        activeIds.push(tabId);
-      }
-    }
-
-    if (suspendedPositionGroups === "beginning") {
-      finalOrder = [...suspendedIds, ...activeIds];
-      console.debug(`${log_prefix} Grouped ${suspendedIds.length} suspended tabs at the beginning`);
-    } else {
-      finalOrder = [...activeIds, ...suspendedIds];
-      console.debug(`${log_prefix} Grouped ${suspendedIds.length} suspended tabs at the end`);
     }
   }
 
