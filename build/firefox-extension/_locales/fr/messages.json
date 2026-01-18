@@ -124,7 +124,7 @@
     "description": "Section header for appearance preferences"
   },
   "theme_label": {
-    "message": "Thème :",
+    "message": "Thème",
     "description": "Label for theme selector"
   },
   "theme_auto": {

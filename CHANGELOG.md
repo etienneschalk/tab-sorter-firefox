@@ -110,6 +110,10 @@ New functionality to preserve tab groups during sorting.
 - **Group Organization**: New helper functions for organizing tabs by group membership
 - **Backward Compatibility**: Legacy sorting mode preserved when groups are disabled or API unavailable
 
+#### Fixed
+- **Ungrouped Tabs Sorting Bug**: Fixed a critical bug where ungrouped tabs could be lost or incorrectly ordered when sorting with "Respect Tab Groups" enabled. The previous algorithm tried to distribute sorted ungrouped tabs at their original positions, but had a tracking bug that caused tabs to be skipped when sorted tab IDs collided with original tab IDs. The new algorithm places all ungrouped tabs as a sorted block at the position of the first ungrouped tab encountered.
+- **No Groups Edge Case**: Fixed sorting requiring two clicks when "Respect Tab Groups" was ON but no groups existed (e.g., after deleting all groups). Added a fast path that skips the group-preserving logic when no groups are present.
+
 #### Note
 - The "Respect Tab Groups" checkbox should remain ON for modern browsers (Chrome 89+, Firefox 137+). Setting it to OFF will break groups during sorting.
 - Maybe later we can sort the groups themselves, using their names if available, or the first tab of the group as a rank

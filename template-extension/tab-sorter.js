@@ -766,42 +766,46 @@ function sortTabsWithGroupSupport(notPinnedTabs, allTabs, comparisonFunction, cu
   }
 
   // Build final order: preserve group positions, only sort within groups
+  // Groups stay at their relative positions, ungrouped tabs are sorted together
+  // and placed at the position of the first ungrouped tab encountered
   let finalOrder = [];
   
-  // Create a map of groupId -> sorted tabs
-  const groupTabsMap = new Map();
-  for (const group of sortedGroups) {
-    groupTabsMap.set(group.groupId, [...group.tabs]);
-  }
+  // Fast path: if no groups exist, just use the sorted ungrouped tabs directly
+  if (groups.size === 0) {
+    finalOrder = sortedUngrouped.map(t => t.id);
+    console.debug(`${log_prefix} No groups found, using simple sorted order`);
+  } else {
+    // Create a map of groupId -> sorted tabs
+    const groupTabsMap = new Map();
+    for (const group of sortedGroups) {
+      groupTabsMap.set(group.groupId, [...group.tabs]);
+    }
 
-  // Track which groups and ungrouped tabs we've processed
-  const processedGroups = new Set();
-  const processedUngrouped = new Set();
+    // Track which groups we've processed
+    const processedGroups = new Set();
+    let ungroupedAdded = false;
 
-  // Go through original tab order to preserve positions
-  for (const tab of notPinnedTabs) {
-    if (tab.groupId && tab.groupId !== -1 && tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE) {
-      // This tab is in a group
-      if (!processedGroups.has(tab.groupId)) {
-        // First time seeing this group - add all its sorted tabs
-        const groupTabs = groupTabsMap.get(tab.groupId);
-        if (groupTabs) {
-          finalOrder.push(...groupTabs.map(t => t.id));
-        }
-        processedGroups.add(tab.groupId);
-      }
-      // Skip - already added with group
-    } else {
-      // Ungrouped tab - add in sorted order among ungrouped
-      if (!processedUngrouped.has(tab.id)) {
-        // Find next ungrouped tab from sorted list that hasn't been processed
-        for (const sortedTab of sortedUngrouped) {
-          if (!processedUngrouped.has(sortedTab.id)) {
-            finalOrder.push(sortedTab.id);
-            processedUngrouped.add(sortedTab.id);
-            break;
+    // Go through original tab order to preserve relative positions
+    for (const tab of notPinnedTabs) {
+      if (tab.groupId && tab.groupId !== -1 && tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE) {
+        // This tab is in a group
+        if (!processedGroups.has(tab.groupId)) {
+          // First time seeing this group - add all its sorted tabs
+          const groupTabs = groupTabsMap.get(tab.groupId);
+          if (groupTabs) {
+            finalOrder.push(...groupTabs.map(t => t.id));
           }
+          processedGroups.add(tab.groupId);
         }
+        // Skip - already added with group
+      } else {
+        // Ungrouped tab - add ALL sorted ungrouped tabs at the first ungrouped position
+        if (!ungroupedAdded) {
+          finalOrder.push(...sortedUngrouped.map(t => t.id));
+          ungroupedAdded = true;
+          console.debug(`${log_prefix} Added ${sortedUngrouped.length} ungrouped tabs at first ungrouped position`);
+        }
+        // Skip subsequent ungrouped tabs - already added all of them
       }
     }
   }
