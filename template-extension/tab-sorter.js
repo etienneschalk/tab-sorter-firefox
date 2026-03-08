@@ -388,8 +388,13 @@ function faviconSort(tabs, comparisonFunction, reverse) {
 
 // Comparison functions
 
+// Compare tabs by domain name (without www prefix)
+// This ensures consistent sorting regardless of www. prefix in URLs
+// See: https://github.com/etienneschalk/tab-sorter-firefox/issues/20
 function comparisonByUrl(tabA, tabB) {
-  return tabA.url.localeCompare(tabB.url);
+  const domainA = extractDomain(tabA.url);
+  const domainB = extractDomain(tabB.url);
+  return domainA.localeCompare(domainB);
 }
 
 function comparisonByMru(tabA, tabB) {
