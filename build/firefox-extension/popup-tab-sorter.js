@@ -14,6 +14,7 @@ function initializeUserInterface(initialState) {
     isReverse,
     isAllWindows,
     isAutoOnNewTab,
+    isCloseDuplicateTabs,
     defaultSortMethod,
     availableSortMethods,
     allCommands,
@@ -23,6 +24,7 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isReverse", isReverse);
   console.log(logPrefix + "isAllWindows", isAllWindows);
   console.log(logPrefix + "isAutoOnNewTab", isAutoOnNewTab);
+  console.log(logPrefix + "isCloseDuplicateTabs", isCloseDuplicateTabs);
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
@@ -41,6 +43,7 @@ function initializeUserInterface(initialState) {
     isReverse,
     isAllWindows,
     isAutoOnNewTab,
+    isCloseDuplicateTabs,
     defaultSortMethod,
     availableSortMethods,
     allCommands: allCommands
@@ -61,6 +64,8 @@ function initializeUserInterface(initialState) {
 const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
 const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
 const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
+const CHECKBOX_CLOSE_DUPLICATES =
+  "ui_click_checkbox_sort_tabs_close_duplicates";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
 
@@ -136,6 +141,7 @@ function renderPopup(params) {
     isReverse,
     isAllWindows,
     isAutoOnNewTab,
+    isCloseDuplicateTabs,
     defaultSortMethod,
     availableSortMethods,
     allCommands,
@@ -168,6 +174,7 @@ function renderPopup(params) {
             <h3> ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
+            ${renderCheckbox(CHECKBOX_CLOSE_DUPLICATES, isCloseDuplicateTabs)}
             <br> 
             <h3> ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}

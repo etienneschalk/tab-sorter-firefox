@@ -27,6 +27,9 @@ const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
 const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+const STORAGE_KEY_CLOSE_DUPLICATE_TABS =
+  "TAB_SORTER_STORAGE_KEY_CLOSE_DUPLICATE_TABS";
+const STORAGE_DEFAULT_VALUE_CLOSE_DUPLICATE_TABS = false;
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
 
@@ -62,6 +65,14 @@ async function getDefaultSortMethodAsync() {
     STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
   );
 }
+
+async function getCloseDuplicateTabsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_CLOSE_DUPLICATE_TABS,
+    STORAGE_DEFAULT_VALUE_CLOSE_DUPLICATE_TABS
+  );
+}
+
 async function getAllCommandsFromManifest() {
   const allCommands = await chrome.commands.getAll();
   CACHED_STATE[CACHE_KEY_ALL_COMMANDS] = allCommands;
@@ -87,6 +98,7 @@ async function resetCacheAsync() {
   await getAllWindowsAsync();
   await getAutoOnNewTabAsync();
   await getDefaultSortMethodAsync();
+  await getCloseDuplicateTabsAsync();
   await getAllCommandsFromManifest();
 }
 
@@ -118,6 +130,10 @@ function getDefaultSortMethodCached() {
   return value;
 }
 
+function getCloseDuplicateTabsCached() {
+  return CACHED_STATE[STORAGE_KEY_CLOSE_DUPLICATE_TABS];
+}
+
 function setReverse(choice) {
   persistInStorage(STORAGE_KEY_REVERSE, choice);
 }
@@ -132,6 +148,10 @@ function setAutoSortBestEffort(choice) {
 
 function setDefaultSortMethod(choice) {
   persistInStorage(STORAGE_KEY_DEFAULT_SORT_METHOD, choice);
+}
+
+function setCloseDuplicateTabs(choice) {
+  persistInStorage(STORAGE_KEY_CLOSE_DUPLICATE_TABS, choice);
 }
 
 async function retrieveFromStorage(key, default_value) {
@@ -181,6 +201,7 @@ function addEventListeners() {
           isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
           isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT],
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+          isCloseDuplicateTabs: CACHED_STATE[STORAGE_KEY_CLOSE_DUPLICATE_TABS],
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
         };
@@ -351,6 +372,8 @@ function stateUpdateEventListener(command, value) {
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
     setDefaultSortMethod(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_close_duplicates") {
+    setCloseDuplicateTabs(value);
   }
 }
 
@@ -421,101 +444,167 @@ function sortTabs(sortingType, shuffle) {
   console.debug(`${log_prefix} with '${sortingType}'`);
 
   getCurrentWindowTabs(function (tabs) {
-    console.debug("Callback of getCurrentWindowTabs 1");
-    let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
-    let comparisonFunction;
-    let customSort = undefined;
-
-    console.debug(notPinnedTabs);
-
-    switch (sortingType) {
-      case "sort_tabs_url":
-        comparisonFunction = comparisonByUrl;
-        break;
-      case "sort_tabs_mru":
-        // TODO Not working on chromium!
-        // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
-        // Addition 2025-09-16: This is now working on chromium!
-        // https://developer.chrome.com/docs/extensions/reference/api/tabs
-        // lastAccessed property is now available in Chrome 121+
-        comparisonFunction = comparisonByMru;
-        break;
-      case "sort_tabs_title":
-        comparisonFunction = comparisonByTitle;
-        break;
-      case "sort_tabs_favicon_and_title":
-        comparisonFunction = comparisonByTitle;
-        customSort = faviconSort;
-        break;
-      default:
-        comparisonFunction = comparisonByUrl;
-    }
-
-    console.debug(
-      "Callback of getCurrentWindowTabs 2",
-      `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
-    );
-
-    if (customSort) {
-      notPinnedTabs = customSort(
-        notPinnedTabs,
-        comparisonFunction,
-        getReverseCached()
-      );
+    if (getCloseDuplicateTabsCached()) {
+      closeDuplicateTabs(tabs, (tabIdsToClose) => {
+        const tabsToSort =
+          tabIdsToClose.length === 0
+            ? tabs
+            : tabs.filter((t) => !tabIdsToClose.includes(t.id));
+        performSort(tabsToSort, sortingType, doShuffle, log_prefix);
+      });
     } else {
-      if (getReverseCached()) {
-        notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-        console.debug(`${log_prefix} Reverse sorting`);
-      } else {
-        notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
-      }
-    }
-
-    console.debug("Callback of getCurrentWindowTabs 3");
-
-    let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
-
-    console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
-
-    if (doShuffle) {
-      console.debug(`${log_prefix} Shuffling tabs`);
-      let i = newIds.length;
-      let j, temp;
-      if (i != 0) {
-        while (--i) {
-          j = Math.floor(Math.random() * (i + 1));
-          temp = newIds[j];
-          newIds[j] = newIds[i];
-          newIds[i] = temp;
-        }
-      }
-    }
-
-    let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
-
-    if (DEBUG) {
-      performance.mark("begin");
-    }
-
-    console.debug(
-      `Callback of getCurrentWindowTabs 5 - Before actual tab move`
-    );
-
-    // The index seems to be useless in this case of moving all the tabs
-    chrome.tabs.move(newIds, {
-      index: numberOfPinnedTabs,
-    });
-
-    if (DEBUG) {
-      performance.mark("end");
-      performance.measure("Tab reorganizing time", "begin", "end");
-      console.table(
-        performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
-      );
-      performance.clearMarks();
-      performance.clearMeasures();
+      performSort(tabs, sortingType, doShuffle, log_prefix);
     }
   });
+}
+
+// Normalized URL: no hash, no query string, no www, lowercase, no trailing slash.
+function getUrlMatchKey(url) {
+  try {
+    const p = new URL(url);
+    const host = p.hostname.replace(/^www\./i, "").toLowerCase();
+    const path = p.pathname.length > 1 ? p.pathname.replace(/\/$/, "") : p.pathname;
+    return `${p.protocol}//${host}${path}`.toLowerCase();
+  } catch {
+    return url.toLowerCase();
+  }
+}
+
+// Closes duplicate unpinned tabs, keeping the leftmost occurrence.
+// Mirrors DTC: URL key first, then title key (when enabled and tab is loaded).
+// Invokes callback with the list of closed tab ids (empty if none).
+function closeDuplicateTabs(tabs, callback) {
+  const log_prefix = `${TAB_SORTER_PREFIX} (closeDuplicateTabs):`;
+  const seenKeys = new Set();
+  const tabIdsToClose = [];
+
+  tabs.forEach((tab) => {
+    if (tab.pinned) {
+      return;
+    }
+    const urlKey = getUrlMatchKey(tab.url);
+    const titleKey = tab.status === "complete" && tab.title
+      ? `title:${tab.title}`
+      : null;
+
+    if (seenKeys.has(urlKey) || (titleKey && seenKeys.has(titleKey))) {
+      tabIdsToClose.push(tab.id);
+    } else {
+      seenKeys.add(urlKey);
+      if (titleKey) seenKeys.add(titleKey);
+    }
+  });
+
+  if (tabIdsToClose.length === 0) {
+    callback(tabIdsToClose);
+    return;
+  }
+
+  console.debug(
+    `${log_prefix} Closing ${tabIdsToClose.length} duplicate tab(s)`
+  );
+  chrome.tabs.remove(tabIdsToClose, () => {
+    if (chrome.runtime.lastError) {
+      console.error(`${log_prefix}`, chrome.runtime.lastError);
+    }
+    callback(tabIdsToClose);
+  });
+}
+
+function performSort(tabs, sortingType, doShuffle, log_prefix) {
+  let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
+  let comparisonFunction;
+  let customSort = undefined;
+
+  console.debug(notPinnedTabs);
+
+  switch (sortingType) {
+    case "sort_tabs_url":
+      comparisonFunction = comparisonByUrl;
+      break;
+    case "sort_tabs_mru":
+      // TODO Not working on chromium!
+      // WIP, See https://groups.google.com/a/chromium.org/g/extensions-reviews/c/iokG6nMuLio
+      // Addition 2025-09-16: This is now working on chromium!
+      // https://developer.chrome.com/docs/extensions/reference/api/tabs
+      // lastAccessed property is now available in Chrome 121+
+      comparisonFunction = comparisonByMru;
+      break;
+    case "sort_tabs_title":
+      comparisonFunction = comparisonByTitle;
+      break;
+    case "sort_tabs_favicon_and_title":
+      comparisonFunction = comparisonByTitle;
+      customSort = faviconSort;
+      break;
+    default:
+      comparisonFunction = comparisonByUrl;
+  }
+
+  console.debug(
+    "Callback of getCurrentWindowTabs 2",
+    `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
+  );
+
+  if (customSort) {
+    notPinnedTabs = customSort(
+      notPinnedTabs,
+      comparisonFunction,
+      getReverseCached()
+    );
+  } else {
+    if (getReverseCached()) {
+      notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
+      console.debug(`${log_prefix} Reverse sorting`);
+    } else {
+      notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
+    }
+  }
+
+  console.debug("Callback of getCurrentWindowTabs 3");
+
+  let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
+
+  console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
+
+  if (doShuffle) {
+    console.debug(`${log_prefix} Shuffling tabs`);
+    let i = newIds.length;
+    let j, temp;
+    if (i != 0) {
+      while (--i) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = newIds[j];
+        newIds[j] = newIds[i];
+        newIds[i] = temp;
+      }
+    }
+  }
+
+  let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
+
+  if (DEBUG) {
+    performance.mark("begin");
+  }
+
+  console.debug(
+    `Callback of getCurrentWindowTabs 5 - Before actual tab move`
+  );
+
+  // The index seems to be useless in this case of moving all the tabs
+  chrome.tabs.move(newIds, {
+    index: numberOfPinnedTabs,
+  });
+
+  if (DEBUG) {
+    performance.mark("end");
+    performance.measure("Tab reorganizing time", "begin", "end");
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
+    );
+    performance.clearMarks();
+    performance.clearMeasures();
+  }
 }
 
 // Helpers
