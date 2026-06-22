@@ -10,7 +10,8 @@
     "default_popup": "tab-sorter.html"
   },
   "background": {
-    "service_worker": "tab-sorter.js"
+    "service_worker": "tab-sorter.js",
+    "type": "module"
   },
   "icons": {
     "48": "icons/icon-48.png",

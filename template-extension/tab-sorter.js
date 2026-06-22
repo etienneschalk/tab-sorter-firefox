@@ -7,6 +7,18 @@
 // + getDefaultSortMethodAsync
 // + getAvailableSortMethodsSync
 
+import {
+  comparisonByMru,
+  comparisonByTitle,
+  comparisonByUrl,
+  computeGroupAwareSortResult,
+  computeLegacyTabOrder,
+  computePinnedTabOrder,
+  extractDomain,
+  faviconSort,
+  findDuplicateTabIds,
+} from "./lib/sort-logic.js";
+
 const TAB_SORTER_PREFIX = "[Tab Sorter]";
 const DEBUG = false;
 
@@ -485,149 +497,6 @@ function stateUpdateEventListener(command, value) {
 }
 
 // Custom sorts
-// Takes tabs, return tabs
-
-// Return classified tabs by favicon then applies comparison function on each
-// (Uses intermediary a dict of tabs, indexed by url and valued by arrays of
-// corresponding tabs)
-// Exemple : {"google.com": [1,5,6], "rickandmortyadventures.com": [4,2,0]}
-function faviconSort(tabs, comparisonFunction, reverse) {
-  let dictionaryByUrl = {};
-  let sortedTabs = [];
-
-  tabs.forEach((tab, index) => {
-    dictionaryByUrl[tab.favIconUrl] = dictionaryByUrl[tab.favIconUrl] || [];
-    dictionaryByUrl[tab.favIconUrl].push(tab);
-  });
-
-  icons = Object.keys(dictionaryByUrl);
-
-  console.debug(reverse);
-
-  if (reverse) {
-    icons.reverse();
-  }
-
-  icons.forEach((url) => {
-    simpleSort(dictionaryByUrl[url], comparisonFunction, reverse); // simpleSort(array, comparisonFunction, reverse)
-    Array.prototype.push.apply(sortedTabs, dictionaryByUrl[url]); // push values of array to the left array
-  });
-
-  return sortedTabs;
-}
-
-// Comparison functions
-
-// Compare tabs by domain name (without www prefix)
-// This ensures consistent sorting regardless of www. prefix in URLs
-// See: https://github.com/etienneschalk/tab-sorter-firefox/issues/20
-function comparisonByUrl(tabA, tabB) {
-  const domainA = extractDomain(tabA.url);
-  const domainB = extractDomain(tabB.url);
-  return domainA.localeCompare(domainB);
-}
-
-function comparisonByMru(tabA, tabB) {
-  return tabA.lastAccessed - tabB.lastAccessed;
-}
-
-function comparisonByTitle(tabA, tabB) {
-  cleanTitleA = removeParenthesisNotification(tabA.title);
-  cleanTitleB = removeParenthesisNotification(tabB.title);
-  return cleanTitleA.localeCompare(cleanTitleB);
-}
-
-// Suspended Tabs Helper Functions
-
-/**
- * Separate suspended (discarded) tabs from active tabs
- * @param {Array} tabs - Array of tab objects (already sorted)
- * @param {string} position - "end" or "beginning"
- * @returns {Array} Array with tabs reordered based on position
- */
-function groupSuspendedTabs(tabs, position) {
-  const activeTabs = [];
-  const suspendedTabs = [];
-
-  for (const tab of tabs) {
-    // tab.discarded is true when the tab is suspended/unloaded from memory
-    if (tab.discarded) {
-      suspendedTabs.push(tab);
-    } else {
-      activeTabs.push(tab);
-    }
-  }
-
-  if (position === "beginning") {
-    return [...suspendedTabs, ...activeTabs];
-  }
-  // Default to "end"
-
-  console.debug(
-    `[Tab Sorter] Grouped ${suspendedTabs.length} suspended tabs at the end`,
-  );
-  return [...activeTabs, ...suspendedTabs];
-}
-
-// Tab Groups Helper Functions
-
-/**
- * Organize tabs by their group membership
- * @param {Array} tabs - Array of tab objects
- * @returns {Object} Object with groups Map and ungrouped array
- */
-function organizeTabsByGroup(tabs) {
-  const groups = new Map(); // groupId -> { tabs: [], firstIndex: number }
-  const ungrouped = [];
-
-  tabs.forEach((tab, index) => {
-    // groupId of -1 or undefined means not in a group
-    if (
-      tab.groupId &&
-      tab.groupId !== -1 &&
-      tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE
-    ) {
-      if (!groups.has(tab.groupId)) {
-        groups.set(tab.groupId, { tabs: [], firstIndex: index });
-      }
-      groups.get(tab.groupId).tabs.push(tab);
-    } else {
-      ungrouped.push(tab);
-    }
-  });
-
-  return { groups, ungrouped };
-}
-
-/**
- * Sort an array of tabs using the specified comparison function
- * @param {Array} tabs - Array of tab objects
- * @param {Function} comparisonFunction - Comparison function for sorting
- * @param {boolean} reverse - Whether to reverse the sort order
- * @returns {Array} Sorted array of tabs
- */
-function sortTabArray(tabs, comparisonFunction, reverse) {
-  const sorted = [...tabs];
-  if (reverse) {
-    sorted.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-  } else {
-    sorted.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
-  }
-  return sorted;
-}
-
-/**
- * Get representative tab for a group (first tab after sorting)
- * Used to determine group ordering
- * @param {Array} groupTabs - Sorted array of tabs in a group
- * @returns {Object} The first tab in the sorted group
- */
-function getGroupRepresentative(groupTabs) {
-  return groupTabs[0];
-}
-
-// Enhanced sorting function with retry mechanism for new tabs
-
 // Core sorting function
 
 /**
@@ -664,23 +533,6 @@ function sortTabs(sortingType, shuffle) {
   });
 }
 
-// Normalized URL: no hash, no query string, no www, lowercase, no trailing slash.
-function getUrlMatchKey(url) {
-  try {
-    const p = new URL(url);
-    const host = p.hostname.replace(/^www\./i, "").toLowerCase();
-    const path =
-      p.pathname.length > 1 ? p.pathname.replace(/\/$/, "") : p.pathname;
-    return `${p.protocol}//${host}${path}`.toLowerCase();
-  } catch {
-    return url.toLowerCase();
-  }
-}
-
-/**
- * Sort only pinned tabs independently
- * Pinned tabs are sorted among themselves and moved to positions 0, 1, 2...
- */
 function sortPinnedTabsOnly(
   pinnedTabs,
   comparisonFunction,
@@ -689,31 +541,12 @@ function sortPinnedTabsOnly(
 ) {
   console.debug(`${log_prefix} Sorting ${pinnedTabs.length} pinned tabs`);
 
-  const reverse = getReverseCached();
-  let sortedPinnedTabs;
-
-  if (customSort) {
-    sortedPinnedTabs = customSort(pinnedTabs, comparisonFunction, reverse);
-  } else {
-    sortedPinnedTabs = [...pinnedTabs];
-    if (reverse) {
-      sortedPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-    } else {
-      sortedPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
-    }
-  }
-
-  // Group suspended tabs if enabled
-  const suspendedPositionPinned = getSuspendedTabsPositionCached();
-  if (suspendedPositionPinned !== "ignore") {
-    sortedPinnedTabs = groupSuspendedTabs(
-      sortedPinnedTabs,
-      suspendedPositionPinned,
-    );
-  }
-
-  // Move pinned tabs to their new positions (starting at index 0)
-  const pinnedTabIds = sortedPinnedTabs.map((tab) => tab.id);
+  const pinnedTabIds = computePinnedTabOrder(pinnedTabs, {
+    comparisonFunction,
+    reverse: getReverseCached(),
+    suspendedPosition: getSuspendedTabsPositionCached(),
+    customSort,
+  });
 
   console.debug(
     `${log_prefix} Moving pinned tabs to positions 0-${pinnedTabIds.length - 1}`,
@@ -738,103 +571,19 @@ function sortTabsWithGroupSupport(
     `${log_prefix} Sorting with tab groups support (preserving group positions)`,
   );
 
-  const { groups, ungrouped } = organizeTabsByGroup(notPinnedTabs);
-  const reverse = getReverseCached();
   const suspendedPosition = getSuspendedTabsPositionCached();
+  const { finalOrder, sortedGroups, sortedUngrouped } =
+    computeGroupAwareSortResult(notPinnedTabs, {
+      comparisonFunction,
+      reverse: getReverseCached(),
+      suspendedPosition,
+      customSort,
+      tabGroupIdNone: chrome.tabGroups?.TAB_GROUP_ID_NONE,
+    });
 
   console.debug(
-    `${log_prefix} Found ${groups.size} groups and ${ungrouped.length} ungrouped tabs`,
+    `${log_prefix} Found ${sortedGroups.length} groups and ${sortedUngrouped.length} ungrouped tabs`,
   );
-
-  // Sort tabs within each group, then apply suspended tabs grouping within each group
-  const sortedGroups = [];
-  for (const [groupId, groupData] of groups) {
-    let sortedGroupTabs;
-    if (customSort) {
-      sortedGroupTabs = customSort(groupData.tabs, comparisonFunction, reverse);
-    } else {
-      sortedGroupTabs = sortTabArray(
-        groupData.tabs,
-        comparisonFunction,
-        reverse,
-      );
-    }
-
-    // Apply suspended tabs grouping within this group
-    if (suspendedPosition !== "ignore") {
-      sortedGroupTabs = groupSuspendedTabs(sortedGroupTabs, suspendedPosition);
-    }
-
-    sortedGroups.push({
-      groupId,
-      tabs: sortedGroupTabs,
-      originalFirstIndex: groupData.firstIndex,
-    });
-  }
-
-  // Sort ungrouped tabs, then apply suspended tabs grouping
-  let sortedUngrouped;
-  if (customSort) {
-    sortedUngrouped = customSort(ungrouped, comparisonFunction, reverse);
-  } else {
-    sortedUngrouped = sortTabArray(ungrouped, comparisonFunction, reverse);
-  }
-
-  // Apply suspended tabs grouping within ungrouped tabs
-  if (suspendedPosition !== "ignore") {
-    sortedUngrouped = groupSuspendedTabs(sortedUngrouped, suspendedPosition);
-  }
-
-  // Build final order: preserve group positions, only sort within groups
-  // Groups stay at their relative positions, ungrouped tabs are sorted together
-  // and placed at the position of the first ungrouped tab encountered
-  let finalOrder = [];
-
-  // Fast path: if no groups exist, just use the sorted ungrouped tabs directly
-  if (groups.size === 0) {
-    finalOrder = sortedUngrouped.map((t) => t.id);
-    console.debug(`${log_prefix} No groups found, using simple sorted order`);
-  } else {
-    // Create a map of groupId -> sorted tabs
-    const groupTabsMap = new Map();
-    for (const group of sortedGroups) {
-      groupTabsMap.set(group.groupId, [...group.tabs]);
-    }
-
-    // Track which groups we've processed
-    const processedGroups = new Set();
-    let ungroupedAdded = false;
-
-    // Go through original tab order to preserve relative positions
-    for (const tab of notPinnedTabs) {
-      if (
-        tab.groupId &&
-        tab.groupId !== -1 &&
-        tab.groupId !== chrome.tabGroups?.TAB_GROUP_ID_NONE
-      ) {
-        // This tab is in a group
-        if (!processedGroups.has(tab.groupId)) {
-          // First time seeing this group - add all its sorted tabs
-          const groupTabs = groupTabsMap.get(tab.groupId);
-          if (groupTabs) {
-            finalOrder.push(...groupTabs.map((t) => t.id));
-          }
-          processedGroups.add(tab.groupId);
-        }
-        // Skip - already added with group
-      } else {
-        // Ungrouped tab - add ALL sorted ungrouped tabs at the first ungrouped position
-        if (!ungroupedAdded) {
-          finalOrder.push(...sortedUngrouped.map((t) => t.id));
-          ungroupedAdded = true;
-          console.debug(
-            `${log_prefix} Added ${sortedUngrouped.length} ungrouped tabs at first ungrouped position`,
-          );
-        }
-        // Skip subsequent ungrouped tabs - already added all of them
-      }
-    }
-  }
 
   const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
 
@@ -846,18 +595,14 @@ function sortTabsWithGroupSupport(
     performance.mark("begin");
   }
 
-  // Move all tabs to their new positions
   chrome.tabs.move(finalOrder, {
     index: numberOfPinnedTabs,
   });
 
-  // Re-apply group membership to ensure tabs stay in their groups after moving
-  // This is necessary because moving tabs can sometimes break group associations
   for (const group of sortedGroups) {
     const tabIds = group.tabs.map((t) => t.id);
     if (tabIds.length > 0) {
       chrome.tabs.group({ tabIds, groupId: group.groupId }).catch((error) => {
-        // Silently ignore errors - group may have been deleted or tabs already in correct group
         console.debug(
           `${log_prefix} Could not re-apply group ${group.groupId}:`,
           error,
@@ -866,12 +611,9 @@ function sortTabsWithGroupSupport(
     }
   }
 
-  // Explicitly ungroup the ungrouped tabs to prevent Chrome from auto-grouping them
-  // with adjacent groups after the move operation
   if (sortedUngrouped.length > 0 && chrome.tabs.ungroup) {
     const ungroupedTabIds = sortedUngrouped.map((t) => t.id);
     chrome.tabs.ungroup(ungroupedTabIds).catch((error) => {
-      // Silently ignore errors - tabs may already be ungrouped
       console.debug(`${log_prefix} Could not ungroup tabs:`, error);
     });
   }
@@ -903,55 +645,20 @@ function sortTabsLegacy(
     `${log_prefix} Sorting without tab groups support (legacy mode)`,
   );
 
-  if (customSort) {
-    notPinnedTabs = customSort(
-      notPinnedTabs,
-      comparisonFunction,
-      getReverseCached(),
-    );
-  } else {
-    if (getReverseCached()) {
-      notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-      console.debug(`${log_prefix} Reverse sorting`);
-    } else {
-      notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
-    }
-  }
+  const newIds = computeLegacyTabOrder(notPinnedTabs, {
+    comparisonFunction,
+    reverse: getReverseCached(),
+    suspendedPosition: getSuspendedTabsPositionCached(),
+    customSort,
+    doShuffle,
+  });
 
-  // Group suspended tabs if enabled (and not shuffling)
-  const suspendedPosition = getSuspendedTabsPositionCached();
-  if (suspendedPosition !== "ignore" && !doShuffle) {
-    notPinnedTabs = groupSuspendedTabs(notPinnedTabs, suspendedPosition);
-  }
-
-  console.debug("Callback of getCurrentWindowTabs 3");
-  let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
-
-  console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
-
-  if (doShuffle) {
-    console.debug(`${log_prefix} Shuffling tabs`);
-    let i = newIds.length;
-    let j, temp;
-    if (i != 0) {
-      while (--i) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = newIds[j];
-        newIds[j] = newIds[i];
-        newIds[i] = temp;
-      }
-    }
-  }
-
-  let numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
+  const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
 
   if (DEBUG) {
     performance.mark("begin");
   }
 
-  console.debug(`Callback of getCurrentWindowTabs 5 - Before actual tab move`);
-
-  // The index seems to be useless in this case of moving all the tabs
   chrome.tabs.move(newIds, {
     index: numberOfPinnedTabs,
   });
@@ -972,24 +679,7 @@ function sortTabsLegacy(
 // Invokes callback with the list of closed tab ids (empty if none).
 function closeDuplicateTabs(tabs, callback) {
   const log_prefix = `${TAB_SORTER_PREFIX} (closeDuplicateTabs):`;
-  const seenKeys = new Set();
-  const tabIdsToClose = [];
-
-  tabs.forEach((tab) => {
-    if (tab.pinned) {
-      return;
-    }
-    const urlKey = getUrlMatchKey(tab.url);
-    const titleKey =
-      tab.status === "complete" && tab.title ? `title:${tab.title}` : null;
-
-    if (seenKeys.has(urlKey) || (titleKey && seenKeys.has(titleKey))) {
-      tabIdsToClose.push(tab.id);
-    } else {
-      seenKeys.add(urlKey);
-      if (titleKey) seenKeys.add(titleKey);
-    }
-  });
+  const tabIdsToClose = findDuplicateTabIds(tabs);
 
   if (tabIdsToClose.length === 0) {
     callback(tabIdsToClose);
@@ -1009,6 +699,10 @@ function closeDuplicateTabs(tabs, callback) {
 
 function performSort(tabs, sortingType, doShuffle, log_prefix) {
   console.debug("Callback of getCurrentWindowTabs 1");
+
+  const respectTabGroups =
+    getRespectTabGroupsCached() && TAB_GROUPS_API_AVAILABLE;
+  const sortPinnedTabs = getSortPinnedTabsCached();
 
   // Separate pinned and non-pinned tabs
   let pinnedTabs = tabs.filter((tab) => tab.pinned);
@@ -1101,35 +795,9 @@ function getCurrentWindowTabs(callback) {
   });
 }
 
-// Easy reverse option for sorting
-function simpleSort(array, comparisonFunction, reverse) {
-  reverse = reverse || false;
-  if (reverse) {
-    array.sort((b, a) => comparisonFunction(a, b));
-  } else {
-    array.sort((a, b) => comparisonFunction(a, b));
-  }
-}
-
-// Remove youtube notifications in title eg "(20) video" -> "video"
-function removeParenthesisNotification(stringToModify) {
-  return stringToModify.replace(/\(\d*\)/m, "").trim();
-}
-
 // Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
-}
-
-// Domain extraction utility
-function extractDomain(url) {
-  try {
-    const urlObj = new URL(url);
-    return urlObj.hostname.replace(/^www\./, ""); // Remove www prefix
-  } catch (error) {
-    console.error("Failed to extract domain from URL:", url, error);
-    return null;
-  }
 }
 
 // Main extract domain function

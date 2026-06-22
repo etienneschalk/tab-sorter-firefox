@@ -1,0 +1,21 @@
+{
+  "name": "tab-sorter-firefox",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "./build-extensions.sh",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  }
+}

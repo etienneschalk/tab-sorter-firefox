@@ -1,32 +1,17 @@
+import {
+  AVAILABLE_THEMES,
+  THEME_AUTO,
+  applyTheme as applyThemeToDocument,
+} from "./lib/theme-logic.js";
+
 // chrome.runtime.sendMessage("queryInitialState", (initialState) => {
 //   console.log("Received initial state", initialState);
 //   initializeUserInterface(initialState);
 // });
 
-// Theme options
-const THEME_AUTO = "auto";
-const THEME_DARK = "dark";
-const THEME_LIGHT = "light";
-const AVAILABLE_THEMES = [THEME_AUTO, THEME_DARK, THEME_LIGHT];
 
-/**
- * Detect the system's preferred color scheme
- * @returns {"dark" | "light"} The resolved theme
- */
-function getSystemTheme() {
-  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    return THEME_DARK;
-  }
-  return THEME_LIGHT;
-}
-
-/**
- * Apply the theme to the document
- * @param {string} theme - "auto", "dark", or "light"
- */
 function applyTheme(theme) {
-  const resolvedTheme = theme === THEME_AUTO ? getSystemTheme() : theme;
-  document.documentElement.setAttribute("data-theme", resolvedTheme);
+  const resolvedTheme = applyThemeToDocument(theme, document);
   console.log(`[Tab Sorter] Applied theme: ${theme} (resolved to: ${resolvedTheme})`);
 }
 

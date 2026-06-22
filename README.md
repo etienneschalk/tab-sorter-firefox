@@ -16,6 +16,25 @@ The `template-extension` folder contains the main source.
 The `build` folder contains concrete extensions for Firefox and Chrome (respectively (`firefox-extension` and `chrome-extension`)).
 The `build-extensions.sh` script generates the Firefox and Chrome extensions from the `template-extension` folder, ready to be zipped.
 
+## Testing
+
+Automated tests cover the scenarios from the `test-*.md` manuals:
+
+- **Unit tests** (Vitest): sorting logic, suspended tabs, tab groups, domain extraction, theme resolution
+- **E2E tests** (Playwright + Chromium): popup theme, sort by URL, pinned tabs, extract domain
+
+Requirements: Node.js 18+ (see `.nvmrc`), npm, `jq` for builds, Chromium (installed via Playwright).
+
+```bash
+npm install
+npx playwright install chromium   # first time only
+npm run test:unit                 # fast logic tests
+npm run test:e2e                  # browser extension tests (builds first)
+npm run test:all                  # both suites
+```
+
+Pure logic lives in `template-extension/lib/` and is shared by the extension and unit tests.
+
 ## Extension Home Page
 
 (EN) [Firefox Extension Home Page](https://addons.mozilla.org/en-US/firefox/addon/tab-sorter/)
