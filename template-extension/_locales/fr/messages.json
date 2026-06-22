@@ -154,5 +154,9 @@
   "options_page_auto_save": {
     "message": "Les modifications sont enregistrées automatiquement.",
     "description": "Hint shown on the settings page"
+  },
+  "change_addons_preferences": {
+    "message": "Accéder aux préférences des modules",
+    "description": "Link to access the Firefox's about:addons page"
   }
 }

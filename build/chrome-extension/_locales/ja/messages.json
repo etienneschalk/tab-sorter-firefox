@@ -1,0 +1,162 @@
+{
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "タブを並べ替える拡張機能です。",
+    "description": "Description of the extension."
+  },
+  "actions": {
+    "message": "並べ替え"
+  },
+  "help": {
+    "message": "ヘルプ"
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "並べ替え方法ごとのキーボードショートカットを変更するには？"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "この拡張機能には、一部の並べ替え方法用のショートカットがあらかじめ設定されています。Firefox から直接変更できます。詳細はこちら：<a target=\"_blank\" href=\"https://support.mozilla.org/ja/kb/extension-shortcuts\">Firefox で拡張機能のショートカットを管理する</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "最近使用した順での並べ替えは Chrome 121 以降で利用できます。"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "タブ API の lastAccessed プロパティにより、この機能は Chrome 121 以降で利用可能です。詳細はこちら：<a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API ドキュメント</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "問題が発生しました！"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">GitHub で issue を作成してください</a>"
+  },
+  "preferences": {
+    "message": "設定"
+  },
+  "preferences_general": {
+    "message": "一般設定"
+  },
+  "preferences_auto": {
+    "message": "自動並べ替え"
+  },
+  "no_shortcut_configured": {
+    "message": "ショートカットはまだ設定されていません"
+  },
+  "command_sort_tabs_url": {
+    "message": "URL 順",
+    "description": "Button for sorting tabs by URL."
+  },
+  "command_sort_tabs_mru": {
+    "message": "最近使用した順",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_title": {
+    "message": "タイトル順",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "アイコン順",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "タブをシャッフル",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_extract_domain": {
+    "message": "ドメインを抽出",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "change_addons_preferences": {
+    "message": "アドオンの設定を開く",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "並べ替えを反転",
+    "description": "Reverse sorting order"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "すべてのウィンドウのタブを並べ替え",
+    "description": "Sorting tabs also in other windows"
+  },
+  "preferences_suspended_tabs": {
+    "message": "スリープ中のタブ",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "suspended_tabs_position_label": {
+    "message": "スリープ中タブの位置：",
+    "description": "Label for suspended tabs position selector"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "破棄状態を無視",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_end": {
+    "message": "末尾にグループ化",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "先頭にグループ化",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "ピン留めタブも並べ替え",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "重複タブを閉じる",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "タブを自動で並べ替え（ベストエフォート）。",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "自動並べ替えのデフォルト方法",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "タブグループを尊重（グループ内で並べ替え）",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "tab_groups_not_supported": {
+    "message": "このブラウザバージョンではタブグループはサポートされていません",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "preferences_tab_groups": {
+    "message": "タブグループ",
+    "description": "Section header for tab groups preferences"
+  },
+  "preferences_appearance": {
+    "message": "外観",
+    "description": "Section header for appearance preferences"
+  },
+  "theme_label": {
+    "message": "テーマ：",
+    "description": "Label for theme selector"
+  },
+  "theme_auto": {
+    "message": "自動（システムに従う）",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "ダーク",
+    "description": "Dark theme option"
+  },
+  "theme_light": {
+    "message": "ライト",
+    "description": "Light theme option"
+  },
+  "open_settings_page": {
+    "message": "設定ページを開く",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_intro": {
+    "message": "Tab Sorter の設定を行います。変更は自動的に保存され、拡張機能のポップアップと共有されます。",
+    "description": "Introduction text on the settings page"
+  },
+  "options_page_auto_save": {
+    "message": "変更は自動的に保存されます。",
+    "description": "Hint shown on the settings page"
+  }
+}

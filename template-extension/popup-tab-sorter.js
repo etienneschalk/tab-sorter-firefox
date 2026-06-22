@@ -1,3 +1,4 @@
+import { applyDocumentLocale } from "./lib/locale-logic.js";
 import { applyTheme as applyThemeToDocument } from "./lib/theme-logic.js";
 import { COMMAND_DISPLAY_PRIORITY } from "./popup/constants.js";
 import { registerPopupEventListeners } from "./popup/events.js";
@@ -11,6 +12,8 @@ function applyTheme(theme) {
 }
 
 registerPopupEventListeners(applyTheme);
+
+applyDocumentLocale(document);
 
 (async () => {
   const initialState = await chrome.runtime.sendMessage("queryInitialState");

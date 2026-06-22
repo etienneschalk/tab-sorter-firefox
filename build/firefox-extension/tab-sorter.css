@@ -59,7 +59,7 @@ html {
 
 .flexcontainer {
   display: flex;
-  flex-direction: col;
+  flex-direction: row;
   gap: 12px;
   margin-top: 6px;
   margin-bottom: 6px;
@@ -283,4 +283,40 @@ select option {
 .settings-link a {
   display: inline;
   cursor: pointer;
+}
+
+/* Right-to-left locales (Arabic, Hebrew) */
+[dir="rtl"] .flexcontainer {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] label input[type="checkbox"] {
+  margin-inline-start: 6px;
+  margin-inline-end: 0;
+}
+
+[dir="rtl"] .sub-checkbox {
+  margin-inline-start: 18px;
+  margin-inline-end: 0;
+  padding-inline-start: 8px;
+  padding-inline-end: 0;
+  border-inline-start: 2px solid var(--border-color);
+  border-inline-end: none;
+}
+
+[dir="rtl"] .theme-selector,
+[dir="rtl"] .suspended-tabs-selector {
+  flex-direction: row-reverse;
+}
+
+.suspended-tabs-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.suspended-tabs-selector label {
+  display: inline;
+  width: auto;
 }
