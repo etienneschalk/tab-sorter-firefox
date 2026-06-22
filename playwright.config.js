@@ -4,7 +4,9 @@ export default defineConfig({
   testDir: "tests/e2e",
   timeout: 60_000,
   retries: process.env.CI ? 1 : 0,
-  reporter: [["list"]],
+  reporter: process.env.CI
+    ? [["list"], ["html", { open: "never" }]]
+    : [["list"]],
   globalSetup: "./tests/e2e/global-setup.js",
   use: {
     trace: "on-first-retry",
