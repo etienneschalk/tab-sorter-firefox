@@ -10,12 +10,35 @@ Options de Tri
 - Par Titre - Organisation alphabétique
 - Par URL/Domaine - Grouper les sites web similaires
 - Par Favicon - Regroupement visuel par icônes de sites
-- Plus Récemment Utilisé - Trier par activité récente (Firefox uniquement)
+- Plus Récemment Utilisé - Trier par activité récente (Chrome 121+, Firefox)
 - Mélanger - Randomiser l'ordre des onglets
+
+Support des Groupes d'Onglets
+- Respecte les groupes d'onglets du navigateur lors du tri (Chrome 89+, Firefox 137+)
+- Les onglets au sein de chaque groupe sont triés séparément
+- Les groupes conservent leurs positions d'origine
+- Option pour désactiver et revenir au comportement classique
 
 Raccourcis Clavier
 - Ctrl+Shift+Espace - Trier les onglets avec votre méthode préférée
 - Ctrl+Shift+L - Extraire le domaine (déplacer les onglets du même domaine vers une nouvelle fenêtre)
+
+Support des Onglets Suspendus
+- Options flexibles pour gérer les onglets suspendus lors du tri
+- Trois choix de position : Ignorer, Grouper à la fin, ou Grouper au début
+- Permet de garder les onglets actifs facilement accessibles ou de revoir les onglets suspendus en premier
+- Fonctionne avec toutes les méthodes de tri
+
+Support des Onglets Épinglés
+- Option pour trier les onglets épinglés indépendamment
+- Les onglets épinglés sont triés entre eux tout en restant épinglés
+- Fonctionne avec toutes les méthodes de tri
+
+Mode Sombre
+- Le thème Auto (suit le système) est le défaut
+- Détection automatique du thème système
+- Sélection manuelle du thème (Auto, Sombre, Clair)
+- Changement de thème instantané
 
 Fonctionnalités Supplémentaires
 - Tri automatique - Organiser automatiquement les nouveaux onglets

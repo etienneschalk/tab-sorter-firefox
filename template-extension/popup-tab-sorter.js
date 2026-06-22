@@ -1,11 +1,27 @@
+import {
+  AVAILABLE_THEMES,
+  THEME_AUTO,
+  applyTheme as applyThemeToDocument,
+} from "./lib/theme-logic.js";
+
 // chrome.runtime.sendMessage("queryInitialState", (initialState) => {
 //   console.log("Received initial state", initialState);
 //   initializeUserInterface(initialState);
 // });
 
+
+function applyTheme(theme) {
+  const resolvedTheme = applyThemeToDocument(theme, document);
+  console.log(`[Tab Sorter] Applied theme: ${theme} (resolved to: ${resolvedTheme})`);
+}
+
 (async () => {
   const initialState = await chrome.runtime.sendMessage("queryInitialState");
   console.debug("== After await chrome.runtime.sendMessage");
+  
+  // Apply theme immediately before rendering
+  applyTheme(initialState.theme);
+  
   initializeUserInterface(initialState);
 })();
 
@@ -16,6 +32,12 @@ function initializeUserInterface(initialState) {
     isAutoOnNewTab,
     isCloseDuplicateTabs,
     defaultSortMethod,
+    isRespectTabGroups,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
+    isSortPinnedTabs,
+    theme,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
   } = initialState;
@@ -26,6 +48,11 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isAutoOnNewTab", isAutoOnNewTab);
   console.log(logPrefix + "isCloseDuplicateTabs", isCloseDuplicateTabs);
   console.log(logPrefix + "defaultSortMethod", defaultSortMethod);
+  console.log(logPrefix + "isRespectTabGroups", isRespectTabGroups);
+  console.log(logPrefix + "suspendedTabsPosition", suspendedTabsPosition);
+  console.log(logPrefix + "isSortPinnedTabs", isSortPinnedTabs);
+  console.log(logPrefix + "theme", theme);
+  console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
   logCommands(allCommands);
@@ -45,6 +72,12 @@ function initializeUserInterface(initialState) {
     isAutoOnNewTab,
     isCloseDuplicateTabs,
     defaultSortMethod,
+    isRespectTabGroups,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
+    isSortPinnedTabs,
+    theme,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands: allCommands
       .filter((command) => command.name.startsWith("command_sort_tabs") || command.name === "command_extract_domain")
@@ -64,10 +97,14 @@ function initializeUserInterface(initialState) {
 const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
 const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
 const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
+const CHECKBOX_RESPECT_TAB_GROUPS = "ui_click_checkbox_sort_tabs_respect_tab_groups";
+const CHECKBOX_SORT_PINNED = "ui_click_checkbox_sort_tabs_pinned";
 const CHECKBOX_CLOSE_DUPLICATES =
   "ui_click_checkbox_sort_tabs_close_duplicates";
 const SELECT_DEFAULT_SORT_METHOD =
   "ui_change_select_sort_select_tabs_default_sort_method";
+const SELECT_SUSPENDED_TABS_POSITION = "ui_change_select_suspended_tabs_position";
+const SELECT_THEME = "ui_change_select_theme";
 
 function translate(message) {
   return chrome.i18n.getMessage(message);
@@ -117,6 +154,19 @@ function renderCheckbox(id, initialValue) {
 </label>
   `;
 }
+
+function renderCheckboxWithDisabled(id, initialValue, disabled, disabledMessage) {
+  if (disabled) {
+    return `
+<label for=${id} class="disabled-checkbox">
+  <input type="checkbox" id=${id} disabled />
+   ${translate(id)} 
+  <br><small class="warning-text">${translate(disabledMessage)}</small>
+</label>
+    `;
+  }
+  return renderCheckbox(id, initialValue);
+}
 function renderSelect(id, options, initialSelectedValue) {
   return `
 <label for="${id}">${translate(id)}</label>
@@ -136,6 +186,22 @@ function renderOption(value, initialSelectedValue) {
     `;
 }
 
+function renderThemeOption(themeValue, selectedTheme) {
+  return `
+<option value="${themeValue}" ${themeValue === selectedTheme ? "selected" : ""}>
+    ${translate(`theme_${themeValue}`)}
+</option>
+  `;
+}
+
+function renderSuspendedTabsPositionOption(positionValue, selectedPosition) {
+  return `
+<option value="${positionValue}" ${positionValue === selectedPosition ? "selected" : ""}>
+    ${translate(`suspended_tabs_position_${positionValue}`)}
+</option>
+  `;
+}
+
 function renderPopup(params) {
   const {
     isReverse,
@@ -143,6 +209,12 @@ function renderPopup(params) {
     isAutoOnNewTab,
     isCloseDuplicateTabs,
     defaultSortMethod,
+    isRespectTabGroups,
+    suspendedTabsPosition,
+    availableSuspendedTabsPositions,
+    isSortPinnedTabs,
+    theme,
+    isTabGroupsApiAvailable,
     availableSortMethods,
     allCommands,
   } = params;
@@ -171,12 +243,29 @@ function renderPopup(params) {
         <div class="flexcol">
             <h2> ⚙️ ${translate("preferences")} </h2>
             <br> 
-            <h3> ${translate("preferences_general")}</h3>
+            <h3> ⭐ ${translate("preferences_general")}</h3>
             ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
             ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
+            ${renderCheckbox(CHECKBOX_SORT_PINNED, isSortPinnedTabs)}
             ${renderCheckbox(CHECKBOX_CLOSE_DUPLICATES, isCloseDuplicateTabs)}
+            <br>
+            <h3> 💤 ${translate("preferences_suspended_tabs")}</h3>
+            <div class="suspended-tabs-selector">
+              <label for="${SELECT_SUSPENDED_TABS_POSITION}">${translate("suspended_tabs_position_label")}</label>
+              <select id="${SELECT_SUSPENDED_TABS_POSITION}">
+                ${availableSuspendedTabsPositions.map((p) => renderSuspendedTabsPositionOption(p, suspendedTabsPosition)).join("")}
+              </select>
+            </div>
             <br> 
-            <h3> ${translate("preferences_auto")}</h3>
+            <h3> 📁 ${translate("preferences_tab_groups")}</h3>
+            ${renderCheckboxWithDisabled(
+              CHECKBOX_RESPECT_TAB_GROUPS,
+              isRespectTabGroups,
+              !isTabGroupsApiAvailable,
+              "tab_groups_not_supported"
+            )}
+            <br> 
+            <h3> 🤖 ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}
             <br>
             ${renderSelect(
@@ -184,6 +273,15 @@ function renderPopup(params) {
               availableSortMethods,
               defaultSortMethod
             )}
+            <br>
+            <br>
+            <h3> 🎨 ${translate("preferences_appearance")}</h3>
+            <div class="theme-selector">
+              <label for="${SELECT_THEME}">${translate("theme_label")}</label>
+              <select id="${SELECT_THEME}">
+                ${AVAILABLE_THEMES.map((t) => renderThemeOption(t, theme)).join("")}
+              </select>
+            </div>
         </div>
         <div class="flexcol">
             <h2> 🧹 ${translate("actions")} </h2>
@@ -234,6 +332,11 @@ document.addEventListener("change", (e) => {
   if (id.startsWith("ui_change_select_")) {
     command = id;
     value = e.target.value;
+    
+    // Apply theme immediately when changed
+    if (id === SELECT_THEME) {
+      applyTheme(value);
+    }
   }
 
   chrome.runtime.sendMessage({

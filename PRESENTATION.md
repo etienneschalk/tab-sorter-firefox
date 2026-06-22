@@ -10,12 +10,35 @@ Sorting Options
 - By Title - Alphabetical organization
 - By URL/Domain - Group similar websites together
 - By Favicon - Visual grouping by site icons
-- Most Recently Used - Sort by recent activity (Firefox only)
+- Most Recently Used - Sort by recent activity
 - Shuffle - Randomize tab order
+
+Tab Groups Support
+- Respects browser Tab Groups during sorting (Chrome 89+, Firefox 137+)
+- Tabs within each group are sorted separately
+- Groups maintain their original positions
+- Option to disable for legacy behavior
 
 Keyboard Shortcuts
 - Ctrl+Shift+Space - Sort tabs with your preferred method
 - Ctrl+Shift+L - Extract domain (move same-domain tabs to new window)
+
+Suspended Tabs Support
+- Flexible options for handling suspended (discarded) tabs when sorting
+- Three position choices: Ignore, Group at the end, or Group at the beginning
+- Helps keep active tabs easily accessible or review suspended tabs first
+- Works with all sorting methods
+
+Pinned Tabs Support
+- Option to sort pinned tabs independently
+- Pinned tabs sorted among themselves while remaining pinned
+- Works with all sorting methods
+
+Dark Mode Support
+- Auto theme (follows system) is the default
+- Automatic system theme detection
+- Manual theme selection (Auto, Dark, Light)
+- Instant theme switching
 
 Additional Features
 - Auto-sort - Automatically organize new tabs

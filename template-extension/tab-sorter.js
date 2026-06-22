@@ -7,6 +7,18 @@
 // + getDefaultSortMethodAsync
 // + getAvailableSortMethodsSync
 
+import {
+  comparisonByMru,
+  comparisonByTitle,
+  comparisonByUrl,
+  computeGroupAwareSortResult,
+  computeLegacyTabOrder,
+  computePinnedTabOrder,
+  extractDomain,
+  faviconSort,
+  findDuplicateTabIds,
+} from "./lib/sort-logic.js";
+
 const TAB_SORTER_PREFIX = "[Tab Sorter]";
 const DEBUG = false;
 
@@ -27,11 +39,28 @@ const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
 const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = AVAILABLE_SORT_METHODS[1];
+const STORAGE_KEY_RESPECT_TAB_GROUPS =
+  "TAB_SORTER_STORAGE_KEY_RESPECT_TAB_GROUPS";
+const STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS = true;
+const STORAGE_KEY_SUSPENDED_TABS_POSITION =
+  "TAB_SORTER_STORAGE_KEY_SUSPENDED_TABS_POSITION";
+// Options: "ignore" (no special handling), "end" (group at end), "beginning" (group at beginning)
+const STORAGE_DEFAULT_VALUE_SUSPENDED_TABS_POSITION = "ignore";
+const AVAILABLE_SUSPENDED_TABS_POSITIONS = ["ignore", "end", "beginning"];
+const STORAGE_KEY_SORT_PINNED_TABS = "TAB_SORTER_STORAGE_KEY_SORT_PINNED_TABS";
+const STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS = false;
+const STORAGE_KEY_THEME = "TAB_SORTER_STORAGE_KEY_THEME";
+// Theme options: "auto" (detect system), "dark", "light"
+// Default to "auto" to follow system preference
+const STORAGE_DEFAULT_VALUE_THEME = "auto";
 const STORAGE_KEY_CLOSE_DUPLICATE_TABS =
   "TAB_SORTER_STORAGE_KEY_CLOSE_DUPLICATE_TABS";
 const STORAGE_DEFAULT_VALUE_CLOSE_DUPLICATE_TABS = false;
 
 const CACHE_KEY_ALL_COMMANDS = "CACHE_KEY_ALL_COMMANDS";
+
+// Tab Groups API availability (Chrome 89+, Firefox 137+)
+const TAB_GROUPS_API_AVAILABLE = typeof chrome.tabGroups !== "undefined";
 
 // Initialization code
 initTabSorter();
@@ -41,35 +70,63 @@ initTabSorter();
 async function getReverseAsync() {
   return await retrieveFromStorage(
     STORAGE_KEY_REVERSE,
-    STORAGE_DEFAULT_VALUE_REVERSE
+    STORAGE_DEFAULT_VALUE_REVERSE,
   );
 }
 
 async function getAllWindowsAsync() {
   return await retrieveFromStorage(
     STORAGE_KEY_SORT_ALL_WINDOWS,
-    STORAGE_DEFAULT_VALUE_SORT_ALL_WINDOWS
+    STORAGE_DEFAULT_VALUE_SORT_ALL_WINDOWS,
   );
 }
 
 async function getAutoOnNewTabAsync() {
   return await retrieveFromStorage(
     STORAGE_KEY_AUTO_SORT_BEST_EFFORT,
-    STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB
+    STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB,
   );
 }
 
 async function getDefaultSortMethodAsync() {
   return await retrieveFromStorage(
     STORAGE_KEY_DEFAULT_SORT_METHOD,
-    STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD
+    STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD,
+  );
+}
+
+async function getRespectTabGroupsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_RESPECT_TAB_GROUPS,
+    STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS,
+  );
+}
+
+async function getSuspendedTabsPositionAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_SUSPENDED_TABS_POSITION,
+    STORAGE_DEFAULT_VALUE_SUSPENDED_TABS_POSITION,
+  );
+}
+
+async function getSortPinnedTabsAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_SORT_PINNED_TABS,
+    STORAGE_DEFAULT_VALUE_SORT_PINNED_TABS,
+  );
+}
+
+async function getThemeAsync() {
+  return await retrieveFromStorage(
+    STORAGE_KEY_THEME,
+    STORAGE_DEFAULT_VALUE_THEME,
   );
 }
 
 async function getCloseDuplicateTabsAsync() {
   return await retrieveFromStorage(
     STORAGE_KEY_CLOSE_DUPLICATE_TABS,
-    STORAGE_DEFAULT_VALUE_CLOSE_DUPLICATE_TABS
+    STORAGE_DEFAULT_VALUE_CLOSE_DUPLICATE_TABS,
   );
 }
 
@@ -98,6 +155,10 @@ async function resetCacheAsync() {
   await getAllWindowsAsync();
   await getAutoOnNewTabAsync();
   await getDefaultSortMethodAsync();
+  await getRespectTabGroupsAsync();
+  await getSuspendedTabsPositionAsync();
+  await getSortPinnedTabsAsync();
+  await getThemeAsync();
   await getCloseDuplicateTabsAsync();
   await getAllCommandsFromManifest();
 }
@@ -130,6 +191,33 @@ function getDefaultSortMethodCached() {
   return value;
 }
 
+function getRespectTabGroupsCached() {
+  console.debug("getRespectTabGroupsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS];
+  console.debug("getRespectTabGroupsCached 2", `${value}`);
+  return value;
+}
+
+function getSuspendedTabsPositionCached() {
+  console.debug("getSuspendedTabsPositionCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_SUSPENDED_TABS_POSITION];
+  console.debug("getSuspendedTabsPositionCached 2", `${value}`);
+  return value;
+}
+
+function getSortPinnedTabsCached() {
+  console.debug("getSortPinnedTabsCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_SORT_PINNED_TABS];
+  console.debug("getSortPinnedTabsCached 2", `${value}`);
+  return value;
+}
+
+function getThemeCached() {
+  console.debug("getThemeCached 1");
+  const value = CACHED_STATE[STORAGE_KEY_THEME];
+  console.debug("getThemeCached 2", `${value}`);
+  return value;
+}
 function getCloseDuplicateTabsCached() {
   return CACHED_STATE[STORAGE_KEY_CLOSE_DUPLICATE_TABS];
 }
@@ -148,6 +236,22 @@ function setAutoSortBestEffort(choice) {
 
 function setDefaultSortMethod(choice) {
   persistInStorage(STORAGE_KEY_DEFAULT_SORT_METHOD, choice);
+}
+
+function setRespectTabGroups(choice) {
+  persistInStorage(STORAGE_KEY_RESPECT_TAB_GROUPS, choice);
+}
+
+function setSuspendedTabsPosition(choice) {
+  persistInStorage(STORAGE_KEY_SUSPENDED_TABS_POSITION, choice);
+}
+
+function setSortPinnedTabs(choice) {
+  persistInStorage(STORAGE_KEY_SORT_PINNED_TABS, choice);
+}
+
+function setTheme(choice) {
+  persistInStorage(STORAGE_KEY_THEME, choice);
 }
 
 function setCloseDuplicateTabs(choice) {
@@ -201,6 +305,13 @@ function addEventListeners() {
           isAllWindows: CACHED_STATE[STORAGE_KEY_SORT_ALL_WINDOWS],
           isAutoOnNewTab: CACHED_STATE[STORAGE_KEY_AUTO_SORT_BEST_EFFORT],
           defaultSortMethod: CACHED_STATE[STORAGE_KEY_DEFAULT_SORT_METHOD],
+          isRespectTabGroups: CACHED_STATE[STORAGE_KEY_RESPECT_TAB_GROUPS],
+          suspendedTabsPosition:
+            CACHED_STATE[STORAGE_KEY_SUSPENDED_TABS_POSITION],
+          availableSuspendedTabsPositions: AVAILABLE_SUSPENDED_TABS_POSITIONS,
+          isSortPinnedTabs: CACHED_STATE[STORAGE_KEY_SORT_PINNED_TABS],
+          theme: CACHED_STATE[STORAGE_KEY_THEME],
+          isTabGroupsApiAvailable: TAB_GROUPS_API_AVAILABLE,
           isCloseDuplicateTabs: CACHED_STATE[STORAGE_KEY_CLOSE_DUPLICATE_TABS],
           availableSortMethods: AVAILABLE_SORT_METHODS,
           allCommands: CACHED_STATE[CACHE_KEY_ALL_COMMANDS],
@@ -223,7 +334,7 @@ function addEventListeners() {
   // Clicking on a popup button
   chrome.runtime.onMessage.addListener((message) => {
     console.debug(
-      `${TAB_SORTER_PREFIX} Message event received: ${message.command} with value=${message.value}`
+      `${TAB_SORTER_PREFIX} Message event received: ${message.command} with value=${message.value}`,
     );
     commandEventListener(message.command);
     stateUpdateEventListener(message.command, message.value);
@@ -243,7 +354,7 @@ function addEventListeners() {
       return;
     }
     console.debug(
-      `New tab created, sorting as soon as possible. ${tab.lastAccessed}`
+      `New tab created, sorting as soon as possible. ${tab.lastAccessed}`,
     );
     sortTabs(sortMethod);
   });
@@ -276,7 +387,7 @@ function addEventListeners() {
   // Listening for tab updates to catch any missed tabs and trigger auto sort after navigation
   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.debug(
-      `${TAB_SORTER_PREFIX} Tab updated: ${tabId} ${changeInfo.status} ${changeInfo.title} ${changeInfo.url}...`
+      `${TAB_SORTER_PREFIX} Tab updated: ${tabId} ${changeInfo.status} ${changeInfo.title} ${changeInfo.url}...`,
     );
     console.debug(changeInfo);
     console.debug(tab);
@@ -290,12 +401,12 @@ function addEventListeners() {
 
     if (changeInfo.url && sortMethod === "sort_tabs_url") {
       console.debug(
-        `URL changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.url}`
+        `URL changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.url}`,
       );
       sortTabs(sortMethod);
     } else if (changeInfo.title && sortMethod === "sort_tabs_title") {
       console.debug(
-        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title}`
+        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title}`,
       );
       sortTabs(sortMethod);
     } else if (
@@ -304,7 +415,7 @@ function addEventListeners() {
       sortMethod === "sort_tabs_favicon_and_title"
     ) {
       console.debug(
-        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title} ${tab.favIconUrl}`
+        `Title changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.title} ${tab.favIconUrl}`,
       );
       sortTabs(sortMethod);
     } else if (
@@ -314,7 +425,7 @@ function addEventListeners() {
     ) {
       // Note: this case should be mutually exclusive with the one above
       console.debug(
-        `Favicon changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.favIconUrl} ${tab.title}`
+        `Favicon changed and sort method is ${sortMethod}, sorting as soon as possible. ${changeInfo.favIconUrl} ${tab.title}`,
       );
       sortTabs(sortMethod);
     }
@@ -368,70 +479,24 @@ function stateUpdateEventListener(command, value) {
     setAllWindows(value);
   } else if (command === "ui_click_checkbox_sort_tabs_auto_best_effort") {
     setAutoSortBestEffort(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_respect_tab_groups") {
+    setRespectTabGroups(value);
+  } else if (command === "ui_change_select_suspended_tabs_position") {
+    setSuspendedTabsPosition(value);
+  } else if (command === "ui_click_checkbox_sort_tabs_pinned") {
+    setSortPinnedTabs(value);
   } else if (
     command === "ui_change_select_sort_select_tabs_default_sort_method"
   ) {
     setDefaultSortMethod(value);
+  } else if (command === "ui_change_select_theme") {
+    setTheme(value);
   } else if (command === "ui_click_checkbox_sort_tabs_close_duplicates") {
     setCloseDuplicateTabs(value);
   }
 }
 
 // Custom sorts
-// Takes tabs, return tabs
-
-// Return classified tabs by favicon then applies comparison function on each
-// (Uses intermediary a dict of tabs, indexed by url and valued by arrays of
-// corresponding tabs)
-// Exemple : {"google.com": [1,5,6], "rickandmortyadventures.com": [4,2,0]}
-function faviconSort(tabs, comparisonFunction, reverse) {
-  let dictionaryByUrl = {};
-  let sortedTabs = [];
-
-  tabs.forEach((tab, index) => {
-    dictionaryByUrl[tab.favIconUrl] = dictionaryByUrl[tab.favIconUrl] || [];
-    dictionaryByUrl[tab.favIconUrl].push(tab);
-  });
-
-  icons = Object.keys(dictionaryByUrl);
-
-  console.debug(reverse);
-
-  if (reverse) {
-    icons.reverse();
-  }
-
-  icons.forEach((url) => {
-    simpleSort(dictionaryByUrl[url], comparisonFunction, reverse); // simpleSort(array, comparisonFunction, reverse)
-    Array.prototype.push.apply(sortedTabs, dictionaryByUrl[url]); // push values of array to the left array
-  });
-
-  return sortedTabs;
-}
-
-// Comparison functions
-
-// Compare tabs by domain name (without www prefix)
-// This ensures consistent sorting regardless of www. prefix in URLs
-// See: https://github.com/etienneschalk/tab-sorter-firefox/issues/20
-function comparisonByUrl(tabA, tabB) {
-  const domainA = extractDomain(tabA.url);
-  const domainB = extractDomain(tabB.url);
-  return domainA.localeCompare(domainB);
-}
-
-function comparisonByMru(tabA, tabB) {
-  return tabA.lastAccessed - tabB.lastAccessed;
-}
-
-function comparisonByTitle(tabA, tabB) {
-  cleanTitleA = removeParenthesisNotification(tabA.title);
-  cleanTitleB = removeParenthesisNotification(tabB.title);
-  return cleanTitleA.localeCompare(cleanTitleB);
-}
-
-// Enhanced sorting function with retry mechanism for new tabs
-
 // Core sorting function
 
 /**
@@ -445,8 +510,13 @@ function comparisonByTitle(tabA, tabB) {
 function sortTabs(sortingType, shuffle) {
   const doShuffle = shuffle || false;
   const log_prefix = `${TAB_SORTER_PREFIX} (sortTabs):`;
+  const respectTabGroups =
+    getRespectTabGroupsCached() && TAB_GROUPS_API_AVAILABLE;
+  const sortPinnedTabs = getSortPinnedTabsCached();
 
-  console.debug(`${log_prefix} with '${sortingType}'`);
+  console.debug(
+    `${log_prefix} with '${sortingType}', respectTabGroups=${respectTabGroups}, sortPinnedTabs=${sortPinnedTabs}`,
+  );
 
   getCurrentWindowTabs(function (tabs) {
     if (getCloseDuplicateTabsCached()) {
@@ -463,15 +533,144 @@ function sortTabs(sortingType, shuffle) {
   });
 }
 
-// Normalized URL: no hash, no query string, no www, lowercase, no trailing slash.
-function getUrlMatchKey(url) {
-  try {
-    const p = new URL(url);
-    const host = p.hostname.replace(/^www\./i, "").toLowerCase();
-    const path = p.pathname.length > 1 ? p.pathname.replace(/\/$/, "") : p.pathname;
-    return `${p.protocol}//${host}${path}`.toLowerCase();
-  } catch {
-    return url.toLowerCase();
+function sortPinnedTabsOnly(
+  pinnedTabs,
+  comparisonFunction,
+  customSort,
+  log_prefix,
+) {
+  console.debug(`${log_prefix} Sorting ${pinnedTabs.length} pinned tabs`);
+
+  const pinnedTabIds = computePinnedTabOrder(pinnedTabs, {
+    comparisonFunction,
+    reverse: getReverseCached(),
+    suspendedPosition: getSuspendedTabsPositionCached(),
+    customSort,
+  });
+
+  console.debug(
+    `${log_prefix} Moving pinned tabs to positions 0-${pinnedTabIds.length - 1}`,
+  );
+
+  chrome.tabs.move(pinnedTabIds, { index: 0 });
+}
+
+/**
+ * Sort tabs while respecting tab groups (new behavior)
+ * Tabs within each group are sorted, groups maintain their original positions
+ * Suspended tabs grouping is applied within each group (not globally)
+ */
+function sortTabsWithGroupSupport(
+  notPinnedTabs,
+  allTabs,
+  comparisonFunction,
+  customSort,
+  log_prefix,
+) {
+  console.debug(
+    `${log_prefix} Sorting with tab groups support (preserving group positions)`,
+  );
+
+  const suspendedPosition = getSuspendedTabsPositionCached();
+  const { finalOrder, sortedGroups, sortedUngrouped } =
+    computeGroupAwareSortResult(notPinnedTabs, {
+      comparisonFunction,
+      reverse: getReverseCached(),
+      suspendedPosition,
+      customSort,
+      tabGroupIdNone: chrome.tabGroups?.TAB_GROUP_ID_NONE,
+    });
+
+  console.debug(
+    `${log_prefix} Found ${sortedGroups.length} groups and ${sortedUngrouped.length} ungrouped tabs`,
+  );
+
+  const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
+
+  console.debug(
+    `${log_prefix} Moving ${finalOrder.length} tabs with group support`,
+  );
+
+  if (DEBUG) {
+    performance.mark("begin");
+  }
+
+  chrome.tabs.move(finalOrder, {
+    index: numberOfPinnedTabs,
+  });
+
+  for (const group of sortedGroups) {
+    const tabIds = group.tabs.map((t) => t.id);
+    if (tabIds.length > 0) {
+      chrome.tabs.group({ tabIds, groupId: group.groupId }).catch((error) => {
+        console.debug(
+          `${log_prefix} Could not re-apply group ${group.groupId}:`,
+          error,
+        );
+      });
+    }
+  }
+
+  if (sortedUngrouped.length > 0 && chrome.tabs.ungroup) {
+    const ungroupedTabIds = sortedUngrouped.map((t) => t.id);
+    chrome.tabs.ungroup(ungroupedTabIds).catch((error) => {
+      console.debug(`${log_prefix} Could not ungroup tabs:`, error);
+    });
+  }
+
+  if (DEBUG) {
+    performance.mark("end");
+    performance.measure("Tab reorganizing time (with groups)", "begin", "end");
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration]),
+    );
+    performance.clearMarks();
+    performance.clearMeasures();
+  }
+}
+
+/**
+ * Sort tabs without respecting tab groups (legacy behavior)
+ * All tabs are sorted together regardless of group membership
+ */
+function sortTabsLegacy(
+  notPinnedTabs,
+  allTabs,
+  comparisonFunction,
+  customSort,
+  doShuffle,
+  log_prefix,
+) {
+  console.debug(
+    `${log_prefix} Sorting without tab groups support (legacy mode)`,
+  );
+
+  const newIds = computeLegacyTabOrder(notPinnedTabs, {
+    comparisonFunction,
+    reverse: getReverseCached(),
+    suspendedPosition: getSuspendedTabsPositionCached(),
+    customSort,
+    doShuffle,
+  });
+
+  const numberOfPinnedTabs = allTabs.length - notPinnedTabs.length;
+
+  if (DEBUG) {
+    performance.mark("begin");
+  }
+
+  chrome.tabs.move(newIds, {
+    index: numberOfPinnedTabs,
+  });
+
+  if (DEBUG) {
+    performance.mark("end");
+    performance.measure("Tab reorganizing time", "begin", "end");
+    console.table(
+      performance.getEntriesByType("measure").map((e) => [e.name, e.duration]),
+    );
+    performance.clearMarks();
+    performance.clearMeasures();
   }
 }
 
@@ -480,25 +679,7 @@ function getUrlMatchKey(url) {
 // Invokes callback with the list of closed tab ids (empty if none).
 function closeDuplicateTabs(tabs, callback) {
   const log_prefix = `${TAB_SORTER_PREFIX} (closeDuplicateTabs):`;
-  const seenKeys = new Set();
-  const tabIdsToClose = [];
-
-  tabs.forEach((tab) => {
-    if (tab.pinned) {
-      return;
-    }
-    const urlKey = getUrlMatchKey(tab.url);
-    const titleKey = tab.status === "complete" && tab.title
-      ? `title:${tab.title}`
-      : null;
-
-    if (seenKeys.has(urlKey) || (titleKey && seenKeys.has(titleKey))) {
-      tabIdsToClose.push(tab.id);
-    } else {
-      seenKeys.add(urlKey);
-      if (titleKey) seenKeys.add(titleKey);
-    }
-  });
+  const tabIdsToClose = findDuplicateTabIds(tabs);
 
   if (tabIdsToClose.length === 0) {
     callback(tabIdsToClose);
@@ -506,7 +687,7 @@ function closeDuplicateTabs(tabs, callback) {
   }
 
   console.debug(
-    `${log_prefix} Closing ${tabIdsToClose.length} duplicate tab(s)`
+    `${log_prefix} Closing ${tabIdsToClose.length} duplicate tab(s)`,
   );
   chrome.tabs.remove(tabIdsToClose, () => {
     if (chrome.runtime.lastError) {
@@ -517,11 +698,21 @@ function closeDuplicateTabs(tabs, callback) {
 }
 
 function performSort(tabs, sortingType, doShuffle, log_prefix) {
-  let notPinnedTabs = tabs.filter((tab) => !tab.pinned); // Not taking in account pinned tabs
+  console.debug("Callback of getCurrentWindowTabs 1");
+
+  const respectTabGroups =
+    getRespectTabGroupsCached() && TAB_GROUPS_API_AVAILABLE;
+  const sortPinnedTabs = getSortPinnedTabsCached();
+
+  // Separate pinned and non-pinned tabs
+  let pinnedTabs = tabs.filter((tab) => tab.pinned);
+  let notPinnedTabs = tabs.filter((tab) => !tab.pinned);
   let comparisonFunction;
   let customSort = undefined;
 
-  console.debug(notPinnedTabs);
+  console.debug(
+    `${log_prefix} Found ${pinnedTabs.length} pinned tabs and ${notPinnedTabs.length} non-pinned tabs`,
+  );
 
   switch (sortingType) {
     case "sort_tabs_url":
@@ -546,69 +737,30 @@ function performSort(tabs, sortingType, doShuffle, log_prefix) {
       comparisonFunction = comparisonByUrl;
   }
 
-  console.debug(
-    "Callback of getCurrentWindowTabs 2",
-    `${comparisonFunction.name}, ${customSort ? customSort.name : ""}`
-  );
+  // Sort pinned tabs if enabled (and not shuffling)
+  if (sortPinnedTabs && pinnedTabs.length > 0 && !doShuffle) {
+    sortPinnedTabsOnly(pinnedTabs, comparisonFunction, customSort, log_prefix);
+  }
 
-  if (customSort) {
-    notPinnedTabs = customSort(
+  // Check if we should respect tab groups
+  if (respectTabGroups && !doShuffle) {
+    sortTabsWithGroupSupport(
       notPinnedTabs,
+      tabs,
       comparisonFunction,
-      getReverseCached()
+      customSort,
+      log_prefix,
     );
   } else {
-    if (getReverseCached()) {
-      notPinnedTabs.sort((tabB, tabA) => comparisonFunction(tabA, tabB));
-      console.debug(`${log_prefix} Reverse sorting`);
-    } else {
-      notPinnedTabs.sort((tabA, tabB) => comparisonFunction(tabA, tabB));
-    }
-  }
-
-  console.debug("Callback of getCurrentWindowTabs 3");
-
-  let newIds = notPinnedTabs.map((tab) => tab.id); // Get an array of the tabs ids
-
-  console.debug(`Callback of getCurrentWindowTabs 4 - Before Shuffle`);
-
-  if (doShuffle) {
-    console.debug(`${log_prefix} Shuffling tabs`);
-    let i = newIds.length;
-    let j, temp;
-    if (i != 0) {
-      while (--i) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = newIds[j];
-        newIds[j] = newIds[i];
-        newIds[i] = temp;
-      }
-    }
-  }
-
-  let numberOfPinnedTabs = tabs.length - notPinnedTabs.length;
-
-  if (DEBUG) {
-    performance.mark("begin");
-  }
-
-  console.debug(
-    `Callback of getCurrentWindowTabs 5 - Before actual tab move`
-  );
-
-  // The index seems to be useless in this case of moving all the tabs
-  chrome.tabs.move(newIds, {
-    index: numberOfPinnedTabs,
-  });
-
-  if (DEBUG) {
-    performance.mark("end");
-    performance.measure("Tab reorganizing time", "begin", "end");
-    console.table(
-      performance.getEntriesByType("measure").map((e) => [e.name, e.duration])
+    // Legacy behavior: sort all tabs together (ignoring groups)
+    sortTabsLegacy(
+      notPinnedTabs,
+      tabs,
+      comparisonFunction,
+      customSort,
+      doShuffle,
+      log_prefix,
     );
-    performance.clearMarks();
-    performance.clearMeasures();
   }
 }
 
@@ -625,7 +777,7 @@ function zip(a, b) {
 // Retrieve the tabs from the current window
 function getCurrentWindowTabs(callback) {
   console.debug(
-    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before getAllWindowsCached`
+    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before getAllWindowsCached`,
   );
 
   // /!\ currentWindow: false != no argument currentWindow given
@@ -635,7 +787,7 @@ function getCurrentWindowTabs(callback) {
         currentWindow: true,
       };
   console.debug(
-    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before tab query`
+    `${TAB_SORTER_PREFIX} (getCurrentWindowTabs): Before tab query`,
   );
 
   chrome.tabs.query(options, function (tabs) {
@@ -643,35 +795,9 @@ function getCurrentWindowTabs(callback) {
   });
 }
 
-// Easy reverse option for sorting
-function simpleSort(array, comparisonFunction, reverse) {
-  reverse = reverse || false;
-  if (reverse) {
-    array.sort((b, a) => comparisonFunction(a, b));
-  } else {
-    array.sort((a, b) => comparisonFunction(a, b));
-  }
-}
-
-// Remove youtube notifications in title eg "(20) video" -> "video"
-function removeParenthesisNotification(stringToModify) {
-  return stringToModify.replace(/\(\d*\)/m, "").trim();
-}
-
 // Convert an object to JSON
 function json(obj) {
   return JSON.stringify(obj, null, "    ");
-}
-
-// Domain extraction utility
-function extractDomain(url) {
-  try {
-    const urlObj = new URL(url);
-    return urlObj.hostname.replace(/^www\./, ""); // Remove www prefix
-  } catch (error) {
-    console.error("Failed to extract domain from URL:", url, error);
-    return null;
-  }
 }
 
 // Main extract domain function
@@ -706,12 +832,12 @@ async function extractDomainTabs() {
 
     const currentDomain = extractDomain(currentTab.url);
     console.log(
-      `${log_prefix} Extracted domain: ${currentDomain} from URL: ${currentTab.url}`
+      `${log_prefix} Extracted domain: ${currentDomain} from URL: ${currentTab.url}`,
     );
 
     if (!currentDomain) {
       console.error(
-        `${log_prefix} Could not extract domain from current tab URL: ${currentTab.url}`
+        `${log_prefix} Could not extract domain from current tab URL: ${currentTab.url}`,
       );
       return;
     }
@@ -725,7 +851,7 @@ async function extractDomainTabs() {
       const isMatch = tabDomain === currentDomain;
       if (isMatch) {
         console.log(
-          `${log_prefix} Found matching tab: ${tab.id} (domain: ${tabDomain}) - ${tab.url} `
+          `${log_prefix} Found matching tab: ${tab.id} (domain: ${tabDomain}) - ${tab.url} `,
         );
       }
       return isMatch;
@@ -735,7 +861,7 @@ async function extractDomainTabs() {
 
     if (matchingTabs.length === 0) {
       console.log(
-        `${log_prefix} No other tabs found for domain: ${currentDomain}. No extraction needed.`
+        `${log_prefix} No other tabs found for domain: ${currentDomain}. No extraction needed.`,
       );
       return;
     }
@@ -743,14 +869,15 @@ async function extractDomainTabs() {
     // Check if current window has all tabs of same domain and no other windows have this domain
     const currentWindowTabs = await chrome.tabs.query({ currentWindow: true });
     console.log(
-      `${log_prefix} Current window tabs count: ${currentWindowTabs.length}`
+      `${log_prefix} Current window tabs count: ${currentWindowTabs.length}`,
     );
 
     const otherWindowsTabs = allTabs.filter(
-      (tab) => !currentWindowTabs.some((currentTab) => currentTab.id === tab.id)
+      (tab) =>
+        !currentWindowTabs.some((currentTab) => currentTab.id === tab.id),
     );
     console.log(
-      `${log_prefix} Other windows tabs count: ${otherWindowsTabs.length}`
+      `${log_prefix} Other windows tabs count: ${otherWindowsTabs.length}`,
     );
 
     const otherWindowsMatchingTabs = otherWindowsTabs.filter((tab) => {
@@ -759,7 +886,7 @@ async function extractDomainTabs() {
     });
 
     console.log(
-      `${log_prefix} Other windows matching tabs count: ${otherWindowsMatchingTabs.length}`
+      `${log_prefix} Other windows matching tabs count: ${otherWindowsMatchingTabs.length}`,
     );
 
     // Check if current window has all tabs of same domain
@@ -769,7 +896,7 @@ async function extractDomainTabs() {
     });
 
     console.log(
-      `${log_prefix} Current window tabs with other domains: ${currentWindowOtherDomains.length}`
+      `${log_prefix} Current window tabs with other domains: ${currentWindowOtherDomains.length}`,
     );
 
     // If current window has all tabs of same domain AND no other windows have this domain, skip extraction
@@ -778,13 +905,13 @@ async function extractDomainTabs() {
       otherWindowsMatchingTabs.length === 0
     ) {
       console.log(
-        `${log_prefix} Current window already contains all tabs of domain ${currentDomain} and no other windows have this domain. No extraction needed.`
+        `${log_prefix} Current window already contains all tabs of domain ${currentDomain} and no other windows have this domain. No extraction needed.`,
       );
       return;
     }
 
     console.log(
-      `${log_prefix} About to create new window with tabId: ${currentTab.id}`
+      `${log_prefix} About to create new window with tabId: ${currentTab.id}`,
     );
 
     // Create new window with the current tab (no new tab created)
@@ -799,7 +926,7 @@ async function extractDomainTabs() {
     if (chrome.runtime.lastError) {
       console.error(
         `${log_prefix} Chrome runtime error after window creation:`,
-        chrome.runtime.lastError
+        chrome.runtime.lastError,
       );
       return;
     }
@@ -809,7 +936,7 @@ async function extractDomainTabs() {
       const tabIds = matchingTabs.map((tab) => tab.id);
       console.log(
         `${log_prefix} Moving ${tabIds.length} tabs to new window:`,
-        tabIds
+        tabIds,
       );
 
       await chrome.tabs.move(tabIds, {
@@ -820,7 +947,7 @@ async function extractDomainTabs() {
       if (chrome.runtime.lastError) {
         console.error(
           `${log_prefix} Chrome runtime error after moving tabs:`,
-          chrome.runtime.lastError
+          chrome.runtime.lastError,
         );
         return;
       }
@@ -833,11 +960,11 @@ async function extractDomainTabs() {
     // Auto-sort after successful extraction if enabled
     if (getAutoOnNewTabCached()) {
       console.log(
-        `${log_prefix} Auto-sort is enabled, performing sort after extraction`
+        `${log_prefix} Auto-sort is enabled, performing sort after extraction`,
       );
       const defaultSortMethod = getDefaultSortMethodCached();
       console.log(
-        `${log_prefix} Using default sort method: ${defaultSortMethod}`
+        `${log_prefix} Using default sort method: ${defaultSortMethod}`,
       );
 
       // Sort tabs in the new window
@@ -845,7 +972,7 @@ async function extractDomainTabs() {
       chrome.tabs.query({ windowId: newWindow.id }, (tabs) => {
         if (tabs && tabs.length > 0) {
           console.log(
-            `${log_prefix} Sorting ${tabs.length} tabs in the new window`
+            `${log_prefix} Sorting ${tabs.length} tabs in the new window`,
           );
           sortTabs(defaultSortMethod);
         }
@@ -858,7 +985,7 @@ async function extractDomainTabs() {
     if (chrome.runtime.lastError) {
       console.error(
         `${log_prefix} Chrome runtime error:`,
-        chrome.runtime.lastError
+        chrome.runtime.lastError,
       );
     }
   }

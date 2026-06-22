@@ -38,7 +38,7 @@
     "message": "Paramètres généraux"
   },
   "preferences_auto": {
-    "message": "Paramètres de tri automatique "
+    "message": "Tri automatique "
   },
   "no_shortcut_configured": {
     "message": "Pas encore de raccourci configuré"
@@ -75,6 +75,30 @@
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
+  "preferences_suspended_tabs": {
+    "message": "Onglets Suspendus",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Position des onglets suspendus :",
+    "description": "Label for suspended tabs position selector"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorer le statut suspendu",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Grouper à la fin",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Grouper au début",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Trier aussi les onglets épinglés",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
   "ui_click_checkbox_sort_tabs_close_duplicates": {
     "message": "Fermer les onglets en double lors du tri",
     "description": "Fermer les onglets ayant la même URL lors d'une action de tri"
@@ -86,5 +110,37 @@
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Méthode de tri à utiliser lors du tri automatique",
     "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respecter les groupes d'onglets (trier au sein des groupes)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "tab_groups_not_supported": {
+    "message": "Les groupes d'onglets ne sont pas supportés dans cette version du navigateur",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "preferences_tab_groups": {
+    "message": "Groupes d'onglets",
+    "description": "Section header for tab groups preferences"
+  },
+  "preferences_appearance": {
+    "message": "Apparence",
+    "description": "Section header for appearance preferences"
+  },
+  "theme_label": {
+    "message": "Thème",
+    "description": "Label for theme selector"
+  },
+  "theme_auto": {
+    "message": "Auto (suivre le système)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Sombre",
+    "description": "Dark theme option"
+  },
+  "theme_light": {
+    "message": "Clair",
+    "description": "Light theme option"
   }
 }

@@ -7,7 +7,7 @@ cp -R template-extension/** build/chrome-extension
 # The Background Page is not supported anymore for chrome, and useless as service_worker is used.
 rm build/chrome-extension/background-tab-sorter.html
 # Remove Firefox-specific settings
-jq 'del(.browser_specific_settings)' template-extension/manifest.json > build/chrome-extension/manifest.json
+jq 'del(.browser_specific_settings) | .background = { "service_worker": "tab-sorter.js", "type": "module" }' template-extension/manifest.json > build/chrome-extension/manifest.json
 
 # FIREFOX
 mkdir -p build/firefox-extension

@@ -38,7 +38,7 @@ The "Extract Domain" feature has been successfully implemented with the followin
 ## How to Test
 
 1. **Install the Extension**:
-   - Load the extension from `/home/eschalk/work/tab-sorter-firefox/build/firefox-extension/`
+   - Load the extension from `build/firefox-extension/`
    - Or install from the generated zip file
 
 2. **Test Scenarios**:

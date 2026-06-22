@@ -38,7 +38,7 @@
     "message": "General Preferences"
   },
   "preferences_auto": {
-    "message": "Preferences for automatic sorting"
+    "message": "Automatic sorting"
   },
   "no_shortcut_configured": {
     "message": "No shortcut configured yet"
@@ -79,6 +79,30 @@
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
+  "preferences_suspended_tabs": {
+    "message": "Suspended Tabs",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Suspended tabs position:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignore discarded status",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Group at the end",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Group at the beginning",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Also sort pinned tabs",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
   "ui_click_checkbox_sort_tabs_close_duplicates": {
     "message": "Close duplicate tabs",
     "description": "Close tabs with the same URL when using a sort action"
@@ -90,5 +114,37 @@
   "ui_change_select_sort_select_tabs_default_sort_method": {
     "message": "Default sort method for auto sort on new tab",
     "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respect Tab Groups (sort within groups)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "tab_groups_not_supported": {
+    "message": "Tab Groups not supported in this browser version",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "preferences_tab_groups": {
+    "message": "Tab Groups",
+    "description": "Section header for tab groups preferences"
+  },
+  "preferences_appearance": {
+    "message": "Appearance",
+    "description": "Section header for appearance preferences"
+  },
+  "theme_label": {
+    "message": "Theme:",
+    "description": "Label for theme selector"
+  },
+  "theme_auto": {
+    "message": "Auto (follow system)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Dark",
+    "description": "Dark theme option"
+  },
+  "theme_light": {
+    "message": "Light",
+    "description": "Light theme option"
   }
 }
