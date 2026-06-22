@@ -1,0 +1,248 @@
+* {
+  font-family: system-ui;
+  font-size: 13px;
+}
+
+/* CSS Custom Properties for theming */
+:root {
+  /* Light theme (default fallback) */
+  --bg-primary: white;
+  --bg-secondary: #eee;
+  --text-primary: #000;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --border-color: #ccc;
+  --link-color: blue;
+  --link-hover-color: navy;
+  --warning-color: #996600;
+  --kbd-bg: #eee;
+  --kbd-border: #ccc;
+  --button-simple-bg: #f2f2f2;
+  --button-simple-bg-dark: #d4d4d4;
+  --button-simple-border: #696969;
+  --button-simple-text: #000000;
+  --button-simple-shadow: #ffffff;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --text-primary: #e4e4e4;
+  --text-secondary: #b0b0b0;
+  --text-muted: #888;
+  --border-color: #404060;
+  --link-color: #6db3f2;
+  --link-hover-color: #a3d1ff;
+  --warning-color: #e6b800;
+  --kbd-bg: #2a2a4a;
+  --kbd-border: #404060;
+  --button-simple-bg: #2a2a4a;
+  --button-simple-bg-dark: #1a1a2e;
+  --button-simple-border: #505070;
+  --button-simple-text: #e4e4e4;
+  --button-simple-shadow: #3a3a5a;
+}
+
+html {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Layout */
+
+.container {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  width: 780px;
+}
+
+.flexcontainer {
+  display: flex;
+  flex-direction: col;
+  gap: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.flexcol {
+  /* width should be 100% / ncol */
+  width: 33.33%;
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.centered,
+.centered h1,
+.centered h2,
+.centered h3,
+.centered p {
+  margin: 0 auto;
+}
+
+.has-text-centered {
+  text-align: center;
+}
+
+.has-text-right-aligned {
+  text-align: right;
+}
+
+/* Content */
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  /* text-align: right; */
+  color: var(--link-color);
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+small {
+  color: var(--text-muted);
+}
+
+kbd {
+  background-color: var(--kbd-bg);
+  box-sizing: border-box;
+  padding: 2px;
+  border: var(--kbd-border) solid 1px;
+  border-bottom: var(--kbd-border) solid 3px;
+  font-size: 10px;
+  border-radius: 3px;
+  color: var(--text-primary);
+}
+
+button {
+  padding: 0.4em;
+  width: 100%;
+  text-align: center;
+}
+
+label {
+  display: block;
+  width: 100%;
+}
+
+label input[type="checkbox"] {
+  position: relative;
+  top: 1px;
+}
+
+label.disabled-checkbox {
+  color: var(--text-muted);
+}
+
+label.disabled-checkbox input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+.warning-text {
+  color: var(--warning-color);
+  font-style: italic;
+}
+
+.sub-checkbox {
+  margin-left: 18px;
+  padding-left: 8px;
+  border-left: 2px solid var(--border-color);
+}
+
+/* Auto-generated CSS buttons (slightly modified) */
+
+/* https://www.bestcssbuttongenerator.com/#/12 */
+
+.button-primary {
+  box-shadow: inset 0px 1px 0px 0px #54a3f7;
+  background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+  background-color: #007dc1;
+  border-radius: 3px;
+  border: 1px solid #124d77;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #154682;
+}
+.button-primary:hover {
+  background: linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+  background-color: #0061a7;
+}
+.button-primary:active {
+  position: relative;
+  top: 1px;
+}
+
+.button-simple {
+  box-shadow: inset 0px 1px 0px 0px var(--button-simple-shadow);
+  background: linear-gradient(to bottom, var(--button-simple-bg) 5%, var(--button-simple-bg-dark) 100%);
+  background-color: var(--button-simple-bg);
+  border-radius: 3px;
+  border: 1px solid var(--button-simple-border);
+  display: inline-block;
+  cursor: pointer;
+  color: var(--button-simple-text);
+  padding: 6px 24px;
+  text-decoration: none;
+}
+.button-simple:hover {
+  background: linear-gradient(to bottom, var(--button-simple-bg-dark) 5%, var(--button-simple-bg) 100%);
+  background-color: var(--button-simple-bg-dark);
+}
+.button-simple:active {
+  position: relative;
+  top: 1px;
+}
+
+/* Theme selector styling */
+.theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.theme-selector label {
+  display: inline;
+  width: auto;
+}
+
+.theme-selector select {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+/* Select element styling for dark mode */
+select {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}

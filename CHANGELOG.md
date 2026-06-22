@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [0.8] - 2026-01-18
 
+
+
 ### Dark Mode ([#16](https://github.com/etienneschalk/tab-sorter-firefox/issues/16))
 
 Full dark mode support with automatic system theme detection.
 
 #### Added
+
+- **Close duplicate tabs** - 2026-05-19 - Optional preference to close duplicate tabs when sorting (keeps the leftmost tab). Matches normalized URLs (ignores hash, query string, `www`, case) and the same issue-tracker resource when the URL shape differs. Closes [#17](https://github.com/etienneschalk/tab-sorter-firefox/issues/17). By [@manosnoam](https://github.com/manosnoam)
+- **Ignore www prefix when sorting tabs by URL** - 2025-03-08 - Closes [#20](https://github.com/etienneschalk/tab-sorter-firefox/issues/20). By [@AntonDobrovinskiy](https://github.com/AntonDobrovinskiy)
 - Auto theme (follows system preference) is the default for new users
 - Automatic system theme detection (follows OS preference)
 - Manual theme selection: Auto, Dark, or Light
@@ -128,6 +133,7 @@ New functionality to preserve tab groups during sorting.
 - Added `test-tab-groups-issue-19.md` - Comprehensive testing documentation
 
 ---
+
 
 ## [0.7] - 2025-09-16
 
