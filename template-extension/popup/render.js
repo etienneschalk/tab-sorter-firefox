@@ -26,17 +26,15 @@ function renderCommandActionButton(command) {
   console.log(command);
 
   return `
-<div>
+<div class="command-action">
   <button class="${className}" href="#" id="${"ui_click_button_command_"}${name}">
    ${translate(name)} 
-  </button>  
-
-  <br/>
-  ${`<p class="has-text-centered"> ${
+  </button>
+  <p class="command-shortcut has-text-centered">${
     shortcut
       ? renderShortcutHint(shortcut)
       : `<small>${translate("no_shortcut_configured")}</small>`
-  } </p>`}
+  }</p>
 </div>
   `;
 }
@@ -76,7 +74,7 @@ export function renderPopup(params) {
             <br> 
             ${allCommands
               .map((command) => renderCommandActionButton(command))
-              .join("<br>")}
+              .join("")}
             <br>
         </div>
     </div>

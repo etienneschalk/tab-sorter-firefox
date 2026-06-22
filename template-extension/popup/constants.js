@@ -12,10 +12,10 @@ export {
 } from "../lib/ui-constants.js";
 
 export const COMMAND_DISPLAY_PRIORITY = {
-  command_sort_tabs_favicon_and_title: 1,
-  command_sort_tabs_title: 2,
-  command_sort_tabs_url: 3,
-  command_sort_tabs_mru: 4,
+  command_sort_tabs_mru: 1,
+  command_sort_tabs_favicon_and_title: 2,
+  command_sort_tabs_title: 3,
+  command_sort_tabs_url: 4,
   command_sort_tabs_shuffle: 5,
   command_extract_domain: 6,
 };

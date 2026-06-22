@@ -1,8 +1,8 @@
 export const TAB_SORTER_PREFIX = "[Tab Sorter]";
 
 export const AVAILABLE_SORT_METHODS = [
-  "sort_tabs_url",
   "sort_tabs_mru",
+  "sort_tabs_url",
   "sort_tabs_title",
   "sort_tabs_favicon_and_title",
 ];
@@ -17,8 +17,7 @@ export const STORAGE_KEY_AUTO_SORT_BEST_EFFORT =
 export const STORAGE_DEFAULT_VALUE_AUTO_SORT_ON_NEW_TAB = false;
 export const STORAGE_KEY_DEFAULT_SORT_METHOD =
   "TAB_SORTER_STORAGE_KEY_DEFAULT_SORT_METHOD";
-export const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD =
-  AVAILABLE_SORT_METHODS[1];
+export const STORAGE_DEFAULT_VALUE_DEFAULT_SORT_METHOD = "sort_tabs_mru";
 export const STORAGE_KEY_RESPECT_TAB_GROUPS =
   "TAB_SORTER_STORAGE_KEY_RESPECT_TAB_GROUPS";
 export const STORAGE_DEFAULT_VALUE_RESPECT_TAB_GROUPS = true;

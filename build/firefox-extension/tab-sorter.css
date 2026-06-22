@@ -1,6 +1,7 @@
 * {
   font-family: system-ui;
   font-size: 13px;
+  box-sizing: border-box;
 }
 
 /* CSS Custom Properties for theming */
@@ -49,12 +50,74 @@ html {
   color: var(--text-primary);
 }
 
+body {
+  margin: 0;
+}
+
 /* Layout */
 
 .container {
   background: var(--bg-primary);
   color: var(--text-primary);
   width: 780px;
+}
+
+/* Extension popup: scroll tall content; wrap long translations inside fixed layout */
+body.popup-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: min(600px, 100vh);
+}
+
+body.popup-page > .container {
+  padding: 2px 2px;
+}
+
+body.popup-page .flexcontainer {
+  align-items: stretch;
+  min-width: 0;
+}
+
+body.popup-page label,
+body.popup-page button,
+body.popup-page p,
+body.popup-page h1,
+body.popup-page h2,
+body.popup-page h3,
+body.popup-page select,
+body.popup-page a,
+body.popup-page kbd {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+body.popup-page button {
+  white-space: normal;
+}
+
+body.popup-page .button-primary,
+body.popup-page .button-simple {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.popup-page select {
+  width: 100%;
+  min-width: 0;
+}
+
+body.popup-page .theme-selector,
+body.popup-page .suspended-tabs-selector {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body.popup-page .theme-selector label,
+body.popup-page .suspended-tabs-selector label {
+  display: block;
+  width: 100%;
 }
 
 .flexcontainer {
@@ -66,12 +129,13 @@ html {
 }
 
 .flexcol {
-  /* width should be 100% / ncol */
-  width: 33.33%;
+  flex: 1 1 0;
+  min-width: 0;
   padding: 10px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 5px;
+  overflow-wrap: anywhere;
 }
 
 .centered,
@@ -84,6 +148,14 @@ html {
 
 .has-text-centered {
   text-align: center;
+}
+
+.command-action {
+  margin-bottom: 10px;
+}
+
+.command-action .command-shortcut {
+  margin: 2px 0 0;
 }
 
 .has-text-right-aligned {
