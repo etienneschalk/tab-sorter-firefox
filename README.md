@@ -68,6 +68,8 @@ Pure logic lives in `template-extension/lib/` and is shared by the extension and
 
 ### Deploying to Firefox Add-ons
 
+Keyword: Publish 
+
 1. **Prepare your extension:**
    - Ensure `build/firefox-extension.zip` is ready
    - Verify the manifest includes Firefox-specific settings
