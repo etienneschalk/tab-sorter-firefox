@@ -5,6 +5,12 @@ export function registerPopupEventListeners(applyTheme) {
   registerPreferencesEventListeners(document, applyTheme);
 
   document.addEventListener("click", (e) => {
+    if (e.target.closest(".chrome-shortcuts-link")) {
+      e.preventDefault();
+      chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+      return;
+    }
+
     const id = e.target.id;
 
     if (id === OPEN_SETTINGS_PAGE) {

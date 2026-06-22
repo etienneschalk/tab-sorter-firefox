@@ -1,5 +1,6 @@
 import { renderPreferencesControls } from "../lib/preferences-render.js";
 import { OPEN_SETTINGS_PAGE } from "./constants.js";
+import { renderHelpSection } from "./help-render.js";
 
 function translate(message) {
   return chrome.i18n.getMessage(message);
@@ -45,23 +46,12 @@ export function renderPopup(params) {
   return `
 <div id="container">
     <div class="">
-        <h1>  🗂️ ${translate("extensionName")} </h1>
+        <h1>  🗂️ ${translate("extensionName")} v${chrome.runtime.getManifest().version}  </h1>
     </div>
     <div class="flexcontainer">
         <div class="flexcol">
             <h2>❓ ${translate("help")} </h2>
-
-            <br>
-            <h3> ${translate("help_how_to_update_shortcuts_question")} </h3>
-            <p> ${translate("help_how_to_update_shortcuts_answer")} </p>
-
-            <br>
-            <h3> ${translate("help_mru_not_working_chrome_question")} </h3>
-            <p> ${translate("help_mru_not_working_chrome_answer")} </p>
-
-            <br>
-            <h3>${translate("help_encountered_a_problem_question")} </h3>
-            <p> ${translate("help_encountered_a_problem_answer")} </p>
+            ${renderHelpSection()}
         </div>
         <div class="flexcol">
             ${renderPreferencesControls(preferencesState)}
@@ -77,9 +67,6 @@ export function renderPopup(params) {
               .join("")}
             <br>
         </div>
-    </div>
-    <div class="">
-        <small> Tab Sorter - v${chrome.runtime.getManifest().version} </small>
     </div>
 </div>
   `;

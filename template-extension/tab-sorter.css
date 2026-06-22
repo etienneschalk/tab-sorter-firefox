@@ -70,7 +70,7 @@ body.popup-page {
 }
 
 body.popup-page > .container {
-  padding: 2px 2px;
+  padding: 0px 3px;
 }
 
 body.popup-page .flexcontainer {
@@ -90,6 +90,21 @@ body.popup-page kbd {
   overflow-wrap: anywhere;
   word-break: break-word;
   max-width: 100%;
+}
+
+body.popup-page a.chrome-shortcuts-link {
+  display: inline;
+  cursor: pointer;
+}
+
+body.popup-page code {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  background-color: var(--kbd-bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 body.popup-page button {
@@ -123,7 +138,7 @@ body.popup-page .suspended-tabs-selector label {
 .flexcontainer {
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 4px;
   margin-top: 6px;
   margin-bottom: 6px;
 }

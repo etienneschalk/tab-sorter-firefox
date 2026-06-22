@@ -136,7 +136,7 @@ export function renderPreferencesControls(state) {
 export function renderOptionsPage(state) {
   return `
 <div id="container" class="options-page">
-    <h1>🗂️ ${translate("extensionName")}</h1>
+    <h1>  🗂️ ${translate("extensionName")} v${chrome.runtime.getManifest().version}  </h1>
     <p class="options-intro">${translate("options_page_intro")}</p>
     <section class="options-preferences">
         ${renderPreferencesControls(state)}

@@ -1,0 +1,35 @@
+import { isFirefoxExtension } from "../lib/browser-logic.js";
+
+function translate(message) {
+  return chrome.i18n.getMessage(message);
+}
+
+function renderShortcutsHelpAnswer() {
+  if (isFirefoxExtension()) {
+    return translate("help_how_to_update_shortcuts_answer");
+  }
+
+  return translate("help_how_to_update_shortcuts_answer_chrome");
+}
+
+function renderMruHelpSection() {
+  if (isFirefoxExtension()) {
+    return "";
+  }
+
+  return `
+            <br>
+            <h3> ${translate("help_mru_not_working_chrome_question")} </h3>
+            <p> ${translate("help_mru_not_working_chrome_answer")} </p>`;
+}
+
+export function renderHelpSection() {
+  return `
+            <br>
+            <h3> ${translate("help_how_to_update_shortcuts_question")} </h3>
+            <p> ${renderShortcutsHelpAnswer()} </p>
+            ${renderMruHelpSection()}
+            <br>
+            <h3>${translate("help_encountered_a_problem_question")} </h3>
+            <p> ${translate("help_encountered_a_problem_answer")} </p>`;
+}

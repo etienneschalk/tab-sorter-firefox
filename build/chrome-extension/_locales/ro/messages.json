@@ -1,45 +1,165 @@
 {
-  "extensionName": { "message": "Tab Sorter", "description": "Name of the extension." },
-  "extensionDescription": { "message": "Extensie pentru sortarea filelor.", "description": "Description of the extension." },
-  "actions": { "message": "Sortează" },
-  "help": { "message": "Ajutor" },
-  "help_how_to_update_shortcuts_question": { "message": "Cum actualizez scurtăturile de tastatură pentru diferitele metode de sortare?" },
-  "help_how_to_update_shortcuts_answer": { "message": "Extensia vine cu scurtături predefinite pentru unele metode de sortare. Le puteți modifica direct în Firefox. Mai multe informații: <a target=\"_blank\" href=\"https://support.mozilla.org/ro/kb/manage-extension-shortcuts-firefox\">Gestionarea scurtăturilor extensiilor în Firefox</a>" },
-  "help_mru_not_working_chrome_question": { "message": "Sortarea după utilizare recentă funcționează în Chrome 121+." },
-  "help_mru_not_working_chrome_answer": { "message": "Această funcție este acum disponibilă în Chrome 121+ datorită proprietății lastAccessed din API-ul de file. Mai multe informații: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentația Chrome Tabs API</a>" },
-  "help_encountered_a_problem_question": { "message": "Am întâmpinat o problemă!" },
-  "help_encountered_a_problem_answer": { "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Creați un issue pe GitHub</a>" },
-  "preferences": { "message": "Preferințe" },
-  "preferences_general": { "message": "Preferințe generale" },
-  "preferences_auto": { "message": "Sortare automată" },
-  "no_shortcut_configured": { "message": "Nicio scurtătură configurată încă" },
-  "command_sort_tabs_url": { "message": "După URL", "description": "Button for sorting tabs by URL." },
-  "command_sort_tabs_mru": { "message": "După utilizare recentă", "description": "Button for sorting tabs by most recently used" },
-  "command_sort_tabs_title": { "message": "După titlu", "description": "Button for sorting tabs by title" },
-  "command_sort_tabs_favicon_and_title": { "message": "După pictogramă", "description": "Button for sorting tabs by favicon and title" },
-  "command_sort_tabs_shuffle": { "message": "Amestecă filele", "description": "Link to reorganize tabs randomly" },
-  "command_extract_domain": { "message": "Extrage domeniul", "description": "Button for extracting domain tabs to new window" },
-  "change_addons_preferences": { "message": "Deschide preferințele suplimentelor", "description": "Link to access the Firefox's about:addons page" },
-  "ui_click_checkbox_sort_tabs_reverse": { "message": "Inversează sortarea", "description": "Reverse sorting order" },
-  "ui_click_checkbox_sort_tabs_all_windows": { "message": "Sortează filele din toate ferestrele", "description": "Sorting tabs also in other windows" },
-  "preferences_suspended_tabs": { "message": "File suspendate", "description": "Section header for suspended tabs preferences" },
-  "suspended_tabs_position_label": { "message": "Poziția filelor suspendate:", "description": "Label for suspended tabs position selector" },
-  "suspended_tabs_position_ignore": { "message": "Ignoră starea de eliminare", "description": "Don't treat suspended tabs specially" },
-  "suspended_tabs_position_end": { "message": "Grupează la sfârșit", "description": "Move suspended tabs to the end when sorting" },
-  "suspended_tabs_position_beginning": { "message": "Grupează la început", "description": "Move suspended tabs to the beginning when sorting" },
-  "ui_click_checkbox_sort_tabs_pinned": { "message": "Sortează și filele fixate", "description": "Sort pinned tabs independently from non-pinned tabs" },
-  "ui_click_checkbox_sort_tabs_close_duplicates": { "message": "Închide filele duplicate", "description": "Close tabs with the same URL when using a sort action" },
-  "ui_click_checkbox_sort_tabs_auto_best_effort": { "message": "Sortează filele automat (cel mai bun efort).", "description": "Sort tabs automatically (best effort)." },
-  "ui_change_select_sort_select_tabs_default_sort_method": { "message": "Metoda implicită de sortare pentru sortarea automată", "description": "Select Default sort method for auto sort on new tab" },
-  "ui_click_checkbox_sort_tabs_respect_tab_groups": { "message": "Respectă grupurile de file (sortează în grupuri)", "description": "Keep tabs in their groups and sort within each group" },
-  "tab_groups_not_supported": { "message": "Grupurile de file nu sunt acceptate în această versiune de browser", "description": "Message shown when Tab Groups API is not available" },
-  "preferences_tab_groups": { "message": "Grupuri de file", "description": "Section header for tab groups preferences" },
-  "preferences_appearance": { "message": "Aspect", "description": "Section header for appearance preferences" },
-  "theme_label": { "message": "Temă:", "description": "Label for theme selector" },
-  "theme_auto": { "message": "Auto (urmează sistemul)", "description": "Auto theme option - follows system preference" },
-  "theme_dark": { "message": "Întunecat", "description": "Dark theme option" },
-  "theme_light": { "message": "Luminos", "description": "Light theme option" },
-  "open_settings_page": { "message": "Deschide pagina completă de setări", "description": "Link in the popup to open the extension settings page" },
-  "options_page_intro": { "message": "Configurați preferințele Tab Sorter. Modificările sunt salvate automat și partajate cu fereastra popup a extensiei.", "description": "Introduction text on the settings page" },
-  "options_page_auto_save": { "message": "Modificările sunt salvate automat.", "description": "Hint shown on the settings page" }
+  "actions": {
+    "message": "Sortează"
+  },
+  "change_addons_preferences": {
+    "message": "Deschide preferințele suplimentelor",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Extrage domeniul",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "După pictogramă",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "După utilizare recentă",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Amestecă filele",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "După titlu",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "După URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Extensie pentru sortarea filelor.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Ajutor"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Creați un issue pe GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Am întâmpinat o problemă!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "Extensia vine cu scurtături predefinite pentru unele metode de sortare. Le puteți modifica direct în Firefox. Mai multe informații: <a target=\"_blank\" href=\"https://support.mozilla.org/ro/kb/manage-extension-shortcuts-firefox\">Gestionarea scurtăturilor extensiilor în Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "Extensia vine cu scurtături predefinite pentru unele metode de sortare. Deschideți <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> în Chrome pentru a le vedea sau modifica."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Cum actualizez scurtăturile de tastatură pentru diferitele metode de sortare?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Această funcție este acum disponibilă în Chrome 121+ datorită proprietății lastAccessed din API-ul de file. Mai multe informații: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentația Chrome Tabs API</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sortarea după utilizare recentă funcționează în Chrome 121+."
+  },
+  "no_shortcut_configured": {
+    "message": "Nicio scurtătură configurată încă"
+  },
+  "open_settings_page": {
+    "message": "Deschide pagina completă de setări",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Modificările sunt salvate automat.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Configurați preferințele Tab Sorter. Modificările sunt salvate automat și partajate cu fereastra popup a extensiei.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Preferințe"
+  },
+  "preferences_appearance": {
+    "message": "Aspect",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Sortare automată"
+  },
+  "preferences_general": {
+    "message": "Preferințe generale"
+  },
+  "preferences_suspended_tabs": {
+    "message": "File suspendate",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Grupuri de file",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Grupează la început",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Grupează la sfârșit",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignoră starea de eliminare",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Poziția filelor suspendate:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Grupurile de file nu sunt acceptate în această versiune de browser",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Auto (urmează sistemul)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Întunecat",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Temă:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Luminos",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Metoda implicită de sortare pentru sortarea automată",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Sortează filele din toate ferestrele",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sortează filele automat (cel mai bun efort).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Închide filele duplicate",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Sortează și filele fixate",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respectă grupurile de file (sortează în grupuri)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Inversează sortarea",
+    "description": "Reverse sorting order"
+  }
 }

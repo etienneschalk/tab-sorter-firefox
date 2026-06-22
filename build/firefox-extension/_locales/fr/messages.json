@@ -1,135 +1,122 @@
 {
-  "extensionName": {
-    "message": "Trieur d'onglets",
-    "description": "Name of the extension."
-  },
-  "extensionDescription": {
-    "message": "Extension pour trier vos onglets",
-    "description": "Description of the extension."
-  },
   "actions": {
     "message": "Tri"
   },
-  "help": {
-    "message": "Aide"
+  "change_addons_preferences": {
+    "message": "Accéder aux préférences des modules",
+    "description": "Link to access the Firefox's about:addons page"
   },
-  "help_how_to_update_shortcuts_question": {
-    "message": "Comment mettre à jour les raccourcis clavier pour les différentes méthodes de tri ?"
-  },
-  "help_how_to_update_shortcuts_answer": {
-    "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines des méthodes de tri proposées. Vous pouvez les modifier directement via Firefox. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox\">Gérer les raccourcis d’extensions dans Firefox</a>"
-  },
-  "help_encountered_a_problem_question": {
-    "message": "J'ai rencontré un problème !"
-  },
-  "help_encountered_a_problem_answer": {
-    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
-  },
-  "help_mru_not_working_chrome_question": {
-    "message": "Le tri par utilisation la plus récente fonctionne sur Chrome 121+."
-  },
-  "help_mru_not_working_chrome_answer": {
-    "message": "Cette fonctionnalité est maintenant disponible dans Chrome 121+ grâce à la propriété lastAccessed de l'API tabs. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentation de l'API Chrome Tabs</a>"
-  },
-  "preferences": {
-    "message": "Préférences"
-  },
-  "preferences_general": {
-    "message": "Paramètres généraux"
-  },
-  "preferences_auto": {
-    "message": "Tri automatique "
-  },
-  "no_shortcut_configured": {
-    "message": "Pas encore de raccourci configuré"
-  },
-  "command_sort_tabs_url": {
-    "message": "Par URL",
-    "description": "Button for sorting tabs by URL."
-  },
-  "command_sort_tabs_mru": {
-    "message": "Par dernière utilisation",
-    "description": "Button for sorting tabs by most recently used"
-  },
-  "command_sort_tabs_title": {
-    "message": "Par titre",
-    "description": "Button for sorting tabs by title"
+  "command_extract_domain": {
+    "message": "Extraire le domaine",
+    "description": "Button for extracting domain tabs to new window"
   },
   "command_sort_tabs_favicon_and_title": {
     "message": "Par icône",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Par dernière utilisation",
     "description": "Button for sorting tabs by most recently used"
   },
   "command_sort_tabs_shuffle": {
     "message": "Mélanger les onglets",
     "description": "Reorganizes tabs randomly"
   },
-  "command_extract_domain": {
-    "message": "Extraire le domaine",
-    "description": "Button for extracting domain tabs to new window"
+  "command_sort_tabs_title": {
+    "message": "Par titre",
+    "description": "Button for sorting tabs by title"
   },
-  "ui_click_checkbox_sort_tabs_reverse": {
-    "message": "Inverser l'ordre de tri",
-    "description": "Reverse sorting order"
+  "command_sort_tabs_url": {
+    "message": "Par URL",
+    "description": "Button for sorting tabs by URL."
   },
-  "ui_click_checkbox_sort_tabs_all_windows": {
-    "message": "Trier dans toutes les fenêtres",
-    "description": "Sorting tabs also in other windows"
+  "extensionDescription": {
+    "message": "Extension pour trier vos onglets",
+    "description": "Description of the extension."
   },
-  "preferences_suspended_tabs": {
-    "message": "Onglets Suspendus",
-    "description": "Section header for suspended tabs preferences"
+  "extensionName": {
+    "message": "Trieur d'onglets",
+    "description": "Name of the extension."
   },
-  "suspended_tabs_position_label": {
-    "message": "Position des onglets suspendus :",
-    "description": "Label for suspended tabs position selector"
+  "help": {
+    "message": "Aide"
   },
-  "suspended_tabs_position_ignore": {
-    "message": "Ignorer le statut suspendu",
-    "description": "Don't treat suspended tabs specially"
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Créer une <em>issue</em> sur GitHub</a>"
   },
-  "suspended_tabs_position_end": {
-    "message": "Grouper à la fin",
-    "description": "Move suspended tabs to the end when sorting"
+  "help_encountered_a_problem_question": {
+    "message": "J'ai rencontré un problème !"
   },
-  "suspended_tabs_position_beginning": {
-    "message": "Grouper au début",
-    "description": "Move suspended tabs to the beginning when sorting"
+  "help_how_to_update_shortcuts_answer": {
+    "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines des méthodes de tri proposées. Vous pouvez les modifier directement via Firefox. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://support.mozilla.org/fr/kb/gerer-raccourcis-extensions-firefox\">Gérer les raccourcis d’extensions dans Firefox</a>"
   },
-  "ui_click_checkbox_sort_tabs_pinned": {
-    "message": "Trier aussi les onglets épinglés",
-    "description": "Sort pinned tabs independently from non-pinned tabs"
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "L'extension est livrée avec des raccourcis prédéfinis pour certaines méthodes de tri. Ouvrez <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> dans Chrome pour les consulter ou les modifier."
   },
-  "ui_click_checkbox_sort_tabs_close_duplicates": {
-    "message": "Fermer les onglets en double lors du tri",
-    "description": "Fermer les onglets ayant la même URL lors d'une action de tri"
+  "help_how_to_update_shortcuts_question": {
+    "message": "Comment mettre à jour les raccourcis clavier pour les différentes méthodes de tri ?"
   },
-  "ui_click_checkbox_sort_tabs_auto_best_effort": {
-    "message": "Trier automatiquement les onglets (meilleur effort)",
-    "description": "Sort tabs automatically (best effort)."
+  "help_mru_not_working_chrome_answer": {
+    "message": "Cette fonctionnalité est maintenant disponible dans Chrome 121+ grâce à la propriété lastAccessed de l'API tabs. Pour plus d'informations, voir : <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentation de l'API Chrome Tabs</a>"
   },
-  "ui_change_select_sort_select_tabs_default_sort_method": {
-    "message": "Méthode de tri à utiliser lors du tri automatique",
-    "description": "Select Default sort method for auto sort on new tab"
+  "help_mru_not_working_chrome_question": {
+    "message": "Le tri par utilisation la plus récente fonctionne sur Chrome 121+."
   },
-  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
-    "message": "Respecter les groupes d'onglets (trier au sein des groupes)",
-    "description": "Keep tabs in their groups and sort within each group"
+  "no_shortcut_configured": {
+    "message": "Pas encore de raccourci configuré"
   },
-  "tab_groups_not_supported": {
-    "message": "Les groupes d'onglets ne sont pas supportés dans cette version du navigateur",
-    "description": "Message shown when Tab Groups API is not available"
+  "open_settings_page": {
+    "message": "Ouvrir la page des paramètres",
+    "description": "Link in the popup to open the extension settings page"
   },
-  "preferences_tab_groups": {
-    "message": "Groupes d'onglets",
-    "description": "Section header for tab groups preferences"
+  "options_page_auto_save": {
+    "message": "Les modifications sont enregistrées automatiquement.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Configurez les préférences de Tab Sorter. Les modifications sont enregistrées automatiquement et partagées avec la fenêtre contextuelle de l'extension.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Préférences"
   },
   "preferences_appearance": {
     "message": "Apparence",
     "description": "Section header for appearance preferences"
   },
-  "theme_label": {
-    "message": "Thème",
-    "description": "Label for theme selector"
+  "preferences_auto": {
+    "message": "Tri automatique "
+  },
+  "preferences_general": {
+    "message": "Paramètres généraux"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Onglets Suspendus",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Groupes d'onglets",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Grouper au début",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Grouper à la fin",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorer le statut suspendu",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Position des onglets suspendus :",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Les groupes d'onglets ne sont pas supportés dans cette version du navigateur",
+    "description": "Message shown when Tab Groups API is not available"
   },
   "theme_auto": {
     "message": "Auto (suivre le système)",
@@ -139,24 +126,40 @@
     "message": "Sombre",
     "description": "Dark theme option"
   },
+  "theme_label": {
+    "message": "Thème",
+    "description": "Label for theme selector"
+  },
   "theme_light": {
     "message": "Clair",
     "description": "Light theme option"
   },
-  "open_settings_page": {
-    "message": "Ouvrir la page des paramètres",
-    "description": "Link in the popup to open the extension settings page"
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Méthode de tri à utiliser lors du tri automatique",
+    "description": "Select Default sort method for auto sort on new tab"
   },
-  "options_page_intro": {
-    "message": "Configurez les préférences de Tab Sorter. Les modifications sont enregistrées automatiquement et partagées avec la fenêtre contextuelle de l'extension.",
-    "description": "Introduction text on the settings page"
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Trier dans toutes les fenêtres",
+    "description": "Sorting tabs also in other windows"
   },
-  "options_page_auto_save": {
-    "message": "Les modifications sont enregistrées automatiquement.",
-    "description": "Hint shown on the settings page"
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Trier automatiquement les onglets (meilleur effort)",
+    "description": "Sort tabs automatically (best effort)."
   },
-  "change_addons_preferences": {
-    "message": "Accéder aux préférences des modules",
-    "description": "Link to access the Firefox's about:addons page"
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Fermer les onglets en double lors du tri",
+    "description": "Fermer les onglets ayant la même URL lors d'une action de tri"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Trier aussi les onglets épinglés",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respecter les groupes d'onglets (trier au sein des groupes)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Inverser l'ordre de tri",
+    "description": "Reverse sorting order"
   }
 }

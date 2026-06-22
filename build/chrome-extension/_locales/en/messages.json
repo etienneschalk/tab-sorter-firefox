@@ -1,139 +1,122 @@
 {
-  "extensionName": {
-    "message": "Tab Sorter",
-    "description": "Name of the extension."
-  },
-  "extensionDescription": {
-    "message": "Extension for sorting your tabs.",
-    "description": "Description of the extension."
-  },
   "actions": {
     "message": "Sort"
   },
-  "help": {
-    "message": "Help"
+  "change_addons_preferences": {
+    "message": "Access addons preferences",
+    "description": "Link to access the Firefox's about:addons page"
   },
-  "help_how_to_update_shortcuts_question": {
-    "message": "How do I update the keyboard shortcuts mapping for the different sorting methods?"
-  },
-  "help_how_to_update_shortcuts_answer": {
-    "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a target=\"_blank\" href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
-  },
-  "help_mru_not_working_chrome_question": {
-    "message": "Sort by most recently used works on Chrome 121+."
-  },
-  "help_mru_not_working_chrome_answer": {
-    "message": "This feature is now available in Chrome 121+ thanks to the lastAccessed property in the tabs API. For more information, see: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API documentation</a>"
-  },
-  "help_encountered_a_problem_question": {
-    "message": "I encountered a problem!"
-  },
-  "help_encountered_a_problem_answer": {
-    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Please create an issue on GitHub</a>"
-  },
-  "preferences": {
-    "message": "Preferences"
-  },
-  "preferences_general": {
-    "message": "General Preferences"
-  },
-  "preferences_auto": {
-    "message": "Automatic sorting"
-  },
-  "no_shortcut_configured": {
-    "message": "No shortcut configured yet"
-  },
-  "command_sort_tabs_url": {
-    "message": "By URL",
-    "description": "Button for sorting tabs by URL."
-  },
-  "command_sort_tabs_mru": {
-    "message": "By most recently used",
-    "description": "Button for sorting tabs by most recently used"
-  },
-  "command_sort_tabs_title": {
-    "message": "By title",
-    "description": "Button for sorting tabs by title"
+  "command_extract_domain": {
+    "message": "Extract Domain",
+    "description": "Button for extracting domain tabs to new window"
   },
   "command_sort_tabs_favicon_and_title": {
     "message": "By icon",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_mru": {
+    "message": "By most recently used",
     "description": "Button for sorting tabs by most recently used"
   },
   "command_sort_tabs_shuffle": {
     "message": "Shuffle tabs",
     "description": "Link to reorganize tabs randomly"
   },
-  "command_extract_domain": {
-    "message": "Extract Domain",
-    "description": "Button for extracting domain tabs to new window"
+  "command_sort_tabs_title": {
+    "message": "By title",
+    "description": "Button for sorting tabs by title"
   },
-  "change_addons_preferences": {
-    "message": "Access addons preferences",
-    "description": "Link to access the Firefox's about:addons page"
+  "command_sort_tabs_url": {
+    "message": "By URL",
+    "description": "Button for sorting tabs by URL."
   },
-  "ui_click_checkbox_sort_tabs_reverse": {
-    "message": "Reverse sorting",
-    "description": "Reverse sorting order"
+  "extensionDescription": {
+    "message": "Extension for sorting your tabs.",
+    "description": "Description of the extension."
   },
-  "ui_click_checkbox_sort_tabs_all_windows": {
-    "message": "Sort tabs in all windows",
-    "description": "Sorting tabs also in other windows"
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
   },
-  "preferences_suspended_tabs": {
-    "message": "Suspended Tabs",
-    "description": "Section header for suspended tabs preferences"
+  "help": {
+    "message": "Help"
   },
-  "suspended_tabs_position_label": {
-    "message": "Suspended tabs position:",
-    "description": "Label for suspended tabs position selector"
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Please create an issue on GitHub</a>"
   },
-  "suspended_tabs_position_ignore": {
-    "message": "Ignore discarded status",
-    "description": "Don't treat suspended tabs specially"
+  "help_encountered_a_problem_question": {
+    "message": "I encountered a problem!"
   },
-  "suspended_tabs_position_end": {
-    "message": "Group at the end",
-    "description": "Move suspended tabs to the end when sorting"
+  "help_how_to_update_shortcuts_answer": {
+    "message": "The extension comes with predefined shortcuts for some of the proposed sorting methods. You can change them via Firefox directly. For more information, see: <a target=\"_blank\" href=\"https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox\">Manage extension shortcuts in Firefox</a>"
   },
-  "suspended_tabs_position_beginning": {
-    "message": "Group at the beginning",
-    "description": "Move suspended tabs to the beginning when sorting"
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "The extension comes with predefined shortcuts for some sorting methods. Open <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> in Chrome to view or change them."
   },
-  "ui_click_checkbox_sort_tabs_pinned": {
-    "message": "Also sort pinned tabs",
-    "description": "Sort pinned tabs independently from non-pinned tabs"
+  "help_how_to_update_shortcuts_question": {
+    "message": "How do I update the keyboard shortcuts mapping for the different sorting methods?"
   },
-  "ui_click_checkbox_sort_tabs_close_duplicates": {
-    "message": "Close duplicate tabs",
-    "description": "Close tabs with the same URL when using a sort action"
+  "help_mru_not_working_chrome_answer": {
+    "message": "This feature is now available in Chrome 121+ thanks to the lastAccessed property in the tabs API. For more information, see: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API documentation</a>"
   },
-  "ui_click_checkbox_sort_tabs_auto_best_effort": {
-    "message": "Sort tabs automatically (best effort).",
-    "description": "Sort tabs automatically (best effort)."
+  "help_mru_not_working_chrome_question": {
+    "message": "Sort by most recently used works on Chrome 121+."
   },
-  "ui_change_select_sort_select_tabs_default_sort_method": {
-    "message": "Default sort method for auto sort on new tab",
-    "description": "Select Default sort method for auto sort on new tab"
+  "no_shortcut_configured": {
+    "message": "No shortcut configured yet"
   },
-  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
-    "message": "Respect Tab Groups (sort within groups)",
-    "description": "Keep tabs in their groups and sort within each group"
+  "open_settings_page": {
+    "message": "Open full settings page",
+    "description": "Link in the popup to open the extension settings page"
   },
-  "tab_groups_not_supported": {
-    "message": "Tab Groups not supported in this browser version",
-    "description": "Message shown when Tab Groups API is not available"
+  "options_page_auto_save": {
+    "message": "Changes are saved automatically.",
+    "description": "Hint shown on the settings page"
   },
-  "preferences_tab_groups": {
-    "message": "Tab Groups",
-    "description": "Section header for tab groups preferences"
+  "options_page_intro": {
+    "message": "Configure Tab Sorter preferences. Changes are saved automatically and shared with the extension popup.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Preferences"
   },
   "preferences_appearance": {
     "message": "Appearance",
     "description": "Section header for appearance preferences"
   },
-  "theme_label": {
-    "message": "Theme:",
-    "description": "Label for theme selector"
+  "preferences_auto": {
+    "message": "Automatic sorting"
+  },
+  "preferences_general": {
+    "message": "General Preferences"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Suspended Tabs",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Tab Groups",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Group at the beginning",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Group at the end",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignore discarded status",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Suspended tabs position:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Tab Groups not supported in this browser version",
+    "description": "Message shown when Tab Groups API is not available"
   },
   "theme_auto": {
     "message": "Auto (follow system)",
@@ -143,20 +126,40 @@
     "message": "Dark",
     "description": "Dark theme option"
   },
+  "theme_label": {
+    "message": "Theme:",
+    "description": "Label for theme selector"
+  },
   "theme_light": {
     "message": "Light",
     "description": "Light theme option"
   },
-  "open_settings_page": {
-    "message": "Open full settings page",
-    "description": "Link in the popup to open the extension settings page"
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Default sort method for auto sort on new tab",
+    "description": "Select Default sort method for auto sort on new tab"
   },
-  "options_page_intro": {
-    "message": "Configure Tab Sorter preferences. Changes are saved automatically and shared with the extension popup.",
-    "description": "Introduction text on the settings page"
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Sort tabs in all windows",
+    "description": "Sorting tabs also in other windows"
   },
-  "options_page_auto_save": {
-    "message": "Changes are saved automatically.",
-    "description": "Hint shown on the settings page"
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sort tabs automatically (best effort).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Close duplicate tabs",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Also sort pinned tabs",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respect Tab Groups (sort within groups)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Reverse sorting",
+    "description": "Reverse sorting order"
   }
 }
