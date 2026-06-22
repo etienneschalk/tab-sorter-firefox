@@ -75,6 +75,10 @@
     "message": "Trier dans toutes les fenêtres",
     "description": "Sorting tabs also in other windows"
   },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Fermer les onglets en double lors du tri",
+    "description": "Fermer les onglets ayant la même URL lors d'une action de tri"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Trier automatiquement les onglets (meilleur effort)",
     "description": "Sort tabs automatically (best effort)."

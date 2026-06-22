@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8] - 2026-05-19
+
+### Added
+- **Close duplicate tabs** - Optional preference to close duplicate tabs when sorting (keeps the leftmost tab). Matches normalized URLs (ignores hash, query string, `www`, case) and the same issue-tracker resource when the URL shape differs. Closes [#17](https://github.com/etienneschalk/tab-sorter-firefox/issues/17).
+
 ## [0.7] - 2025-09-16
 
 ### Added

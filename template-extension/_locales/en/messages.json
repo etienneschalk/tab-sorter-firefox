@@ -79,6 +79,10 @@
     "message": "Sort tabs in all windows",
     "description": "Sorting tabs also in other windows"
   },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Close duplicate tabs",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
   "ui_click_checkbox_sort_tabs_auto_best_effort": {
     "message": "Sort tabs automatically (best effort).",
     "description": "Sort tabs automatically (best effort)."
