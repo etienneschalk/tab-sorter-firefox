@@ -102,7 +102,37 @@ Keyword: Publish
      - Category selection
      - Privacy policy (if applicable)
 
-3. **Review process:**
+3. **Privacy practices (onglet « Pratiques en matière de confidentialité »):**
+
+   Chrome requires a justification for each sensitive permission. Paste the text below into the corresponding field, then save the draft.
+
+   **Data usage:** No data is collected or transmitted off-device. Select *No* for data collection if asked.
+
+   **`tabGroups`**
+
+   *Français:*
+   > L'autorisation `tabGroups` est requise pour la fonction « Respecter les groupes d'onglets » (activée par défaut). L'extension lit à quels groupes appartiennent les onglets afin de les trier à l'intérieur de chaque groupe sans les en retirer, puis réapplique l'appartenance au groupe après le réordonnancement. Aucune donnée n'est envoyée à un serveur externe.
+
+   *English:*
+   > The `tabGroups` permission is required for the "Respect Tab Groups" feature (on by default). The extension reads which group each tab belongs to so it can sort tabs within each group without pulling them out, then re-applies group membership after reordering. No data is sent to external servers.
+
+   **`tabs`**
+
+   *Français:*
+   > L'autorisation `tabs` permet de lire l'ordre, l'URL, le titre et l'état des onglets (épinglé, suspendu, groupe) pour les trier, les déplacer, fermer les doublons ou extraire un domaine vers une nouvelle fenêtre. Tout le traitement reste local dans le navigateur.
+
+   *English:*
+   > The `tabs` permission is used to read tab order, URL, title, and state (pinned, discarded, group) in order to sort, move, close duplicate tabs, or extract a domain to a new window. All processing stays local in the browser.
+
+   **`storage`**
+
+   *Français:*
+   > L'autorisation `storage` enregistre localement les préférences de l'utilisateur (méthode de tri par défaut, thème, options de tri des onglets épinglés, etc.). Aucune donnée n'est synchronisée avec un serveur externe.
+
+   *English:*
+   > The `storage` permission saves user preferences locally (default sort method, theme, pinned-tab options, etc.). No data is synced to an external server.
+
+4. **Review process:**
    - Chrome Web Store reviews can take 1-3 business days
    - Extensions with minimal permissions usually get faster approval
    - Check dashboard for status updates
