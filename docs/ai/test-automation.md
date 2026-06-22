@@ -55,7 +55,7 @@ tests/
 package.json               # npm scripts and devDependencies
 vitest.config.js
 playwright.config.js
-.nvmrc                     # Node 22
+.nvmrc                     # Node 24
 ```
 
 ### Design choices
@@ -276,7 +276,7 @@ Anyone cloning the repo (or rebuilding this setup on another branch) should foll
 
 | Tool | Version | Used for |
 |------|---------|----------|
-| Node.js | ≥ 18 (repo pins 22 in `.nvmrc`) | Vitest, Playwright |
+| Node.js | ≥ 24 (repo pins 24 in `.nvmrc`) | Vitest, Playwright |
 | npm | comes with Node | dependencies |
 | `jq` | any recent | `build-extensions.sh` |
 | Linux/macOS/Windows | — | Playwright downloads Chromium automatically |
@@ -457,6 +457,8 @@ tests/e2e/extract-domain.spec.js
 
 docs/ai/README.md
 docs/ai/test-automation.md
+docs/ai/github-actions.md
+.github/workflows/test.yml
 ```
 
 ---
@@ -473,6 +475,12 @@ docs/ai/test-automation.md
 | E2E: extract does nothing | Active tab not on target domain | Activate target tab before extract (see `extract-domain.spec.js`) |
 | E2E: network timeouts | Offline or site blocked | Ensure github.com/google.com/youtube.com reachable |
 | `jq: command not found` | jq missing | Install jq per README |
+
+---
+
+## 12. Continuous integration (GitHub Actions)
+
+CI runs the same test commands as local development. See **[github-actions.md](./github-actions.md)** for triggers, a step-by-step breakdown of each workflow job, how to reproduce CI locally, and CI-specific troubleshooting.
 
 ---
 

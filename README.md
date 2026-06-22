@@ -23,7 +23,7 @@ Automated tests cover the scenarios from the `test-*.md` manuals:
 - **Unit tests** (Vitest): sorting logic, suspended tabs, tab groups, domain extraction, theme resolution
 - **E2E tests** (Playwright + Chromium): popup theme, sort by URL, pinned tabs, extract domain
 
-Requirements: Node.js 18+ (see `.nvmrc`), npm, `jq` for builds, Chromium (installed via Playwright).
+Requirements: Node.js 24+ (see `.nvmrc`), npm, `jq` for builds, Chromium (installed via Playwright).
 
 ```bash
 npm install

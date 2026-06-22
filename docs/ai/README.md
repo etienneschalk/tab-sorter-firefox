@@ -7,12 +7,13 @@ This folder documents changes made with AI assistance so they can be understood,
 | Document | Description |
 |----------|-------------|
 | [test-automation.md](./test-automation.md) | Full write-up of the automated test stack: what changed, why, and how to reproduce it from scratch |
+| [github-actions.md](./github-actions.md) | GitHub Actions CI workflow: triggers, steps, and troubleshooting |
 
 ## Quick reference
 
 ```bash
-# Prerequisites: Node.js 18+, npm, jq, Chromium (via Playwright)
-nvm use                    # uses .nvmrc (Node 22)
+# Prerequisites: Node.js 24+, npm, jq, Chromium (via Playwright)
+nvm use                    # uses .nvmrc (Node 24)
 npm install
 npx playwright install chromium   # first time only
 npm run test:all           # 17 unit + 5 E2E tests
@@ -25,5 +26,6 @@ npm run test:all           # 17 unit + 5 E2E tests
 3. **E2E tests** in `tests/e2e/` — Playwright loads the Chrome extension and exercises the popup + tab APIs
 4. **ES module migration** — extension scripts import shared libs; Chrome service worker uses `"type": "module"`
 5. **Bug fix** — `performSort` now reads pinned-tab and tab-group preferences from cache (required after ES module strict mode)
+6. **GitHub Actions** — [`.github/workflows/test.yml`](../../.github/workflows/test.yml) runs unit + E2E tests on push/PR (see [github-actions.md](./github-actions.md))
 
 Manual procedures in the repo root `test-*.md` files are partially automated; see [test-automation.md](./test-automation.md) for the mapping.
