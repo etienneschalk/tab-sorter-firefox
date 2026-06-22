@@ -142,5 +142,17 @@
   "theme_light": {
     "message": "Clair",
     "description": "Light theme option"
+  },
+  "open_settings_page": {
+    "message": "Ouvrir la page des paramètres",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_intro": {
+    "message": "Configurez les préférences de Tab Sorter. Les modifications sont enregistrées automatiquement et partagées avec la fenêtre contextuelle de l'extension.",
+    "description": "Introduction text on the settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Les modifications sont enregistrées automatiquement.",
+    "description": "Hint shown on the settings page"
   }
 }

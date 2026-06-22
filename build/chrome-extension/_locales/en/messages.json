@@ -146,5 +146,17 @@
   "theme_light": {
     "message": "Light",
     "description": "Light theme option"
+  },
+  "open_settings_page": {
+    "message": "Open full settings page",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_intro": {
+    "message": "Configure Tab Sorter preferences. Changes are saved automatically and shared with the extension popup.",
+    "description": "Introduction text on the settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Changes are saved automatically.",
+    "description": "Hint shown on the settings page"
   }
 }

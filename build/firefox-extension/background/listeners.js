@@ -35,6 +35,10 @@ export function addEventListeners() {
   });
 
   chrome.runtime.onMessage.addListener((message) => {
+    if (!message || typeof message !== "object" || !message.command) {
+      return;
+    }
+
     console.debug(
       `${TAB_SORTER_PREFIX} Message event received: ${message.command} with value=${message.value}`,
     );

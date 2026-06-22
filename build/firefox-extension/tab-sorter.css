@@ -246,3 +246,41 @@ select option {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
 }
+
+.options-page {
+  width: 560px;
+  max-width: calc(100vw - 32px);
+  margin: 16px auto;
+  padding: 16px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.options-intro {
+  color: var(--text-secondary);
+  margin: 8px 0 16px;
+}
+
+.options-preferences h2 {
+  margin-top: 0;
+}
+
+.options-saved-hint {
+  margin-top: 16px;
+  color: var(--text-muted);
+}
+
+.options-version {
+  margin-top: 24px;
+  color: var(--text-muted);
+}
+
+.settings-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.settings-link a {
+  display: inline;
+  cursor: pointer;
+}
