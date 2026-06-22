@@ -1,21 +1,21 @@
 # Test automation setup
 
-This document explains the automated test infrastructure added to **tab-sorter-firefox**: what was done, how it maps to the existing manual `test-*.md` procedures, and how to reproduce or extend the setup later.
+This document explains the automated test infrastructure added to **tab-sorter-firefox**: what was done, how it maps to the manual procedures in [`test-procedures/`](./test-procedures/), and how to reproduce or extend the setup later.
 
 ---
 
 ## 1. Problem and goal
 
-The repository had six manual test documents at the root:
+The repository has six manual test documents in [`test-procedures/`](./test-procedures/):
 
 | File | Topic |
 |------|-------|
-| `test-dark-mode-issue-16.md` | Popup dark/light/auto theme |
-| `test-pinned-tabs-issue-9.md` | Sort pinned tabs independently |
-| `test-suspended-tabs-issue-18.md` | Group discarded tabs at start/end |
-| `test-tab-groups-issue-19.md` | Sort within tab groups |
-| `test-extract-domain.md` | Move same-domain tabs to a new window |
-| `test-implementation.md` | Auto-sort on new tab (timing) |
+| [test-dark-mode-issue-16.md](./test-procedures/test-dark-mode-issue-16.md) | Popup dark/light/auto theme |
+| [test-pinned-tabs-issue-9.md](./test-procedures/test-pinned-tabs-issue-9.md) | Sort pinned tabs independently |
+| [test-suspended-tabs-issue-18.md](./test-procedures/test-suspended-tabs-issue-18.md) | Group discarded tabs at start/end |
+| [test-tab-groups-issue-19.md](./test-procedures/test-tab-groups-issue-19.md) | Sort within tab groups |
+| [test-extract-domain.md](./test-procedures/test-extract-domain.md) | Move same-domain tabs to a new window |
+| [test-implementation.md](./test-procedures/test-implementation.md) | Auto-sort on new tab (timing) |
 
 There was no `package.json`, no test runner, and no CI. Sorting logic lived inline in `template-extension/tab-sorter.js`, which made it hard to test without loading a real browser extension.
 
@@ -406,7 +406,7 @@ If you need to re-apply the same approach from zero (e.g. after a large revert):
 
 ### New manual doc scenario
 
-Update the mapping tables in this document when you automate (or consciously skip) a `test-*.md` procedure.
+Update the mapping tables in this document when you automate (or consciously skip) a procedure in `test-procedures/`.
 
 ---
 
@@ -456,6 +456,7 @@ tests/e2e/pinned-tabs.spec.js
 tests/e2e/extract-domain.spec.js
 
 docs/ai/README.md
+docs/ai/test-procedures/
 docs/ai/test-automation.md
 docs/ai/github-actions.md
 .github/workflows/test.yml

@@ -119,7 +119,7 @@ Download it from the run’s **Summary → Artifacts** to inspect the HTML repor
 ## What CI does not run
 
 - Firefox extension testing (Playwright extension support is Chromium-only here)
-- Manual checks from `test-*.md` (visual/CSS, real discarded tabs, auto-sort timing)
+- Manual checks from [test-procedures/](./test-procedures/) (visual/CSS, real discarded tabs, auto-sort timing)
 - `npm run build` as a separate step (build happens inside E2E global setup)
 
 ---

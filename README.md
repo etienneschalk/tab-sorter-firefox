@@ -18,7 +18,7 @@ The `build-extensions.sh` script generates the Firefox and Chrome extensions fro
 
 ## Testing
 
-Automated tests cover the scenarios from the `test-*.md` manuals:
+Automated tests cover the scenarios from the [manual test procedures](docs/ai/test-procedures/):
 
 - **Unit tests** (Vitest): sorting logic, suspended tabs, tab groups, domain extraction, theme resolution
 - **E2E tests** (Playwright + Chromium): popup theme, sort by URL, pinned tabs, extract domain
