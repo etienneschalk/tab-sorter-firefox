@@ -43,7 +43,7 @@ Mode Sombre
 Fonctionnalités Supplémentaires
 - Tri automatique - Organiser automatiquement les nouveaux onglets
 - Support multi-fenêtres - Fonctionne dans toutes les fenêtres du navigateur
-- Interface bilingue - Support anglais et français
+- Interface multilingue - Prise en charge de 25 langues
 - Axé sur la confidentialité - Aucune collecte de données, traitement local uniquement
 
 Comment Utiliser

@@ -1,4 +1,5 @@
 import { loadInitialState } from "./lib/load-initial-state.js";
+import { replaceHtmlContent } from "./lib/replace-html-content.js";
 import { applyDocumentLocale } from "./lib/locale-logic.js";
 import { registerPreferencesEventListeners } from "./lib/preferences-events.js";
 import { renderOptionsPage } from "./lib/preferences-render.js";
@@ -16,7 +17,7 @@ applyDocumentLocale(document);
   try {
     const initialState = await loadInitialState();
     applyTheme(initialState.theme);
-    document.body.innerHTML = renderOptionsPage(initialState);
+    replaceHtmlContent(document.body, renderOptionsPage(initialState));
   } catch (error) {
     console.error("[Tab Sorter] Options page failed to load", error);
     document.body.textContent =

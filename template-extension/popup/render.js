@@ -1,3 +1,4 @@
+import { replaceHtmlContent } from "../lib/replace-html-content.js";
 import { renderPreferencesControls } from "../lib/preferences-render.js";
 import { OPEN_SETTINGS_PAGE } from "./constants.js";
 import { renderHelpSection } from "./help-render.js";
@@ -80,8 +81,11 @@ export function mountPopup(initialState, allCommands) {
     throw new Error("[Tab Sorter] Popup container element is missing");
   }
 
-  container.innerHTML = renderPopup({
-    ...initialState,
-    allCommands,
-  });
+  replaceHtmlContent(
+    container,
+    renderPopup({
+      ...initialState,
+      allCommands,
+    }),
+  );
 }

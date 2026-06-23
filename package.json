@@ -11,7 +11,8 @@
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:all": "npm run test:unit && npm run test:e2e"
+    "test:all": "npm run test:unit && npm run test:e2e",
+    "generate:screenshots": "npm run build && node scripts/generate-popup-screenshots.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",

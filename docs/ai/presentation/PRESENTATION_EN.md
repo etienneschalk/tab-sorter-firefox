@@ -43,7 +43,7 @@ Dark Mode Support
 Additional Features
 - Auto-sort - Automatically organize new tabs
 - Cross-window support - Works across all browser windows
-- Bilingual interface - English and French support
+- Multilingual interface - Support for 25 languages
 - Privacy-focused - No data collection, local processing only
 
 How to Use
