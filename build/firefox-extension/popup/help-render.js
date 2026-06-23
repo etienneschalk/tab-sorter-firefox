@@ -32,9 +32,13 @@ function renderTabGroupsNotSupportedHelpSection() {
     return "";
   }
 
+  const messageKey = isFirefoxExtension()
+    ? "help_tab_groups_not_supported_firefox"
+    : "help_tab_groups_not_supported_chrome";
+
   return `
             <br>
-            <p class="warning-text">${translate("tab_groups_not_supported")}</p>`;
+            <p class="warning-text">${translate(messageKey)}</p>`;
 }
 
 export function renderHelpSection() {

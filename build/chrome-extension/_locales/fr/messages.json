@@ -62,6 +62,14 @@
   "help_mru_not_working_chrome_question": {
     "message": "Le tri par utilisation la plus récente fonctionne sur Chrome 121+."
   },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Les groupes d'onglets ne sont pas pris en charge dans cette version de Chrome. Le tri à l'intérieur des groupes tout en conservant leur disposition nécessite Chrome 89 ou ultérieur. Sur les versions plus anciennes, les onglets sont tout de même triés, mais sur l'ensemble de la fenêtre.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Les groupes d'onglets ne sont pas pris en charge dans cette version de Firefox. Le tri à l'intérieur des groupes tout en conservant leur disposition nécessite Firefox 139 ou ultérieur. Sur les versions plus anciennes, les onglets sont tout de même triés, mais sur l'ensemble de la fenêtre.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
   "no_shortcut_configured": {
     "message": "Pas encore de raccourci configuré"
   },
