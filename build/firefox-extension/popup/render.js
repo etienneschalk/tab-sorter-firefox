@@ -7,6 +7,10 @@ function translate(message) {
 }
 
 export function logCommands(commands) {
+  if (!commands) {
+    return;
+  }
+
   commands.forEach((command) => {
     console.info(command);
   });
@@ -44,7 +48,6 @@ export function renderPopup(params) {
   const { allCommands, ...preferencesState } = params;
 
   return `
-<div id="container">
     <div class="">
         <h1>  🗂️ ${translate("extensionName")} v${chrome.runtime.getManifest().version}  </h1>
     </div>
@@ -68,19 +71,17 @@ export function renderPopup(params) {
             <br>
         </div>
     </div>
-</div>
   `;
 }
 
 export function mountPopup(initialState, allCommands) {
-  const popupHtmlString = renderPopup({
+  const container = document.getElementById("container");
+  if (!container) {
+    throw new Error("[Tab Sorter] Popup container element is missing");
+  }
+
+  container.innerHTML = renderPopup({
     ...initialState,
     allCommands,
   });
-
-  const container = new DOMParser()
-    .parseFromString(popupHtmlString, "text/html")
-    .getElementById("container");
-  document.getElementById("container").innerHTML = "";
-  document.getElementById("container").appendChild(container);
 }

@@ -6,9 +6,9 @@ Simple extension for sorting tabs in Firefox (and Chrome)
 
 **For Firefox users:**
 
-➡️ Please use this link to download: https://addons.mozilla.org/en-US/firefox/addon/tab-sorter/
+➡️ Please use this link to download: https://addons.mozilla.org/en-US/firefox/addon/tab-sorter-/
 
-The original link lead to an outdated version (https://addons.mozilla.org/en-US/firefox/addon/tab-sorter-) and cannot be updated anymore.
+The original link lead to an outdated version (https://addons.mozilla.org/en-US/firefox/addon/tab-sorter) and cannot be updated anymore.
 
 ### Translations
 
@@ -76,7 +76,7 @@ Keyword: Publish
 
 1. **Prepare your extension:**
    - Ensure `build/firefox-extension.zip` is ready
-   - Verify the manifest includes Firefox-specific settings (`strict_min_version` **140.0** for `tabGroups` and AMO data-collection consent)
+   - Verify the manifest includes Firefox-specific settings
 
 2. **Upload to Firefox Add-ons:**
    - Go to [Firefox Add-ons Developer Hub](https://addons.mozilla.org/developers/)

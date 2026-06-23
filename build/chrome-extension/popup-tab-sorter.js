@@ -1,3 +1,4 @@
+import { loadInitialState } from "./lib/load-initial-state.js";
 import { applyDocumentLocale } from "./lib/locale-logic.js";
 import { applyTheme as applyThemeToDocument } from "./lib/theme-logic.js";
 import { COMMAND_DISPLAY_PRIORITY } from "./popup/constants.js";
@@ -16,11 +17,19 @@ registerPopupEventListeners(applyTheme);
 applyDocumentLocale(document);
 
 (async () => {
-  const initialState = await chrome.runtime.sendMessage("queryInitialState");
-  console.debug("== After await chrome.runtime.sendMessage");
+  try {
+    const initialState = await loadInitialState();
+    console.debug("== Popup initial state loaded");
 
-  applyTheme(initialState.theme);
-  initializeUserInterface(initialState);
+    applyTheme(initialState.theme);
+    initializeUserInterface(initialState);
+  } catch (error) {
+    console.error("[Tab Sorter] Popup failed to load", error);
+    const container = document.getElementById("container");
+    if (container) {
+      container.textContent = "Tab Sorter failed to load. See the browser console.";
+    }
+  }
 })();
 
 function initializeUserInterface(initialState) {
@@ -53,9 +62,9 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
-  logCommands(allCommands);
+  logCommands(allCommands ?? []);
 
-  const filteredCommands = allCommands
+  const filteredCommands = (allCommands ?? [])
     .filter(
       (command) =>
         command.name.startsWith("command_sort_tabs") ||

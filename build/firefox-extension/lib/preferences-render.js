@@ -24,19 +24,6 @@ function renderCheckbox(id, initialValue) {
   `;
 }
 
-function renderCheckboxWithDisabled(id, initialValue, disabled, disabledMessage) {
-  if (disabled) {
-    return `
-<label for=${id} class="disabled-checkbox">
-  <input type="checkbox" id=${id} disabled />
-   ${translate(id)} 
-  <br><small class="warning-text">${translate(disabledMessage)}</small>
-</label>
-    `;
-  }
-  return renderCheckbox(id, initialValue);
-}
-
 function renderSelect(id, options, initialSelectedValue) {
   return `
 <label for="${id}">${translate(id)}</label>
@@ -72,6 +59,18 @@ function renderSuspendedTabsPositionOption(positionValue, selectedPosition) {
   `;
 }
 
+function renderTabGroupsSection(isRespectTabGroups, isTabGroupsApiAvailable) {
+  if (!isTabGroupsApiAvailable) {
+    return "";
+  }
+
+  return `
+            <br> 
+            <h3> 📁 ${translate("preferences_tab_groups")}</h3>
+            ${renderCheckbox(CHECKBOX_RESPECT_TAB_GROUPS, isRespectTabGroups)}
+  `;
+}
+
 export function renderPreferencesControls(state) {
   const {
     isReverse,
@@ -104,14 +103,7 @@ export function renderPreferencesControls(state) {
                 ${availableSuspendedTabsPositions.map((p) => renderSuspendedTabsPositionOption(p, suspendedTabsPosition)).join("")}
               </select>
             </div>
-            <br> 
-            <h3> 📁 ${translate("preferences_tab_groups")}</h3>
-            ${renderCheckboxWithDisabled(
-              CHECKBOX_RESPECT_TAB_GROUPS,
-              isRespectTabGroups,
-              !isTabGroupsApiAvailable,
-              "tab_groups_not_supported",
-            )}
+            ${renderTabGroupsSection(isRespectTabGroups, isTabGroupsApiAvailable)}
             <br> 
             <h3> 🤖 ${translate("preferences_auto")}</h3>
             ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}

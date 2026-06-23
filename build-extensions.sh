@@ -2,6 +2,7 @@
 # Note: jq is required to edit JSON, see https://jqlang.github.io/jq/
 
 # CHROME 
+rm -rf build/chrome-extension
 mkdir -p build/chrome-extension
 cp -R template-extension/** build/chrome-extension
 # The Background Page is not supported anymore for chrome, and useless as service_worker is used.
@@ -10,10 +11,11 @@ rm build/chrome-extension/background-tab-sorter.html
 jq 'del(.browser_specific_settings) | .background = { "service_worker": "tab-sorter.js", "type": "module" }' template-extension/manifest.json > build/chrome-extension/manifest.json
 
 # FIREFOX
+rm -rf build/firefox-extension
 mkdir -p build/firefox-extension
 cp -R template-extension/** build/firefox-extension
-# Firefox does not support yet service workers; require 140+ for tabGroups + data consent keys
-jq '.background = { "page": "background-tab-sorter.html" } | .browser_specific_settings.gecko.strict_min_version = "140.0"' template-extension/manifest.json > build/firefox-extension/manifest.json
+# Firefox MV3: background page loads tab-sorter.js as an ES module (see background-tab-sorter.html)
+jq '.background = { "page": "background-tab-sorter.html" }' template-extension/manifest.json > build/firefox-extension/manifest.json
 
 # CREATE ZIP FILES
 echo "Creating zip files..."

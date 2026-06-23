@@ -18,12 +18,16 @@ import { extractDomainTabs } from "./extract-domain.js";
 import { sortTabs } from "./sort-tabs.js";
 
 export function addEventListeners() {
-  chrome.runtime.onMessage.addListener((message, sender, sendMessage) => {
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "queryInitialState") {
       console.debug("Start queryInitialState handler");
       (async () => {
-        await resetCacheAsync();
-        sendMessage(buildInitialState());
+        try {
+          await resetCacheAsync();
+          sendResponse(buildInitialState());
+        } catch (error) {
+          console.error(`${TAB_SORTER_PREFIX} queryInitialState failed`, error);
+        }
       })();
       return true;
     }
