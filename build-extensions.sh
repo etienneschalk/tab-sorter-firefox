@@ -12,8 +12,8 @@ jq 'del(.browser_specific_settings) | .background = { "service_worker": "tab-sor
 # FIREFOX
 mkdir -p build/firefox-extension
 cp -R template-extension/** build/firefox-extension
-# Firefox does not support yet service workers
-jq '.background = { "page": "background-tab-sorter.html" }' template-extension/manifest.json > build/firefox-extension/manifest.json
+# Firefox does not support yet service workers; require 140+ for tabGroups + data consent keys
+jq '.background = { "page": "background-tab-sorter.html" } | .browser_specific_settings.gecko.strict_min_version = "140.0"' template-extension/manifest.json > build/firefox-extension/manifest.json
 
 # CREATE ZIP FILES
 echo "Creating zip files..."

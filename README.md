@@ -76,7 +76,7 @@ Keyword: Publish
 
 1. **Prepare your extension:**
    - Ensure `build/firefox-extension.zip` is ready
-   - Verify the manifest includes Firefox-specific settings
+   - Verify the manifest includes Firefox-specific settings (`strict_min_version` **140.0** for `tabGroups` and AMO data-collection consent)
 
 2. **Upload to Firefox Add-ons:**
    - Go to [Firefox Add-ons Developer Hub](https://addons.mozilla.org/developers/)

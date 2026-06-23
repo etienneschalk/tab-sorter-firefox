@@ -9,7 +9,10 @@ function renderShortcutsHelpAnswer() {
     return translate("help_how_to_update_shortcuts_answer");
   }
 
-  return translate("help_how_to_update_shortcuts_answer_chrome");
+  return translate("help_how_to_update_shortcuts_answer_chrome").replace(
+    /href="chrome:\/\/extensions\/shortcuts"/,
+    'href="#"',
+  );
 }
 
 function renderMruHelpSection() {
