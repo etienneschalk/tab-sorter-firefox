@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Сортировать"
+  },
+  "change_addons_preferences": {
+    "message": "Открыть настройки дополнений",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Извлечь домен",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "По значку",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "По недавнему использованию",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Перемешать вкладки",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "По заголовку",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "По URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Расширение для сортировки вкладок.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Справка"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Создайте issue на GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "У меня возникла проблема!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "Расширение поставляется с предустановленными сочетаниями клавиш для некоторых способов сортировки. Их можно изменить прямо в Firefox. Подробнее: <a target=\"_blank\" href=\"https://support.mozilla.org/ru/kb/upravlenie-goryachimi-klavishami-rasshirenij\">Управление сочетаниями клавиш расширений в Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "В расширении есть предустановленные сочетания клавиш для некоторых методов сортировки. Откройте <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> в Chrome, чтобы просмотреть или изменить их."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Как изменить сочетания клавиш для разных способов сортировки?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Эта функция теперь доступна в Chrome 121+ благодаря свойству lastAccessed в API вкладок. Подробнее: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Документация Chrome Tabs API</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Сортировка по недавнему использованию работает в Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Сочетание клавиш ещё не настроено"
+  },
+  "open_settings_page": {
+    "message": "Открыть полную страницу настроек",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Изменения сохраняются автоматически.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Настройте параметры Tab Sorter. Изменения сохраняются автоматически и синхронизируются с всплывающим окном расширения.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Настройки"
+  },
+  "preferences_appearance": {
+    "message": "Внешний вид",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Автоматическая сортировка"
+  },
+  "preferences_general": {
+    "message": "Общие настройки"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Приостановленные вкладки",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Группы вкладок",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Группировать в начале",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Группировать в конце",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Игнорировать статус отброшенных",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Положение приостановленных вкладок:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Группы вкладок не поддерживаются в этой версии браузера",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Авто (как в системе)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Тёмная",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Тема:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Светлая",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Способ сортировки по умолчанию для автосортировки",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Сортировать вкладки во всех окнах",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Сортировать вкладки автоматически (по возможности).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Закрывать дубликаты вкладок",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Также сортировать закреплённые вкладки",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Учитывать группы вкладок (сортировать внутри групп)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Обратная сортировка",
+    "description": "Reverse sorting order"
+  }
+}

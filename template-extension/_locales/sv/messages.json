@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Sortera"
+  },
+  "change_addons_preferences": {
+    "message": "Öppna tilläggsinställningar",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Extrahera domän",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Efter ikon",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Efter senast använd",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Blanda flikar",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Efter titel",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "Efter URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Tillägg för att sortera dina flikar.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Hjälp"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Skapa ett ärende på GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Jag stötte på ett problem!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "Tillägget har fördefinierade kortkommandon för vissa sorteringsmetoder. Du kan ändra dem direkt i Firefox. Mer information: <a target=\"_blank\" href=\"https://support.mozilla.org/sv/kb/manage-extension-shortcuts-firefox\">Hantera tilläggskortkommandon i Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "Tillägget har fördefinierade kortkommandon för vissa sorteringsmetoder. Öppna <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> i Chrome för att visa eller ändra dem."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Hur uppdaterar jag kortkommandona för de olika sorteringsmetoderna?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Den här funktionen är nu tillgänglig i Chrome 121+ tack vare lastAccessed-egenskapen i flik-API:et. Mer information: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API-dokumentation</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sortering efter senast använd fungerar i Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Inget kortkommando konfigurerat ännu"
+  },
+  "open_settings_page": {
+    "message": "Öppna fullständig inställningssida",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Ändringar sparas automatiskt.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Konfigurera Tab Sorter-inställningar. Ändringar sparas automatiskt och delas med tilläggets popup.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Inställningar"
+  },
+  "preferences_appearance": {
+    "message": "Utseende",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Automatisk sortering"
+  },
+  "preferences_general": {
+    "message": "Allmänna inställningar"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Suspenderade flikar",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Flikgrupper",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Gruppera i början",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Gruppera i slutet",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorera kasserad status",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Position för suspenderade flikar:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Flikgrupper stöds inte i den här webbläsarversionen",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Auto (följ systemet)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Mörkt",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Tema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Ljust",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Standardsorteringsmetod för automatisk sortering",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Sortera flikar i alla fönster",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sortera flikar automatiskt (bästa försök).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Stäng dubblettflikar",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Sortera även fästa flikar",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respektera flikgrupper (sortera inom grupper)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Omvänd sortering",
+    "description": "Reverse sorting order"
+  }
+}

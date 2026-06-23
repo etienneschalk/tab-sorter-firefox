@@ -1,28 +1,35 @@
-import {
-  AVAILABLE_THEMES,
-  THEME_AUTO,
-  applyTheme as applyThemeToDocument,
-} from "./lib/theme-logic.js";
-
-// chrome.runtime.sendMessage("queryInitialState", (initialState) => {
-//   console.log("Received initial state", initialState);
-//   initializeUserInterface(initialState);
-// });
-
+import { loadInitialState } from "./lib/load-initial-state.js";
+import { applyDocumentLocale } from "./lib/locale-logic.js";
+import { applyTheme as applyThemeToDocument } from "./lib/theme-logic.js";
+import { COMMAND_DISPLAY_PRIORITY } from "./popup/constants.js";
+import { registerPopupEventListeners } from "./popup/events.js";
+import { logCommands, mountPopup } from "./popup/render.js";
 
 function applyTheme(theme) {
   const resolvedTheme = applyThemeToDocument(theme, document);
-  console.log(`[Tab Sorter] Applied theme: ${theme} (resolved to: ${resolvedTheme})`);
+  console.log(
+    `[Tab Sorter] Applied theme: ${theme} (resolved to: ${resolvedTheme})`,
+  );
 }
 
+registerPopupEventListeners(applyTheme);
+
+applyDocumentLocale(document);
+
 (async () => {
-  const initialState = await chrome.runtime.sendMessage("queryInitialState");
-  console.debug("== After await chrome.runtime.sendMessage");
-  
-  // Apply theme immediately before rendering
-  applyTheme(initialState.theme);
-  
-  initializeUserInterface(initialState);
+  try {
+    const initialState = await loadInitialState();
+    console.debug("== Popup initial state loaded");
+
+    applyTheme(initialState.theme);
+    initializeUserInterface(initialState);
+  } catch (error) {
+    console.error("[Tab Sorter] Popup failed to load", error);
+    const container = document.getElementById("container");
+    if (container) {
+      container.textContent = "Tab Sorter failed to load. See the browser console.";
+    }
+  }
 })();
 
 function initializeUserInterface(initialState) {
@@ -55,293 +62,18 @@ function initializeUserInterface(initialState) {
   console.log(logPrefix + "isTabGroupsApiAvailable", isTabGroupsApiAvailable);
   console.log(logPrefix + "availableSortMethods", availableSortMethods);
 
-  logCommands(allCommands);
+  logCommands(allCommands ?? []);
 
-  const commandDisplayPriority = {
-    command_sort_tabs_favicon_and_title: 1,
-    command_sort_tabs_title: 2,
-    command_sort_tabs_url: 3,
-    command_sort_tabs_mru: 4,
-    command_sort_tabs_shuffle: 5,
-    command_extract_domain: 6,
-  };
+  const filteredCommands = (allCommands ?? [])
+    .filter(
+      (command) =>
+        command.name.startsWith("command_sort_tabs") ||
+        command.name === "command_extract_domain",
+    )
+    .sort(
+      (a, b) =>
+        COMMAND_DISPLAY_PRIORITY[a.name] - COMMAND_DISPLAY_PRIORITY[b.name],
+    );
 
-  const popupHtmlString = renderPopup({
-    isReverse,
-    isAllWindows,
-    isAutoOnNewTab,
-    isCloseDuplicateTabs,
-    defaultSortMethod,
-    isRespectTabGroups,
-    suspendedTabsPosition,
-    availableSuspendedTabsPositions,
-    isSortPinnedTabs,
-    theme,
-    isTabGroupsApiAvailable,
-    availableSortMethods,
-    allCommands: allCommands
-      .filter((command) => command.name.startsWith("command_sort_tabs") || command.name === "command_extract_domain")
-      .sort(
-        (a, b) =>
-          commandDisplayPriority[a.name] - commandDisplayPriority[b.name]
-      ),
-  });
-
-  const container = new DOMParser()
-    .parseFromString(popupHtmlString, "text/html")
-    .getElementById("container");
-  document.getElementById("container").innerHTML = "";
-  document.getElementById("container").appendChild(container);
+  mountPopup(initialState, filteredCommands);
 }
-
-const CHECKBOX_REVERSE = "ui_click_checkbox_sort_tabs_reverse";
-const CHECKBOX_ALL_WINDOWS = "ui_click_checkbox_sort_tabs_all_windows";
-const CHECKBOX_AUTO_ON_NEW_TAB = "ui_click_checkbox_sort_tabs_auto_best_effort";
-const CHECKBOX_RESPECT_TAB_GROUPS = "ui_click_checkbox_sort_tabs_respect_tab_groups";
-const CHECKBOX_SORT_PINNED = "ui_click_checkbox_sort_tabs_pinned";
-const CHECKBOX_CLOSE_DUPLICATES =
-  "ui_click_checkbox_sort_tabs_close_duplicates";
-const SELECT_DEFAULT_SORT_METHOD =
-  "ui_change_select_sort_select_tabs_default_sort_method";
-const SELECT_SUSPENDED_TABS_POSITION = "ui_change_select_suspended_tabs_position";
-const SELECT_THEME = "ui_change_select_theme";
-
-function translate(message) {
-  return chrome.i18n.getMessage(message);
-}
-
-function logCommands(commands) {
-  commands.forEach((command) => {
-    console.info(command);
-  });
-}
-
-function renderShortcutHint(shortcutString) {
-  return shortcutString
-    .split("+")
-    .map((part) => `<kbd>${part}</kbd>`)
-    .join("+");
-}
-
-function renderCommandActionButton(command) {
-  const { name, shortcut } = command;
-
-  const className = shortcut ? "button-primary" : "button-simple";
-
-  console.log(command);
-
-  return `
-<div>
-  <button class="${className}" href="#" id="${"ui_click_button_command_"}${name}">
-   ${translate(name)} 
-  </button>  
-
-  <br/>
-  ${`<p class="has-text-centered"> ${
-    shortcut
-      ? renderShortcutHint(shortcut)
-      : `<small>${translate("no_shortcut_configured")}</small>`
-  } </p>`}
-</div>
-  `;
-}
-
-function renderCheckbox(id, initialValue) {
-  return `
-<label for=${id}>
-  <input type="checkbox" id=${id} ${initialValue ? "checked" : ""}/>
-   ${translate(id)} 
-</label>
-  `;
-}
-
-function renderCheckboxWithDisabled(id, initialValue, disabled, disabledMessage) {
-  if (disabled) {
-    return `
-<label for=${id} class="disabled-checkbox">
-  <input type="checkbox" id=${id} disabled />
-   ${translate(id)} 
-  <br><small class="warning-text">${translate(disabledMessage)}</small>
-</label>
-    `;
-  }
-  return renderCheckbox(id, initialValue);
-}
-function renderSelect(id, options, initialSelectedValue) {
-  return `
-<label for="${id}">${translate(id)}</label>
-<select id="${id}">
-    ${options
-      .map((option) => renderOption(option, initialSelectedValue))
-      .join()}
-</select>
-`;
-}
-
-function renderOption(value, initialSelectedValue) {
-  return `
-<option value="${value}" ${value === initialSelectedValue ? "selected" : ""}>
-    ${translate(`command_${value}`)}
-</option>
-    `;
-}
-
-function renderThemeOption(themeValue, selectedTheme) {
-  return `
-<option value="${themeValue}" ${themeValue === selectedTheme ? "selected" : ""}>
-    ${translate(`theme_${themeValue}`)}
-</option>
-  `;
-}
-
-function renderSuspendedTabsPositionOption(positionValue, selectedPosition) {
-  return `
-<option value="${positionValue}" ${positionValue === selectedPosition ? "selected" : ""}>
-    ${translate(`suspended_tabs_position_${positionValue}`)}
-</option>
-  `;
-}
-
-function renderPopup(params) {
-  const {
-    isReverse,
-    isAllWindows,
-    isAutoOnNewTab,
-    isCloseDuplicateTabs,
-    defaultSortMethod,
-    isRespectTabGroups,
-    suspendedTabsPosition,
-    availableSuspendedTabsPositions,
-    isSortPinnedTabs,
-    theme,
-    isTabGroupsApiAvailable,
-    availableSortMethods,
-    allCommands,
-  } = params;
-
-  return `
-<div id="container">
-    <div class="">
-        <h1>  🗂️ ${translate("extensionName")} </h1>
-    </div>
-    <div class="flexcontainer">
-        <div class="flexcol">
-            <h2>❓ ${translate("help")} </h2>
-
-            <br>
-            <h3> ${translate("help_how_to_update_shortcuts_question")} </h3>
-            <p> ${translate("help_how_to_update_shortcuts_answer")} </p>
-
-            <br>
-            <h3> ${translate("help_mru_not_working_chrome_question")} </h3>
-            <p> ${translate("help_mru_not_working_chrome_answer")} </p>
-
-            <br>
-            <h3>${translate("help_encountered_a_problem_question")} </h3>
-            <p> ${translate("help_encountered_a_problem_answer")} </p>
-        </div>
-        <div class="flexcol">
-            <h2> ⚙️ ${translate("preferences")} </h2>
-            <br> 
-            <h3> ⭐ ${translate("preferences_general")}</h3>
-            ${renderCheckbox(CHECKBOX_REVERSE, isReverse)}
-            ${renderCheckbox(CHECKBOX_ALL_WINDOWS, isAllWindows)}
-            ${renderCheckbox(CHECKBOX_SORT_PINNED, isSortPinnedTabs)}
-            ${renderCheckbox(CHECKBOX_CLOSE_DUPLICATES, isCloseDuplicateTabs)}
-            <br>
-            <h3> 💤 ${translate("preferences_suspended_tabs")}</h3>
-            <div class="suspended-tabs-selector">
-              <label for="${SELECT_SUSPENDED_TABS_POSITION}">${translate("suspended_tabs_position_label")}</label>
-              <select id="${SELECT_SUSPENDED_TABS_POSITION}">
-                ${availableSuspendedTabsPositions.map((p) => renderSuspendedTabsPositionOption(p, suspendedTabsPosition)).join("")}
-              </select>
-            </div>
-            <br> 
-            <h3> 📁 ${translate("preferences_tab_groups")}</h3>
-            ${renderCheckboxWithDisabled(
-              CHECKBOX_RESPECT_TAB_GROUPS,
-              isRespectTabGroups,
-              !isTabGroupsApiAvailable,
-              "tab_groups_not_supported"
-            )}
-            <br> 
-            <h3> 🤖 ${translate("preferences_auto")}</h3>
-            ${renderCheckbox(CHECKBOX_AUTO_ON_NEW_TAB, isAutoOnNewTab)}
-            <br>
-            ${renderSelect(
-              SELECT_DEFAULT_SORT_METHOD,
-              availableSortMethods,
-              defaultSortMethod
-            )}
-            <br>
-            <br>
-            <h3> 🎨 ${translate("preferences_appearance")}</h3>
-            <div class="theme-selector">
-              <label for="${SELECT_THEME}">${translate("theme_label")}</label>
-              <select id="${SELECT_THEME}">
-                ${AVAILABLE_THEMES.map((t) => renderThemeOption(t, theme)).join("")}
-              </select>
-            </div>
-        </div>
-        <div class="flexcol">
-            <h2> 🧹 ${translate("actions")} </h2>
-            <br> 
-            ${allCommands
-              .map((command) => renderCommandActionButton(command))
-              .join("<br>")}
-            <br>
-        </div>
-    </div>
-    <div class="">
-        <small> Tab Sorter - v${chrome.runtime.getManifest().version} </small>
-    </div>
-</div>
-  `;
-}
-
-// Event listeners
-
-// Clicking on the extension "Sort tabs" icon buttons and checkboxes
-document.addEventListener("click", (e) => {
-  const id = e.target.id;
-
-  let command = null;
-  let value = null;
-
-  if (id.startsWith("ui_click_button_command_")) {
-    command = id.replace("ui_click_button_command_", "");
-  } else if (id.startsWith("ui_click_checkbox_")) {
-    command = id;
-    value = e.target.checked;
-  }
-
-  chrome.runtime.sendMessage({
-    type: "clickFromPopup",
-    command: command,
-    value: value,
-  });
-});
-
-// Changing a select
-document.addEventListener("change", (e) => {
-  const id = e.target.id;
-
-  let command = null;
-  let value = null;
-
-  if (id.startsWith("ui_change_select_")) {
-    command = id;
-    value = e.target.value;
-    
-    // Apply theme immediately when changed
-    if (id === SELECT_THEME) {
-      applyTheme(value);
-    }
-  }
-
-  chrome.runtime.sendMessage({
-    type: "changeFromPopup",
-    command: command,
-    value: value,
-  });
-});

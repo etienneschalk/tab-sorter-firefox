@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "정렬"
+  },
+  "change_addons_preferences": {
+    "message": "부가 기능 환경 설정 열기",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "도메인 추출",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "아이콘 순",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "최근 사용 순",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "탭 섞기",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "제목 순",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "URL 순",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "탭을 정렬하는 확장 프로그램입니다.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "도움말"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">GitHub에 이슈를 생성해 주세요</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "문제가 발생했습니다!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "이 확장 프로그램에는 일부 정렬 방식에 대한 기본 단축키가 있습니다. Firefox에서 직접 변경할 수 있습니다. 자세한 내용: <a target=\"_blank\" href=\"https://support.mozilla.org/ko/kb/manage-extension-shortcuts-firefox\">Firefox에서 확장 기능 단축키 관리</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "이 확장 프로그램에는 일부 정렬 방식에 대한 기본 단축키가 있습니다. Chrome에서 <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a>를 열어 확인하거나 변경하세요."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "정렬 방식별 키보드 단축키는 어떻게 변경하나요?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "탭 API의 lastAccessed 속성 덕분에 이 기능은 Chrome 121 이상에서 사용할 수 있습니다. 자세한 내용: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API 문서</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "최근 사용 순 정렬은 Chrome 121 이상에서 작동합니다."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "아직 단축키가 설정되지 않음"
+  },
+  "open_settings_page": {
+    "message": "전체 설정 페이지 열기",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "변경 사항은 자동으로 저장됩니다.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Tab Sorter 환경 설정을 구성합니다. 변경 사항은 자동으로 저장되며 확장 프로그램 팝업과 공유됩니다.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "환경 설정"
+  },
+  "preferences_appearance": {
+    "message": "모양",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "자동 정렬"
+  },
+  "preferences_general": {
+    "message": "일반 환경 설정"
+  },
+  "preferences_suspended_tabs": {
+    "message": "일시 중단된 탭",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "탭 그룹",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "처음에 그룹화",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "끝에 그룹화",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "폐기 상태 무시",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "일시 중단된 탭 위치:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "이 브라우저 버전에서는 탭 그룹이 지원되지 않습니다",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "자동(시스템 따름)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "어두운",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "테마:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "밝은",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "자동 정렬의 기본 정렬 방식",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "모든 창의 탭 정렬",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "탭 자동 정렬(최선의 노력).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "중복 탭 닫기",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "고정된 탭도 정렬",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "탭 그룹 존중(그룹 내에서 정렬)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "정렬 순서 반전",
+    "description": "Reverse sorting order"
+  }
+}

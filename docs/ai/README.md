@@ -7,6 +7,7 @@ This folder documents changes made with AI assistance so they can be understood,
 | Document | Description |
 |----------|-------------|
 | [test-automation.md](./test-automation.md) | Full write-up of the automated test stack: what changed, why, and how to reproduce it from scratch |
+| [manual-i18n-testing.md](./manual-i18n-testing.md) | How to set Firefox and Chromium UI language for manual translation / RTL testing |
 | [github-actions.md](./github-actions.md) | GitHub Actions CI workflow: triggers, steps, and troubleshooting |
 | [test-procedures/](./test-procedures/) | Manual QA checklists (`test-*.md`) for each feature |
 

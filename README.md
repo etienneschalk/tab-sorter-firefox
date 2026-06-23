@@ -6,11 +6,15 @@ Simple extension for sorting tabs in Firefox (and Chrome)
 
 **For Firefox users:**
 
-➡️ Please use this link to download: https://addons.mozilla.org/en-US/firefox/addon/tab-sorter/
+➡️ Please use this link to download: https://addons.mozilla.org/en-US/firefox/addon/tab-sorter-/
 
-The original link lead to an outdated version (https://addons.mozilla.org/en-US/firefox/addon/tab-sorter-) and cannot be updated anymore.
+The original link lead to an outdated version (https://addons.mozilla.org/en-US/firefox/addon/tab-sorter) and cannot be updated anymore.
 
-## Build Process 
+### Translations
+
+Only **English** and **French** UI strings were written and reviewed manually. All other supported languages in `template-extension/_locales/` were AI-generated and may contain mistakes or awkward phrasing. Corrections are welcome via [GitHub issues](https://github.com/etienneschalk/tab-sorter-firefox/issues).
+
+## Build Process
 
 The `template-extension` folder contains the main source. 
 The `build` folder contains concrete extensions for Firefox and Chrome (respectively (`firefox-extension` and `chrome-extension`)).

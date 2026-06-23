@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "排序"
+  },
+  "change_addons_preferences": {
+    "message": "開啟附加元件偏好設定",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "擷取網域",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "依圖示",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "依最近使用",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "隨機排列分頁",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "依標題",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "依 URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "用於排序分頁的擴充功能。",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "說明"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">請在 GitHub 上建立 issue</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "我遇到問題了！"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "此擴充功能為部分排序方式提供預設快捷鍵。您可以直接在 Firefox 中變更。詳情請參閱：<a target=\"_blank\" href=\"https://support.mozilla.org/zh-TW/kb/manage-extension-shortcuts-firefox\">在 Firefox 中管理擴充功能快捷鍵</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "此擴充功能為部分排序方式提供預設快捷鍵。在 Chrome 中開啟 <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> 即可查看或變更。"
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "如何更新不同排序方式的鍵盤快捷鍵？"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "得益於分頁 API 的 lastAccessed 屬性，此功能現已在 Chrome 121 以上可用。詳情請參閱：<a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome 分頁 API 文件</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "依最近使用排序在 Chrome 121 以上可用。"
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "尚未設定快捷鍵"
+  },
+  "open_settings_page": {
+    "message": "開啟完整設定頁面",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "變更會自動儲存。",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "設定 Tab Sorter 偏好設定。變更會自動儲存，並與擴充功能彈出視窗共用。",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "偏好設定"
+  },
+  "preferences_appearance": {
+    "message": "外觀",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "自動排序"
+  },
+  "preferences_general": {
+    "message": "一般偏好設定"
+  },
+  "preferences_suspended_tabs": {
+    "message": "已休眠分頁",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "分頁群組",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "群組到開頭",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "群組到末尾",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "忽略已捨棄狀態",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "休眠分頁位置：",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "此瀏覽器版本不支援分頁群組",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "自動（跟隨系統）",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "深色",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "主題：",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "淺色",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "自動排序的預設排序方式",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "排序所有視窗中的分頁",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "自動排序分頁（盡力而為）。",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "關閉重複分頁",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "同時排序已釘選分頁",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "尊重分頁群組（在群組內排序）",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "反向排序",
+    "description": "Reverse sorting order"
+  }
+}

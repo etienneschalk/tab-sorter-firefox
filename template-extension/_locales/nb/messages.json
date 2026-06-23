@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Sorter"
+  },
+  "change_addons_preferences": {
+    "message": "Åpne tilleggsinnstillinger",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Trekk ut domene",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Etter ikon",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Etter sist brukt",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Bland faner",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Etter tittel",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "Etter URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Utvidelse for å sortere fanene dine.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Hjelp"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Opprett en sak på GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Jeg støtte på et problem!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "Utvidelsen har forhåndsdefinerte snarveier for noen sorteringsmetoder. Du kan endre dem direkte i Firefox. Mer informasjon: <a target=\"_blank\" href=\"https://support.mozilla.org/nb-NO/kb/manage-extension-shortcuts-firefox\">Administrer utvidelsessnarveier i Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "Utvidelsen har forhåndsdefinerte snarveier for noen sorteringsmetoder. Åpne <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> i Chrome for å vise eller endre dem."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Hvordan oppdaterer jeg hurtigtastene for de ulike sorteringsmetodene?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Denne funksjonen er nå tilgjengelig i Chrome 121+ takket være lastAccessed-egenskapen i fane-API-et. Mer informasjon: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API-dokumentasjon</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sortering etter sist brukt fungerer i Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Ingen snarvei konfigurert ennå"
+  },
+  "open_settings_page": {
+    "message": "Åpne full innstillingsside",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Endringer lagres automatisk.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Konfigurer Tab Sorter-innstillinger. Endringer lagres automatisk og deles med utvidelsens popup.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Innstillinger"
+  },
+  "preferences_appearance": {
+    "message": "Utseende",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Automatisk sortering"
+  },
+  "preferences_general": {
+    "message": "Generelle innstillinger"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Suspenderte faner",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Fanegrupper",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Grupper i begynnelsen",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Grupper på slutten",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorer forkastet status",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Plassering av suspenderte faner:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Fanegrupper støttes ikke i denne nettleserversjonen",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Auto (følg systemet)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Mørk",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Tema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Lys",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Standard sorteringsmetode for automatisk sortering",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Sorter faner i alle vinduer",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Sorter faner automatisk (beste forsøk).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Lukk duplikatfaner",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Sorter også festede faner",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respekter fanegrupper (sorter innenfor grupper)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Omvendt sortering",
+    "description": "Reverse sorting order"
+  }
+}

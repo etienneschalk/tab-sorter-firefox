@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Sorteren"
+  },
+  "change_addons_preferences": {
+    "message": "Add-onvoorkeuren openen",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Domein extraheren",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Op pictogram",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Op meest recent gebruikt",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Tabbladen door elkaar",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Op titel",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "Op URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Extensie om je tabbladen te sorteren.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Help"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Maak een issue aan op GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Ik heb een probleem ondervonden!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "De extensie heeft vooraf ingestelde sneltoetsen voor sommige sorteermethoden. Je kunt ze direct in Firefox wijzigen. Meer informatie: <a target=\"_blank\" href=\"https://support.mozilla.org/nl/kb/sneltoetsen-van-extensies-beheren\">Sneltoetsen van extensies beheren in Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "De extensie bevat vooraf ingestelde sneltoetsen voor sommige sorteermethoden. Open <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> in Chrome om ze te bekijken of te wijzigen."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Hoe werk ik de sneltoetsen bij voor de verschillende sorteermethoden?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Deze functie is nu beschikbaar in Chrome 121+ dankzij de lastAccessed-eigenschap in de tabbladen-API. Meer informatie: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API-documentatie</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Sorteren op meest recent gebruikt werkt in Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Nog geen sneltoets geconfigureerd"
+  },
+  "open_settings_page": {
+    "message": "Volledige instellingenpagina openen",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Wijzigingen worden automatisch opgeslagen.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Configureer de Tab Sorter-voorkeuren. Wijzigingen worden automatisch opgeslagen en gedeeld met het extensiepop-upvenster.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Voorkeuren"
+  },
+  "preferences_appearance": {
+    "message": "Uiterlijk",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Automatisch sorteren"
+  },
+  "preferences_general": {
+    "message": "Algemene voorkeuren"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Onderbroken tabbladen",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Tabgroepen",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Groeperen aan het begin",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Groeperen aan het einde",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Genegeerde status negeren",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Positie onderbroken tabbladen:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Tabgroepen worden niet ondersteund in deze browserversie",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Auto (systeem volgen)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Donker",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Thema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Licht",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Standaard sorteermethode voor automatisch sorteren",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Tabbladen in alle vensters sorteren",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Tabbladen automatisch sorteren (beste poging).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Dubbele tabbladen sluiten",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Ook vastgezette tabbladen sorteren",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Tabgroepen respecteren (sorteren binnen groepen)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Sorteervolgorde omkeren",
+    "description": "Reverse sorting order"
+  }
+}

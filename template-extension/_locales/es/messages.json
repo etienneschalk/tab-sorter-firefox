@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Ordenar"
+  },
+  "change_addons_preferences": {
+    "message": "Abrir preferencias de complementos",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Extraer dominio",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Por icono",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Por uso más reciente",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Mezclar pestañas",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Por título",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "Por URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Extensión para ordenar tus pestañas.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Ayuda"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Crea un issue en GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "¡He encontrado un problema!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "La extensión incluye atajos predefinidos para algunos métodos de ordenación. Puedes cambiarlos directamente en Firefox. Para más información, consulta: <a target=\"_blank\" href=\"https://support.mozilla.org/es/kb/manage-extension-shortcuts-firefox\">Gestionar atajos de extensiones en Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "La extensión incluye atajos predefinidos para algunos métodos de ordenación. Abra <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> en Chrome para verlos o cambiarlos."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "¿Cómo actualizo los atajos de teclado para los distintos métodos de ordenación?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Esta función ya está disponible en Chrome 121+ gracias a la propiedad lastAccessed de la API de pestañas. Para más información, consulta: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentación de la API Tabs de Chrome</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Ordenar por uso más reciente funciona en Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Aún no hay atajo configurado"
+  },
+  "open_settings_page": {
+    "message": "Abrir página de configuración completa",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Los cambios se guardan automáticamente.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Configura las preferencias de Tab Sorter. Los cambios se guardan automáticamente y se comparten con el popup de la extensión.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Preferencias"
+  },
+  "preferences_appearance": {
+    "message": "Apariencia",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Ordenación automática"
+  },
+  "preferences_general": {
+    "message": "Preferencias generales"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Pestañas suspendidas",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Grupos de pestañas",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Agrupar al principio",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Agrupar al final",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignorar estado descartado",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Posición de pestañas suspendidas:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Los grupos de pestañas no son compatibles con esta versión del navegador",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Automático (seguir el sistema)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Oscuro",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Tema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Claro",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Método de ordenación predeterminado para ordenación automática",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Ordenar pestañas en todas las ventanas",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Ordenar pestañas automáticamente (mejor esfuerzo).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Cerrar pestañas duplicadas",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Ordenar también las pestañas fijadas",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Respetar grupos de pestañas (ordenar dentro de los grupos)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Invertir ordenación",
+    "description": "Reverse sorting order"
+  }
+}

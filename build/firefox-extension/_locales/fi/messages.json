@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Järjestä"
+  },
+  "change_addons_preferences": {
+    "message": "Avaa lisäosien asetukset",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Erota verkkotunnus",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Kuvakkeen mukaan",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Viimeksi käytetyn mukaan",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Sekoita välilehdet",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Otsikon mukaan",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "URL:n mukaan",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Laajennus välilehtien järjestämiseen.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Ohje"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Luo issue GitHubissa</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Kohtasin ongelman!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "Laajennuksessa on ennalta määritetyt pikanäppäimet joillekin lajittelutavoille. Voit muuttaa niitä suoraan Firefoxissa. Lisätietoja: <a target=\"_blank\" href=\"https://support.mozilla.org/fi/kb/manage-extension-shortcuts-firefox\">Laajennusten pikanäppäinten hallinta Firefoxissa</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "Laajennuksessa on ennalta määritetyt pikanäppäimet joillekin lajittelutavoille. Avaa Chromessa <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> tarkastellaksesi tai muuttaaksesi niitä."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Miten päivitän pikanäppäimet eri lajittelutavoille?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Tämä ominaisuus on nyt saatavilla Chromessa 121+ välilehti-API:n lastAccessed-ominaisuuden ansiosta. Lisätietoja: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Chrome Tabs API -dokumentaatio</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "Viimeksi käytetyn mukaan lajittelu toimii Chromessa 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Pikanäppäintä ei ole vielä määritetty"
+  },
+  "open_settings_page": {
+    "message": "Avaa täydellinen asetussivu",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Muutokset tallennetaan automaattisesti.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Määritä Tab Sorterin asetukset. Muutokset tallennetaan automaattisesti ja jaetaan laajennuksen ponnahdusikkunan kanssa.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Asetukset"
+  },
+  "preferences_appearance": {
+    "message": "Ulkoasu",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Automaattinen lajittelu"
+  },
+  "preferences_general": {
+    "message": "Yleiset asetukset"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Keskeytetyt välilehdet",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Välilehmiryhmät",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Ryhmitä alkuun",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Ryhmitä loppuun",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ohita hylätty tila",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Keskeytettyjen välilehtien sijainti:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "Välilehmiryhmiä ei tueta tässä selainversiossa",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Automaattinen (seuraa järjestelmää)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Tumma",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Teema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Vaalea",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Automaattisen lajittelun oletusmenetelmä",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Järjestä välilehdet kaikissa ikkunoissa",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Järjestä välilehdet automaattisesti (parhaan yrityksen mukaan).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Sulje kaksoiskappaleet",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Järjestä myös kiinnitetyt välilehdet",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Kunnioita välilehmiryhmiä (lajittele ryhmien sisällä)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Käänteinen lajittelu",
+    "description": "Reverse sorting order"
+  }
+}

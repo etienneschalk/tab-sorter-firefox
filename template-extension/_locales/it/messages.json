@@ -1,0 +1,173 @@
+{
+  "actions": {
+    "message": "Ordina"
+  },
+  "change_addons_preferences": {
+    "message": "Apri preferenze componenti aggiuntivi",
+    "description": "Link to access the Firefox's about:addons page"
+  },
+  "command_extract_domain": {
+    "message": "Estrai dominio",
+    "description": "Button for extracting domain tabs to new window"
+  },
+  "command_sort_tabs_favicon_and_title": {
+    "message": "Per icona",
+    "description": "Button for sorting tabs by favicon and title"
+  },
+  "command_sort_tabs_mru": {
+    "message": "Per utilizzo più recente",
+    "description": "Button for sorting tabs by most recently used"
+  },
+  "command_sort_tabs_shuffle": {
+    "message": "Mescola schede",
+    "description": "Link to reorganize tabs randomly"
+  },
+  "command_sort_tabs_title": {
+    "message": "Per titolo",
+    "description": "Button for sorting tabs by title"
+  },
+  "command_sort_tabs_url": {
+    "message": "Per URL",
+    "description": "Button for sorting tabs by URL."
+  },
+  "extensionDescription": {
+    "message": "Estensione per ordinare le schede.",
+    "description": "Description of the extension."
+  },
+  "extensionName": {
+    "message": "Tab Sorter",
+    "description": "Name of the extension."
+  },
+  "help": {
+    "message": "Aiuto"
+  },
+  "help_encountered_a_problem_answer": {
+    "message": "<a target=\"_blank\" href=\"https://github.com/etienneschalk/tab-sorter-firefox/issues/new\">Crea un issue su GitHub</a>"
+  },
+  "help_encountered_a_problem_question": {
+    "message": "Ho riscontrato un problema!"
+  },
+  "help_how_to_update_shortcuts_answer": {
+    "message": "L'estensione include scorciatoie predefinite per alcuni metodi di ordinamento. Puoi modificarle direttamente in Firefox. Per maggiori informazioni, consulta: <a target=\"_blank\" href=\"https://support.mozilla.org/it/kb/manage-extension-shortcuts-in-firefox\">Gestire le scorciatoie delle estensioni in Firefox</a>"
+  },
+  "help_how_to_update_shortcuts_answer_chrome": {
+    "message": "L'estensione include scorciatoie predefinite per alcuni metodi di ordinamento. Apri <a href=\"chrome://extensions/shortcuts\" class=\"chrome-shortcuts-link\">chrome://extensions/shortcuts</a> in Chrome per visualizzarle o modificarle."
+  },
+  "help_how_to_update_shortcuts_question": {
+    "message": "Come aggiorno le scorciatoie da tastiera per i diversi metodi di ordinamento?"
+  },
+  "help_mru_not_working_chrome_answer": {
+    "message": "Questa funzione è ora disponibile in Chrome 121+ grazie alla proprietà lastAccessed dell'API delle schede. Per maggiori informazioni, consulta: <a target=\"_blank\" href=\"https://developer.chrome.com/docs/extensions/reference/api/tabs\">Documentazione dell'API Tabs di Chrome</a>"
+  },
+  "help_mru_not_working_chrome_question": {
+    "message": "L'ordinamento per utilizzo più recente funziona su Chrome 121+."
+  },
+  "help_tab_groups_not_supported_chrome": {
+    "message": "Tab Groups are not supported in this Chrome version. Sorting tabs within groups while preserving group layout requires Chrome 89 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Chrome"
+  },
+  "help_tab_groups_not_supported_firefox": {
+    "message": "Tab Groups are not supported in this Firefox version. Sorting tabs within groups while preserving group layout requires Firefox 139 or later. On older versions, tabs are still sorted across the whole window.",
+    "description": "Help text when the Tab Groups API is unavailable in Firefox"
+  },
+  "no_shortcut_configured": {
+    "message": "Nessuna scorciatoia configurata"
+  },
+  "open_settings_page": {
+    "message": "Apri pagina impostazioni completa",
+    "description": "Link in the popup to open the extension settings page"
+  },
+  "options_page_auto_save": {
+    "message": "Le modifiche vengono salvate automaticamente.",
+    "description": "Hint shown on the settings page"
+  },
+  "options_page_intro": {
+    "message": "Configura le preferenze di Tab Sorter. Le modifiche vengono salvate automaticamente e condivise con il popup dell'estensione.",
+    "description": "Introduction text on the settings page"
+  },
+  "preferences": {
+    "message": "Preferenze"
+  },
+  "preferences_appearance": {
+    "message": "Aspetto",
+    "description": "Section header for appearance preferences"
+  },
+  "preferences_auto": {
+    "message": "Ordinamento automatico"
+  },
+  "preferences_general": {
+    "message": "Preferenze generali"
+  },
+  "preferences_suspended_tabs": {
+    "message": "Schede sospese",
+    "description": "Section header for suspended tabs preferences"
+  },
+  "preferences_tab_groups": {
+    "message": "Gruppi di schede",
+    "description": "Section header for tab groups preferences"
+  },
+  "suspended_tabs_position_beginning": {
+    "message": "Raggruppa all'inizio",
+    "description": "Move suspended tabs to the beginning when sorting"
+  },
+  "suspended_tabs_position_end": {
+    "message": "Raggruppa alla fine",
+    "description": "Move suspended tabs to the end when sorting"
+  },
+  "suspended_tabs_position_ignore": {
+    "message": "Ignora stato scartato",
+    "description": "Don't treat suspended tabs specially"
+  },
+  "suspended_tabs_position_label": {
+    "message": "Posizione schede sospese:",
+    "description": "Label for suspended tabs position selector"
+  },
+  "tab_groups_not_supported": {
+    "message": "I gruppi di schede non sono supportati in questa versione del browser",
+    "description": "Message shown when Tab Groups API is not available"
+  },
+  "theme_auto": {
+    "message": "Automatico (segui sistema)",
+    "description": "Auto theme option - follows system preference"
+  },
+  "theme_dark": {
+    "message": "Scuro",
+    "description": "Dark theme option"
+  },
+  "theme_label": {
+    "message": "Tema:",
+    "description": "Label for theme selector"
+  },
+  "theme_light": {
+    "message": "Chiaro",
+    "description": "Light theme option"
+  },
+  "ui_change_select_sort_select_tabs_default_sort_method": {
+    "message": "Metodo di ordinamento predefinito per ordinamento automatico",
+    "description": "Select Default sort method for auto sort on new tab"
+  },
+  "ui_click_checkbox_sort_tabs_all_windows": {
+    "message": "Ordina schede in tutte le finestre",
+    "description": "Sorting tabs also in other windows"
+  },
+  "ui_click_checkbox_sort_tabs_auto_best_effort": {
+    "message": "Ordina schede automaticamente (miglior sforzo).",
+    "description": "Sort tabs automatically (best effort)."
+  },
+  "ui_click_checkbox_sort_tabs_close_duplicates": {
+    "message": "Chiudi schede duplicate",
+    "description": "Close tabs with the same URL when using a sort action"
+  },
+  "ui_click_checkbox_sort_tabs_pinned": {
+    "message": "Ordina anche le schede fissate",
+    "description": "Sort pinned tabs independently from non-pinned tabs"
+  },
+  "ui_click_checkbox_sort_tabs_respect_tab_groups": {
+    "message": "Rispetta gruppi di schede (ordina all'interno dei gruppi)",
+    "description": "Keep tabs in their groups and sort within each group"
+  },
+  "ui_click_checkbox_sort_tabs_reverse": {
+    "message": "Inverti ordinamento",
+    "description": "Reverse sorting order"
+  }
+}

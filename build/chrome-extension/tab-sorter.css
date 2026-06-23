@@ -1,6 +1,7 @@
 * {
   font-family: system-ui;
   font-size: 13px;
+  box-sizing: border-box;
 }
 
 /* CSS Custom Properties for theming */
@@ -49,6 +50,10 @@ html {
   color: var(--text-primary);
 }
 
+body {
+  margin: 0;
+}
+
 /* Layout */
 
 .container {
@@ -57,21 +62,111 @@ html {
   width: 780px;
 }
 
+/* Extension popup: scroll tall content; wrap long translations inside fixed layout */
+body.popup-page {
+  /* Firefox sizes the popup from body, not :root or inner wrappers (MDN Popups). */
+  width: 780px;
+  min-width: 780px;
+  max-width: 100vw;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 600px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body.popup-page > .container {
+  width: 100%;
+  min-width: 0;
+  padding: 0px 3px;
+  background: transparent;
+}
+
+body.popup-page .flexcontainer {
+  align-items: stretch;
+  min-width: 0;
+  width: 100%;
+}
+
+body.popup-page .flexcol {
+  flex: 0 0 calc((100% - 8px) / 3);
+  min-width: 0;
+}
+
+body.popup-page label,
+body.popup-page button,
+body.popup-page p,
+body.popup-page h1,
+body.popup-page h2,
+body.popup-page h3,
+body.popup-page select,
+body.popup-page a,
+body.popup-page kbd {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+body.popup-page a.chrome-shortcuts-link {
+  display: inline;
+  cursor: pointer;
+}
+
+body.popup-page code {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  background-color: var(--kbd-bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+body.popup-page button {
+  white-space: normal;
+}
+
+body.popup-page .button-primary,
+body.popup-page .button-simple {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.popup-page select {
+  width: 100%;
+  min-width: 0;
+}
+
+body.popup-page .theme-selector,
+body.popup-page .suspended-tabs-selector {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body.popup-page .theme-selector label,
+body.popup-page .suspended-tabs-selector label {
+  display: block;
+  width: 100%;
+}
+
 .flexcontainer {
   display: flex;
-  flex-direction: col;
-  gap: 12px;
+  flex-direction: row;
+  gap: 4px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
 .flexcol {
-  /* width should be 100% / ncol */
-  width: 33.33%;
+  flex: 1 1 0%;
+  min-width: 0;
   padding: 10px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 5px;
+  overflow-wrap: anywhere;
 }
 
 .centered,
@@ -84,6 +179,14 @@ html {
 
 .has-text-centered {
   text-align: center;
+}
+
+.command-action {
+  margin-bottom: 10px;
+}
+
+.command-action .command-shortcut {
+  margin: 2px 0 0;
 }
 
 .has-text-right-aligned {
@@ -245,4 +348,78 @@ select {
 select option {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
+}
+
+.options-page {
+  width: 560px;
+  max-width: calc(100vw - 32px);
+  margin: 16px auto;
+  padding: 16px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.options-intro {
+  color: var(--text-secondary);
+  margin: 8px 0 16px;
+}
+
+.options-preferences h2 {
+  margin-top: 0;
+}
+
+.options-saved-hint {
+  margin-top: 16px;
+  color: var(--text-muted);
+}
+
+.options-version {
+  margin-top: 24px;
+  color: var(--text-muted);
+}
+
+.settings-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.settings-link a {
+  display: inline;
+  cursor: pointer;
+}
+
+/* Right-to-left locales (Arabic, Hebrew) */
+[dir="rtl"] .flexcontainer {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] label input[type="checkbox"] {
+  margin-inline-start: 6px;
+  margin-inline-end: 0;
+}
+
+[dir="rtl"] .sub-checkbox {
+  margin-inline-start: 18px;
+  margin-inline-end: 0;
+  padding-inline-start: 8px;
+  padding-inline-end: 0;
+  border-inline-start: 2px solid var(--border-color);
+  border-inline-end: none;
+}
+
+[dir="rtl"] .theme-selector,
+[dir="rtl"] .suspended-tabs-selector {
+  flex-direction: row-reverse;
+}
+
+.suspended-tabs-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.suspended-tabs-selector label {
+  display: inline;
+  width: auto;
 }
