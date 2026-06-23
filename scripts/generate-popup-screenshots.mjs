@@ -8,12 +8,11 @@
  *
  * Usage: npm run generate:screenshots
  *        node scripts/generate-popup-screenshots.mjs [locale ...]
- * Output: screenshots/amo/<locale>/popup-1280x800.jpg
+ * Output:
+ *   screenshots/amo/light_theme/<locale>/popup-1280x800.jpg
+ *   screenshots/amo/dark_theme/<locale>/popup-1280x800.jpg
  *
- * Chromium cannot load the Firefox MV3 background page, so this script copies
- * the Firefox build and patches the manifest to use a service worker while
- * keeping gecko settings (Firefox-specific help text).
- *
+ * Uses the Chrome extension build (service worker) under Chromium.
  * Extensions require a headed browser. On Linux without a display:
  *   xvfb-run npm run generate:screenshots
  */
@@ -25,13 +24,19 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const firefoxExtensionPath = path.join(rootDir, "build/firefox-extension");
+const extensionPath = path.join(rootDir, "build/chrome-extension");
 const localesDir = path.join(rootDir, "template-extension/_locales");
 const outputRoot = path.join(rootDir, "screenshots/amo");
 
 const WIDTH = 1280;
 const HEIGHT = 800;
 const POPUP_WIDTH = 780;
+const STORAGE_KEY_THEME = "TAB_SORTER_STORAGE_KEY_THEME";
+
+const THEMES = [
+  { name: "light", colorScheme: "light", canvasBackground: "#f0f0f0" },
+  { name: "dark", colorScheme: "dark", canvasBackground: "#12121f" },
+];
 
 const requestedLocales = process.argv.slice(2);
 
@@ -52,52 +57,45 @@ function extensionIdFromUrl(url) {
   return match?.[1] ?? null;
 }
 
-/** Chromium needs a service worker; keep gecko block for Firefox-specific UI. */
-function prepareScreenshotExtension() {
-  const tempDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), "tab-sorter-screenshot-ext-"),
-  );
-  fs.cpSync(firefoxExtensionPath, tempDir, { recursive: true });
-
-  const manifestPath = path.join(tempDir, "manifest.json");
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-  manifest.background = {
-    service_worker: "tab-sorter.js",
-    type: "module",
-  };
-  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-
-  return tempDir;
-}
-
-async function getExtensionId(context) {
+async function getServiceWorker(context) {
   for (const serviceWorker of context.serviceWorkers()) {
-    const id = extensionIdFromUrl(serviceWorker.url());
-    if (id) {
-      return id;
+    if (extensionIdFromUrl(serviceWorker.url())) {
+      return serviceWorker;
     }
   }
 
   const serviceWorker = await context.waitForEvent("serviceworker", {
     timeout: 30_000,
   });
-  const id = extensionIdFromUrl(serviceWorker.url());
-  if (!id) {
+  if (!extensionIdFromUrl(serviceWorker.url())) {
     throw new Error(`Unexpected service worker URL: ${serviceWorker.url()}`);
   }
-  return id;
+  return serviceWorker;
 }
 
-async function prepareScreenshotPage(page) {
+async function getExtensionId(context) {
+  const serviceWorker = await getServiceWorker(context);
+  return extensionIdFromUrl(serviceWorker.url());
+}
+
+async function setStoredTheme(context, theme) {
+  const serviceWorker = await getServiceWorker(context);
+  await serviceWorker.evaluate(
+    ([key, value]) => chrome.storage.sync.set({ [key]: value }),
+    [STORAGE_KEY_THEME, theme],
+  );
+}
+
+async function prepareScreenshotPage(page, theme) {
   await page.setViewportSize({ width: WIDTH, height: HEIGHT });
-  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: theme.colorScheme });
 
   await page.addStyleTag({
     content: `
       html {
         width: ${WIDTH}px !important;
         height: ${HEIGHT}px !important;
-        background: #f0f0f0 !important;
+        background: ${theme.canvasBackground} !important;
       }
 
       body.popup-page {
@@ -113,7 +111,7 @@ async function prepareScreenshotPage(page) {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: #f0f0f0 !important;
+        background: ${theme.canvasBackground} !important;
       }
 
       body.popup-page > .container {
@@ -127,13 +125,9 @@ async function prepareScreenshotPage(page) {
       }
     `,
   });
-
-  await page.evaluate(() => {
-    document.documentElement.setAttribute("data-theme", "light");
-  });
 }
 
-async function captureLocaleScreenshot(extensionPath, locale) {
+async function captureLocaleScreenshots(locale) {
   const browserLang = toBrowserLang(locale);
   const userDataDir = fs.mkdtempSync(
     path.join(os.tmpdir(), `tab-sorter-screenshot-${locale}-`),
@@ -151,30 +145,37 @@ async function captureLocaleScreenshot(extensionPath, locale) {
     ],
   });
 
+  const outputPaths = [];
+
   try {
     const extensionId = await getExtensionId(context);
-
     const page = await context.newPage();
-    await page.goto(`chrome-extension://${extensionId}/tab-sorter.html`, {
-      waitUntil: "domcontentloaded",
-    });
-    await page.waitForSelector("h2", { timeout: 15_000 });
-    await page.waitForTimeout(300);
 
-    await prepareScreenshotPage(page);
+    for (const theme of THEMES) {
+      await setStoredTheme(context, theme.name);
+      await page.goto(`chrome-extension://${extensionId}/tab-sorter.html`, {
+        waitUntil: "domcontentloaded",
+      });
+      await page.waitForSelector("h2", { timeout: 15_000 });
+      await page.waitForTimeout(300);
 
-    const localeDir = path.join(outputRoot, locale);
-    fs.mkdirSync(localeDir, { recursive: true });
-    const outputPath = path.join(localeDir, "popup-1280x800.jpg");
+      await prepareScreenshotPage(page, theme);
 
-    await page.screenshot({
-      path: outputPath,
-      type: "jpeg",
-      quality: 92,
-      clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
-    });
+      const localeDir = path.join(outputRoot, `${theme.name}_theme`, locale);
+      fs.mkdirSync(localeDir, { recursive: true });
+      const outputPath = path.join(localeDir, "popup-1280x800.jpg");
 
-    return outputPath;
+      await page.screenshot({
+        path: outputPath,
+        type: "jpeg",
+        quality: 92,
+        clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
+      });
+
+      outputPaths.push(outputPath);
+    }
+
+    return outputPaths;
   } finally {
     await context.close();
     fs.rmSync(userDataDir, { recursive: true, force: true });
@@ -182,32 +183,30 @@ async function captureLocaleScreenshot(extensionPath, locale) {
 }
 
 async function main() {
-  if (!fs.existsSync(firefoxExtensionPath)) {
-    console.error("Firefox extension build not found. Run: npm run build");
+  if (!fs.existsSync(extensionPath)) {
+    console.error("Chrome extension build not found. Run: npm run build");
     process.exit(1);
   }
 
-  const extensionPath = prepareScreenshotExtension();
-
-  console.log(`Generating ${locales.length} localized screenshots…`);
+  console.log(
+    `Generating ${locales.length * THEMES.length} screenshots (${THEMES.length} themes × ${locales.length} locales)…`,
+  );
   fs.mkdirSync(outputRoot, { recursive: true });
 
   const results = [];
 
-  try {
-    for (const locale of locales) {
-      process.stdout.write(`  ${locale}… `);
-      try {
-        const outputPath = await captureLocaleScreenshot(extensionPath, locale);
-        console.log(`✓ ${path.relative(rootDir, outputPath)}`);
-        results.push({ locale, outputPath, ok: true });
-      } catch (error) {
-        console.log(`✗ ${error.message}`);
-        results.push({ locale, ok: false, error });
-      }
+  for (const locale of locales) {
+    process.stdout.write(`  ${locale}… `);
+    try {
+      const outputPaths = await captureLocaleScreenshots(locale);
+      console.log(
+        `✓ ${outputPaths.map((p) => path.relative(rootDir, p)).join(", ")}`,
+      );
+      results.push({ locale, outputPaths, ok: true });
+    } catch (error) {
+      console.log(`✗ ${error.message}`);
+      results.push({ locale, ok: false, error });
     }
-  } finally {
-    fs.rmSync(extensionPath, { recursive: true, force: true });
   }
 
   const failed = results.filter((result) => !result.ok);
@@ -216,7 +215,9 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\nDone. Screenshots saved under screenshots/amo/<locale>/`);
+  console.log(
+    `\nDone. Screenshots saved under screenshots/amo/<light_theme|dark_theme>/<locale>/`,
+  );
 }
 
 main();
