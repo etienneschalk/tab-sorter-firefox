@@ -2,6 +2,67 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9] - 2026-06-23
+
+### Internationalization ([#6](https://github.com/etienneschalk/tab-sorter-firefox/issues/6))
+
+Broad UI translation support and right-to-left layout.
+
+#### Added
+
+- **23 additional UI locales** (Arabic, Chinese Simplified/Traditional, Czech, Danish, Dutch, Finnish, German, Greek, Hebrew, Hungarian, Italian, Japanese, Korean, Norwegian Bokmål, Polish, Portuguese Brazil/Portugal, Romanian, Russian, Spanish, Swedish, Turkish) in addition to English and French
+- **RTL layout** for Arabic and Hebrew (`dir="rtl"` on `<html>` via `lib/locale-logic.js`)
+- **Locale parity tests** (`tests/unit/locales.test.js`) to keep all `messages.json` keys in sync
+- **Manual i18n testing guide** (`docs/ai/manual-i18n-testing.md`)
+
+#### Note
+
+- Only **English** and **French** strings were manually reviewed; other locales are AI-generated and may need corrections
+
+---
+
+### Settings Page ([#7](https://github.com/etienneschalk/tab-sorter-firefox/issues/7))
+
+Dedicated full-page preferences, shared with the popup.
+
+#### Added
+
+- **`options.html` / `options.js`** — settings open in a browser tab (`options_ui.open_in_tab`)
+- **Shared preferences modules** — `lib/preferences-render.js`, `lib/preferences-events.js`, `lib/ui-constants.js`
+- **Popup link** — “Open full settings page” in the popup preferences column
+- **E2E test** — `tests/e2e/options-page.spec.js` verifies persistence to `chrome.storage.sync`
+
+---
+
+### Added
+
+- **ES module architecture** — background (`background/`), popup (`popup/`), and shared `lib/` modules; entry points slimmed to `tab-sorter.js` and `popup-tab-sorter.js`
+- **Browser-specific help** — Firefox vs Chrome shortcut instructions; clickable `chrome://extensions/shortcuts` link in Chrome (opens in a new tab)
+- **Tab Groups help** — when the API is unavailable, the settings section is hidden and the help pane explains degraded sorting, with version requirements (**Firefox 139+**, **Chrome 89+**)
+- **In-page initial state** — popup and options load preferences from storage directly (`lib/load-initial-state.js`), avoiding hangs when the Firefox background is cold
+- **Firefox AMO data collection** — `data_collection_permissions.required: ["none"]` in the manifest
+
+### Changed
+
+- **Default sort method** — MRU is now the default; `Ctrl+Shift+Space` is assigned to “Sort by MRU” instead of favicon/title
+- **Popup layout** — improved flex, text wrapping, and scrolling for long translations; Firefox popup sizing sets width on `body` per Mozilla guidance
+- **Command display order** — MRU listed first in the actions column
+- **Build script** — cleans `build/chrome-extension` and `build/firefox-extension` before each copy; Firefox build keeps a background page for ES modules
+
+### Fixed
+
+- **Firefox popup** — blank popup on load (background message race); broken three-column layout in Firefox popups
+- **Chrome shortcuts help** — “Not allowed to load local resource” when clicking the `chrome://extensions/shortcuts` link in the popup
+- **Service worker startup** — background listeners register before cache warming so `queryInitialState` is not lost on a cold start (Chrome)
+- **Popup mount** — preserve `class="container centered"` on the page shell when injecting rendered HTML
+
+### Technical Improvements
+
+- **Unit tests** — `browser-logic.test.js`, `locale-logic.test.js`
+- **Dark mode E2E** — waits for popup content before interacting (`withExtensionPage` helper)
+
+---
+
 ## [0.8] - 2026-01-18
 
 
